@@ -1,16 +1,13 @@
-import React from 'react'
-import { observable} from "mobx";
-// Need mobx react
-// import { observer} from "mobx-react";
-
-import backgroundImage from 'images/nb-super-fade.jpg'
-import { Style, StyleMap } from 'utils/styles';
-import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
+import { faCalendarAlt, faListOl, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConcertPage } from 'components/concerts/concertPage';
+import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
 import { LeaderboardPage } from 'components/leaderboardPage';
-import { url } from 'inspector';
-
-
+import backgroundImage from 'images/nb-super-fade.jpg';
+import { observable } from "mobx";
+import { observer } from "mobx-react";
+import React from 'react';
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
 
 export enum Pages {
     UpcomingConcerts,
@@ -18,12 +15,13 @@ export enum Pages {
     Leaderboard,
 }
 
-// Nav model with observables for pages
-class PageModel {
+export class PageModel {
     @observable currentPage: Pages
+    // Blech this should really be handled by the router 
+    @observable selectedConcertID: number | null
 
     constructor(){
-        // Dashboard
+        this.selectedConcertID = null
         this.currentPage = Pages.UpcomingConcerts
     }
 
@@ -32,18 +30,42 @@ class PageModel {
     }
 
     showLeaderboard = (): void => {
-        this.currentPage = Pages.UpcomingConcerts
+        this.currentPage = Pages.Leaderboard
     }
 
     showConcert = (concertId: number): void => {
-        // Not sure how ID gets passed 
+        this.selectedConcertID = concertId
         this.currentPage = Pages.Concert
     }
 }
 
+interface NavIconProps {
+    icon: IconDefinition
+    title: string
+    onClick?(): void
+}
+
+function NavIcon(props: NavIconProps): JSX.Element {
+    const style: Style = {
+        alignItems: 'center',
+        fontSize: 10,
+        flexGrow: 1,
+    }
+
+    const iconStyle = {
+        fontSize: 30,
+    }
+
+    return (
+        <VerticalStack style={style} onClick={props.onClick}>
+            <FontAwesomeIcon icon={props.icon} style={iconStyle}/>
+            {props.title}
+        </VerticalStack>
+    )
+}
+
 class NavFooter extends React.Component<{model: PageModel}> {
     render(): JSX.Element {
-        // TODO: refactor to use vertical 
         const styles: StyleMap = {
             container: {
                 position: 'fixed',
@@ -53,66 +75,42 @@ class NavFooter extends React.Component<{model: PageModel}> {
                 width: '100%',
                 backgroundColor: '#636d66',
                 display: 'flex',
-                flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'center',
                 padding: 10,
                 
             },
-            button: {
-                border: '1px solid',
-                width: 50,
-            }
         }
 
         const model = this.props.model
 
+        // TODO: link to some type of profile page
         return (
-            <div style={styles.container}>
-                <div style={styles.button} onClick={model.showLeaderboard}>L</div>
-                <div style={styles.button} onClick={model.showUpcomingConcerts}>U</div>
-                <div style={styles.button} onClick={model.showUpcomingConcerts}>U</div>
-            </div>
+            <HorizontalStack style={styles.container}>
+                <NavIcon icon={faListOl} title="Rankings" onClick={model.showLeaderboard}/>
+                <NavIcon icon={faCalendarAlt} title="Upcoming Shows" onClick={model.showUpcomingConcerts}/>
+                <NavIcon icon={faCalendarAlt} title="My Profile"/>
+            </HorizontalStack>
         )
     }
 }
 
-
-
-// Probably can be a func
-class Content extends React.Component<{page: Pages}> {
-    render(): JSX.Element {
-        const style: Style = {
-            flex: 1,
-            overflow: 'auto',
-            margin: '0px 10px'
-
-        }
-
-        return (
-            <div style={style}>
-                <CurrentPage page={this.props.page}/>
-            </div>
-        )
-    }
-}
-
-// Need Mobx react
-// @observer
-class CurrentPage extends React.Component<{page: Pages}> {
+@observer
+class CurrentPage extends React.Component<{model: PageModel}> {
     render(): JSX.Element | undefined {
-        switch(this.props.page) {
+        const model = this.props.model
+        switch(model.currentPage) {
             case Pages.UpcomingConcerts:
-                return <UpcomingConcertsPage/>
+                return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>
             case Pages.Concert:
-                // pass params?
-                return <ConcertPage/>
+                return <ConcertPage concertID={model.selectedConcertID}/>
             case Pages.Leaderboard:
                 return <LeaderboardPage/>
         }
     }
 }
 
-
+@observer
 export class Main extends React.Component<{}> {
     private pageModel: PageModel
 
@@ -122,20 +120,33 @@ export class Main extends React.Component<{}> {
         this.pageModel.currentPage = Pages.UpcomingConcerts
     }
 
+    /**
+     * TODO: handle authentication here to start, render login page if no user object is present
+     * Eventually this behvaior will be replaced with React-Router
+     */
     render(): JSX.Element {
-        const style: Style = {
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            backgroundColor: '#CB0DFA',
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundPosition: 'top',
-            color: '#F5ED13',
+        const styles: StyleMap = {
+            container: {
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                backgroundColor: '#CB0DFA',
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundPosition: 'top',
+                color: '#F5ED13',
+            },
+            content: {
+                flex: 1,
+                overflow: 'auto',
+                margin: '0px 10px',
+            }
         }
-    
+        
         return (
-            <div style={style}>
-                <Content page={this.pageModel.currentPage}/>
+            <div style={styles.container}>
+                <div style={styles.content}>
+                    <CurrentPage model={this.pageModel}/>
+                </div>
                 <NavFooter model={this.pageModel}/>
             </div>
         )

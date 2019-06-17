@@ -11,7 +11,6 @@ interface StackProps {
     onClick?(): void
 }
 
-
 export function VerticalStack(props: StackProps): JSX.Element {
     const style = Object.assign({
         display: 'flex',
@@ -19,7 +18,7 @@ export function VerticalStack(props: StackProps): JSX.Element {
         alignItems: 'stretch',
     }, props.style)
 
-    return <div style={style}>{props.children}</div>
+    return <div style={style} onClick={props.onClick}>{props.children}</div>
 }
 
 export function HorizontalStack(props: StackProps): JSX.Element {
@@ -29,5 +28,5 @@ export function HorizontalStack(props: StackProps): JSX.Element {
         alignItems: 'stretch',
     }, props.style)
 
-    return <div style={style}>{props.children}</div>
+    return <div style={style} onClick={props.onClick}>{props.children}</div>
 }

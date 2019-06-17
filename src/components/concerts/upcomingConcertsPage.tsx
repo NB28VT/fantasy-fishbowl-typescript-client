@@ -3,8 +3,12 @@ import React from 'react';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { HorizontalStack, StyleMap, VerticalStack } from 'utils/styles';
 
+interface ConcertThumbnailProps {
+    concert: Concert
+    onClick(concertID: number): void
+}
 
-function ConcertThumbnail(props: {concert: Concert}): JSX.Element {
+function ConcertThumbnail(props: ConcertThumbnailProps): JSX.Element {
     // TODO: save thumbnail (on the backend)
     const styles: StyleMap = {
         container:  {
@@ -33,24 +37,32 @@ function ConcertThumbnail(props: {concert: Concert}): JSX.Element {
         }
     }
 
+    function onSelectConcert(): void {
+        props.onClick(props.concert.id)
+    }
+
     return (
-            <HorizontalStack style={styles.container}>
-                    <img style={styles.thumbnail} src={thumbnailPlaceholder}/>
-                <VerticalStack style={styles.info}>
-                    <div style={styles.showDate}>{props.concert.show_time}</div>
-                    <div style={styles.showName}>{props.concert.venue_name}</div>
-                </VerticalStack>
-            </HorizontalStack>
-           
+        <HorizontalStack style={styles.container} onClick={onSelectConcert}>
+                <img style={styles.thumbnail} src={thumbnailPlaceholder} alt="Concert Photo"/>
+            <VerticalStack style={styles.info}>
+                <div style={styles.showDate}>{props.concert.show_time}</div>
+                <div style={styles.showName}>{props.concert.venue_name}</div>
+            </VerticalStack>
+        </HorizontalStack>       
     )
 }
 
-// mobx observer
-export class UpcomingConcertsPage extends React.Component<{}> {
+
+interface UpcomingConcertsPageProps {
+    onSelectConcert(concertID: number): void
+}
+
+// Mobx observer for data loading indicator
+export class UpcomingConcertsPage extends React.Component<UpcomingConcertsPageProps> {
     private concertFetcher: APIConcertFetcher
     private concertList: Concert[]
 
-    constructor(props: {}) {
+    constructor(props: UpcomingConcertsPageProps) {
         super(props)
 
         this.concertList = []
@@ -65,8 +77,8 @@ export class UpcomingConcertsPage extends React.Component<{}> {
     }
 
     render(): JSX.Element {
-        // Concert fetcher should be observable
         if (this.concertFetcher.isLoading) {
+            // TODO: Loading indicator
             return <div>Loading</div>
         }
 
@@ -83,9 +95,8 @@ export class UpcomingConcertsPage extends React.Component<{}> {
             }
         }
 
-
         const concertButtons = this.concertList.map(concert => {
-            return <ConcertThumbnail concert={concert}/>
+            return <ConcertThumbnail concert={concert} onClick={this.props.onSelectConcert}/>
         })
 
         return (

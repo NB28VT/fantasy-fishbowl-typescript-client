@@ -1,10 +1,11 @@
 import React from 'react'
 
-interface ConcertPageProps {
-}
+export class ConcertPage extends React.Component<{concertID: number | null}> {
+    // TODO: load concert shpw route data here
 
-export class ConcertPage extends React.Component<ConcertPageProps> {
+    // Handle null ID/move over to using React-Router
     render(): JSX.Element {
-        return <div>Concert</div>
+        const placeholder = `Concert ${this.props.concertID}`
+        return <div>{placeholder}</div>
     }
 }
