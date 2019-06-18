@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConcertPage } from 'components/concerts/concertPage';
 import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
 import { LeaderboardPage } from 'components/leaderboardPage';
-import backgroundImage from 'images/nb-super-fade.jpg';
+import backgroundImage from 'images/papyrus-dark.png';
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from 'react';
@@ -71,14 +71,13 @@ class NavFooter extends React.Component<{model: PageModel}> {
                 position: 'fixed',
                 left: 0,
                 bottom: 0,
-                height: 50,
+                height:  50,
                 width: '100%',
                 backgroundColor: '#636d66',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: 10,
-                
+                padding: 10,        
             },
         }
 
@@ -103,7 +102,12 @@ class CurrentPage extends React.Component<{model: PageModel}> {
             case Pages.UpcomingConcerts:
                 return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>
             case Pages.Concert:
-                return <ConcertPage concertID={model.selectedConcertID}/>
+                // This should get fixed if I use React router
+                if (model.selectedConcertID) {
+                    return <ConcertPage concertID={model.selectedConcertID}/>
+                }
+
+                return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>                
             case Pages.Leaderboard:
                 return <LeaderboardPage/>
         }
@@ -129,23 +133,29 @@ export class Main extends React.Component<{}> {
             container: {
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100%',
-                backgroundColor: '#CB0DFA',
-                backgroundImage: `url(${backgroundImage})`,
-                backgroundPosition: 'top',
+                background: `url(${backgroundImage})`,
+                position: 'relative',
                 color: '#F5ED13',
             },
+            overlay: {
+                // TODO: this matches the global purple, get this into a constant somewhere
+                backgroundColor: 'rgba(203, 13, 250, 0.5)',
+                flex: 5,
+            },
             content: {
-                flex: 1,
                 overflow: 'auto',
                 margin: '0px 10px',
-            }
+                paddingBottom: 60,
+                
+            },
         }
-        
+
         return (
             <div style={styles.container}>
-                <div style={styles.content}>
-                    <CurrentPage model={this.pageModel}/>
+                <div style={styles.overlay}>
+                    <div style={styles.content}>
+                        <CurrentPage model={this.pageModel}/>
+                    </div>
                 </div>
                 <NavFooter model={this.pageModel}/>
             </div>

@@ -1,7 +1,9 @@
 // TODO: configure tslint for absolute imports
 // Get absolute imports set up
-import mockConcertResponse from '../mockData/concertList.json'
+import mockConcertsResponse from '../mockData/concertList.json'
+import mockConcertResponse from '../mockData/concert.json'
 
+// TODO: FLESH OUT THE SET DATA
 export interface Concert {
     id: number
     show_time: string
@@ -15,12 +17,17 @@ export interface ConcertResponse {
 export class APIConcertFetcher {
     public isLoading: boolean = false
 
-
     fetchConcerts = (): Concert[] => {
         this.isLoading = true
 
         this.isLoading = false
-        return mockConcertResponse["concerts"]
+        return mockConcertsResponse["concerts"]
     }
 
+    fetchConcert = (concertID: number): Concert => {
+        this.isLoading = true
+
+        this.isLoading = false        
+        return mockConcertResponse
+    }
 }
