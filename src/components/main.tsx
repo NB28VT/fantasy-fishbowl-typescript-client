@@ -45,7 +45,7 @@ interface NavIconProps {
     onClick?(): void
 }
 
-function NavIcon(props: NavIconProps): JSX.Element {
+export function NavIcon(props: NavIconProps): JSX.Element {
     const style: Style = {
         alignItems: 'center',
         fontSize: 10,
@@ -104,9 +104,8 @@ class CurrentPage extends React.Component<{model: PageModel}> {
             case Pages.Concert:
                 // This should get fixed if I use React router
                 if (model.selectedConcertID) {
-                    return <ConcertPage concertID={model.selectedConcertID}/>
+                    return <ConcertPage concertID={model.selectedConcertID} onBackToConcertList={model.showUpcomingConcerts}/>
                 }
-
                 return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>                
             case Pages.Leaderboard:
                 return <LeaderboardPage/>

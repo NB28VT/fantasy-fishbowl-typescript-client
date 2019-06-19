@@ -1,10 +1,12 @@
-import React from 'react'
-import Select from 'react-select';
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import { NavIcon } from 'components/main';
+import { ConcertThumbnail, MenuHeader } from 'components/shared';
 import { observable } from 'mobx';
-import { Style, VerticalStack } from 'utils/styles';
-import { MenuHeader, ConcertThumbnail } from 'components/shared';
 import { observer } from 'mobx-react';
-import { Concert, APIConcertFetcher } from 'services/APIConcertFetcher';
+import React from 'react';
+import Select from 'react-select';
+import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
+import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
 
 // DON'T LIKE HOW REACT-SELECT FORCES THIS TYPE (ID AND NAME IS MORE APPROPRIATE FOR SONG)
 interface Song {
@@ -150,6 +152,7 @@ class PredictionForm extends React.Component<{model: ConcertPredictionModel}> {
 
 interface ConcertPageProps {
     concertID: number
+    onBackToConcertList(): void
 }
 
 @observer
@@ -166,9 +169,17 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     render(): JSX.Element {
         const model = this.model
 
+        const headerStyle: Style = {
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+        }
+
         return (
             <VerticalStack>
-                <MenuHeader title="My Prediction"/>
+                <HorizontalStack style={headerStyle}>
+                    <NavIcon icon= {faAngleDoubleLeft} title="Back To Shows" onClick={this.props.onBackToConcertList}/>
+                    <MenuHeader title="My Prediction"/>
+                </HorizontalStack>
                 <ConcertThumbnail concert={model.concert}/>
                 <PredictionForm model={model}/>
             </VerticalStack>

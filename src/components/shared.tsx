@@ -6,6 +6,7 @@ import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
 export function MenuHeader(props: {title: string}): JSX.Element {
     const style: Style = {
         display: 'flex',
+        flexGrow: 2,
         justifyContent: 'center',
         marginBottom: 20,
         marginTop: 20,
