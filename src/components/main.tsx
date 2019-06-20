@@ -130,8 +130,6 @@ export class Main extends React.Component<{}> {
     render(): JSX.Element {
         const styles: StyleMap = {
             container: {
-                display: 'flex',
-                flexDirection: 'column',
                 background: `url(${backgroundImage})`,
                 position: 'relative',
                 color: '#F5ED13',
@@ -139,24 +137,22 @@ export class Main extends React.Component<{}> {
             overlay: {
                 // TODO: this matches the global purple, get this into a constant somewhere
                 backgroundColor: 'rgba(203, 13, 250, 0.5)',
-                flex: 5,
             },
             content: {
                 overflow: 'auto',
                 margin: '0px 10px',
                 paddingBottom: 60,
-                
             },
         }
 
         return (
             <div style={styles.container}>
                 <div style={styles.overlay}>
-                    <div style={styles.content}>
+                    <VerticalStack style={styles.content}>
                         <CurrentPage model={this.pageModel}/>
-                    </div>
+                    </VerticalStack>
+                    <NavFooter model={this.pageModel}/>
                 </div>
-                <NavFooter model={this.pageModel}/>
             </div>
         )
     }
