@@ -7,6 +7,8 @@ import { observer } from 'mobx-react';
 import { SubmitButton } from 'components/concerts/concertPage';
 import { AuthClient } from 'services/authClient';
 import { AuthContext } from 'App';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function WelcomeLogo(): JSX.Element {
     const styles: StyleMap = {
@@ -39,13 +41,16 @@ class LoginFormModel {
 
     loginUser = async (): Promise<void> => {
         const client = new AuthClient()
+    
         try {
             const loginResponse = await client.loginUser(this.email, this.password)
             this.onLogin(loginResponse.token)
         } catch(error) {
-            // TODO: Handle invalid error with toast message or something
-            // https://trello.com/c/7AVyO03f/10-handle-error-responses-alert
-            console.log("Bad response", error)
+            toast.error("Invalid Login, Please Try Again", {
+                hideProgressBar: true,
+                closeOnClick: true,
+                closeButton: false,
+            })
         }
     }
 
@@ -93,6 +98,7 @@ class LoginForm extends React.Component<LoginFormProps> {
                 <input style={styles.input} placeholder="Email" value={model.email} onChange={model.updateEmail}/>
                 <input  type="password" style={styles.input} placeholder="Password" value={model.password} onChange={model.updatePassword}/>
                 <SubmitButton onClick={model.loginUser}/>
+                <ToastContainer position="bottom-center"/>
             </VerticalStack>
         )
     }
