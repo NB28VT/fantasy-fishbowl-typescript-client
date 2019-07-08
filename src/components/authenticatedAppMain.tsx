@@ -83,7 +83,6 @@ class NavFooter extends React.Component<{model: PageModel}> {
 
         const model = this.props.model
 
-        // TODO: link to some type of profile page
         return (
             <HorizontalStack style={styles.container}>
                 <NavIcon icon={faListOl} title="Rankings" onClick={model.showLeaderboard}/>
@@ -114,7 +113,7 @@ class CurrentPage extends React.Component<{model: PageModel}> {
 }
 
 @observer
-export class Main extends React.Component<{}> {
+export class AuthenticatedApp extends React.Component<{}> {
     private pageModel: PageModel
 
     constructor() {
@@ -123,10 +122,6 @@ export class Main extends React.Component<{}> {
         this.pageModel.currentPage = Pages.UpcomingConcerts
     }
 
-    /**
-     * TODO: handle authentication here to start, render login page if no user object is present
-     * Eventually this behvaior will be replaced with React-Router
-     */
     render(): JSX.Element {
         const styles: StyleMap = {
             container: {

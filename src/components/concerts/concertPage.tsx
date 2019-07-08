@@ -1,5 +1,4 @@
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
-import { NavIcon } from 'components/main';
 import { ConcertThumbnail, MenuHeader } from 'components/shared';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -7,6 +6,7 @@ import React from 'react';
 import Select from 'react-select';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
+import { NavIcon } from 'components/authenticatedAppMain';
 
 // DON'T LIKE HOW REACT-SELECT FORCES THIS TYPE (ID AND NAME IS MORE APPROPRIATE FOR SONG)
 interface Song {
@@ -114,11 +114,12 @@ class SongDropdown extends React.Component<SongDropdownProps> {
 }
 
 
+// TODO: moved to shared
 interface SubmitButtonProps {
     onClick(): void
 }
 
-function SubmitButton(props: SubmitButtonProps): JSX.Element {
+export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     const style: Style = {
         padding: '10px 30px',
         backgroundColor: 'rgba(203, 13, 250, 0.7)',
@@ -129,7 +130,7 @@ function SubmitButton(props: SubmitButtonProps): JSX.Element {
 
     }
 
-    return <VerticalStack style={style}>Submit</VerticalStack>
+    return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
 
 @observer
