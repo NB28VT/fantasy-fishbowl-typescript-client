@@ -37,14 +37,14 @@ class LoginFormModel {
         this.password = ""
     }
 
-    loginUser = (): void => {
+    loginUser = async (): Promise<void> => {
         const client = new AuthClient()
         try {
-            const responseToken = client.loginUser(this.email, this.password)
-            this.onLogin(responseToken)
+            const loginResponse = await client.loginUser(this.email, this.password)
+            this.onLogin(loginResponse.token)
+        } catch(error) {
             // TODO: Handle invalid error with toast message or something
             // https://trello.com/c/7AVyO03f/10-handle-error-responses-alert
-        } catch(error) {
             console.log("Bad response", error)
         }
     }
@@ -75,7 +75,6 @@ class LoginForm extends React.Component<LoginFormProps> {
     }
 
     render(): JSX.Element {
-
         const styles: StyleMap = {
             container: {
                 margin: '0px 40px',
@@ -92,7 +91,7 @@ class LoginForm extends React.Component<LoginFormProps> {
         return (
             <VerticalStack style={styles.container}>
                 <input style={styles.input} placeholder="Email" value={model.email} onChange={model.updateEmail}/>
-                <input style={styles.input} placeholder="Password" value={model.password} onChange={model.updatePassword}/>
+                <input  type="password" style={styles.input} placeholder="Password" value={model.password} onChange={model.updatePassword}/>
                 <SubmitButton onClick={model.loginUser}/>
             </VerticalStack>
         )

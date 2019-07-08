@@ -18,10 +18,12 @@ export interface AuthContextInterface {
   onLogin(loginToken: string): void
 }
 
+// These are the same for now, might change in the future
 type FantasyFishbowlState = AuthContextInterface
 
 class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
   private cookies: Cookies
+
   constructor(props: {}) {
     super(props)
 
