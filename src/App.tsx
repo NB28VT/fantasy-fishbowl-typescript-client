@@ -9,13 +9,15 @@ import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticate
 export const AuthContext = React.createContext({
   token: '',
   authenticated: false,
-  onLogin: (loginToken: string): void => {}
+  onLogin: (loginToken: string): void => {},
+  onLogout: (): void => {}
 })
 
 export interface AuthContextInterface {
   token: string
   authenticated: boolean
   onLogin(loginToken: string): void
+  onLogout(): void
 }
 
 // These are the same for now, might change in the future
@@ -35,18 +37,28 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
       token: maybeToken,
       authenticated: (maybeToken !== undefined),
       onLogin: this.onLogin,
+      onLogout: this.onLogout,
     }
   }
 
+  // Set login cookie and remove on logout; path is set to "/" so it's accessbile on every page.
+  // https://www.npmjs.com/package/universal-cookie
   onLogin = (loginToken: string): void => {
-    // Set login cookie; path is set to "/" so it's accessbile on every page
-    // https://www.npmjs.com/package/universal-cookie
     this.cookies.set("token", loginToken, {path: "/"})
 
     this.setState({
       token: loginToken,
       authenticated: true
     })    
+  }
+
+  onLogout = (): void => {
+    this.cookies.remove("token", {path: "/"})
+
+    this.setState({
+      token: '',
+      authenticated: false,
+    })
   }
 
   render(): JSX.Element {
