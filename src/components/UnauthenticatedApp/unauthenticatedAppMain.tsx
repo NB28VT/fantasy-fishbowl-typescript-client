@@ -41,7 +41,7 @@ class LoginFormModel {
 
     loginUser = async (): Promise<void> => {
         const client = new AuthClient()
-    
+
         try {
             const loginResponse = await client.loginUser(this.email, this.password)
             this.onLogin(loginResponse.token)
@@ -49,7 +49,6 @@ class LoginFormModel {
             toast.error("Invalid Login, Please Try Again", {
                 hideProgressBar: true,
                 closeOnClick: true,
-                closeButton: false,
             })
         }
     }
