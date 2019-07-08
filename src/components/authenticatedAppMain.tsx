@@ -1,4 +1,4 @@
-import { faCalendarAlt, faListOl, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faListOl, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConcertPage } from 'components/concerts/concertPage';
 import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
@@ -8,6 +8,7 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from 'react';
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
+import { AuthContext } from 'App';
 
 export enum Pages {
     UpcomingConcerts,
@@ -64,6 +65,16 @@ export function NavIcon(props: NavIconProps): JSX.Element {
     )
 }
 
+function LogoutButton(): JSX.Element {
+    return (
+        <AuthContext.Consumer>
+            {({onLogout}) => (
+                <NavIcon icon={faSignOutAlt} title="Log Out" onClick={onLogout}/>
+            )}
+        </AuthContext.Consumer>
+    )
+}
+
 class NavFooter extends React.Component<{model: PageModel}> {
     render(): JSX.Element {
         const styles: StyleMap = {
@@ -87,7 +98,7 @@ class NavFooter extends React.Component<{model: PageModel}> {
             <HorizontalStack style={styles.container}>
                 <NavIcon icon={faListOl} title="Rankings" onClick={model.showLeaderboard}/>
                 <NavIcon icon={faCalendarAlt} title="Upcoming Shows" onClick={model.showUpcomingConcerts}/>
-                <NavIcon icon={faCalendarAlt} title="My Profile"/>
+                <LogoutButton/>
             </HorizontalStack>
         )
     }
