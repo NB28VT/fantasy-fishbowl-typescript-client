@@ -2,7 +2,7 @@ import React from 'react';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { MenuHeader, ConcertThumbnail } from 'components/shared';
 
-
+// TODO: this will get replaced by a nested route via React Router
 interface UpcomingConcertsPageProps {
     onSelectConcert(concertID: number): void
 }

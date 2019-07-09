@@ -1,44 +1,14 @@
 import { faCalendarAlt, faListOl, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ConcertPage } from 'components/concerts/concertPage';
+import { AuthContext } from 'App';
 import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
 import { LeaderboardPage } from 'components/leaderboardPage';
 import backgroundImage from 'images/papyrus-dark.png';
-import { observable } from "mobx";
-import { observer } from "mobx-react";
 import React from 'react';
+import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
-import { AuthContext } from 'App';
-
-export enum Pages {
-    UpcomingConcerts,
-    Concert,
-    Leaderboard,
-}
-
-export class PageModel {
-    @observable currentPage: Pages
-    // Blech this should really be handled by the router 
-    @observable selectedConcertID: number | null
-
-    constructor(){
-        this.selectedConcertID = null
-        this.currentPage = Pages.UpcomingConcerts
-    }
-
-    showUpcomingConcerts = (): void => {
-        this.currentPage = Pages.UpcomingConcerts
-    }
-
-    showLeaderboard = (): void => {
-        this.currentPage = Pages.Leaderboard
-    }
-
-    showConcert = (concertId: number): void => {
-        this.selectedConcertID = concertId
-        this.currentPage = Pages.Concert
-    }
-}
+import { AllConcertsPage } from "./concerts/allConcertsPage";
+import { DashboardPage } from "./dashboardPage";
 
 interface NavIconProps {
     icon: IconDefinition
@@ -75,7 +45,11 @@ function LogoutButton(): JSX.Element {
     )
 }
 
-class NavFooter extends React.Component<{model: PageModel}> {
+// This is a mild hack to get withRouter working with TypeScript
+// https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
+interface NavBarProps extends RouteComponentProps<any> {}
+
+class NavFooter extends React.Component<NavBarProps> {
     render(): JSX.Element {
         const styles: StyleMap = {
             container: {
@@ -92,47 +66,27 @@ class NavFooter extends React.Component<{model: PageModel}> {
             },
         }
 
-        const model = this.props.model
+        const goToLeaderboard = (): void => {
+            this.props.history.push('/leaderboard')
+        }
+
+        const goToUpcomingConcerts = (): void => {
+            this.props.history.push('/concerts/upcoming')
+        }
 
         return (
             <HorizontalStack style={styles.container}>
-                <NavIcon icon={faListOl} title="Rankings" onClick={model.showLeaderboard}/>
-                <NavIcon icon={faCalendarAlt} title="Upcoming Shows" onClick={model.showUpcomingConcerts}/>
+                <NavIcon icon={faListOl} title="Rankings" onClick={goToLeaderboard}/>
+                <NavIcon icon={faCalendarAlt} title="Upcoming Shows" onClick={goToUpcomingConcerts}/>
                 <LogoutButton/>
             </HorizontalStack>
         )
     }
 }
 
-@observer
-class CurrentPage extends React.Component<{model: PageModel}> {
-    render(): JSX.Element | undefined {
-        const model = this.props.model
-        switch(model.currentPage) {
-            case Pages.UpcomingConcerts:
-                return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>
-            case Pages.Concert:
-                // This should get fixed if I use React router
-                if (model.selectedConcertID) {
-                    return <ConcertPage concertID={model.selectedConcertID} onBackToConcertList={model.showUpcomingConcerts}/>
-                }
-                return <UpcomingConcertsPage onSelectConcert={model.showConcert}/>                
-            case Pages.Leaderboard:
-                return <LeaderboardPage/>
-        }
-    }
-}
+const NavFooterWithRouter = withRouter(NavFooter)
 
-@observer
-export class AuthenticatedApp extends React.Component<{}> {
-    private pageModel: PageModel
-
-    constructor() {
-        super({})
-        this.pageModel = new PageModel()
-        this.pageModel.currentPage = Pages.UpcomingConcerts
-    }
-
+class AppContent extends React.Component<{}> {
     render(): JSX.Element {
         const styles: StyleMap = {
             container: {
@@ -155,11 +109,24 @@ export class AuthenticatedApp extends React.Component<{}> {
             <div style={styles.container}>
                 <div style={styles.overlay}>
                     <VerticalStack style={styles.content}>
-                        <CurrentPage model={this.pageModel}/>
+                        <Switch>
+                            <Route exact path={"/"} component={DashboardPage}/>
+                            <Route exact path="/leaderboard" component={LeaderboardPage}/>
+                            <Route exact path="/concerts" component={AllConcertsPage}/>
+                            <Route exact path="/concerts/upcoming" component={UpcomingConcertsPage}/>
+                        </Switch>
                     </VerticalStack>
-                    <NavFooter model={this.pageModel}/>
+                    <NavFooterWithRouter/>
                 </div>
             </div>
         )
     }
+}
+
+export function AuthenticatedApp(): JSX.Element {
+    return (
+        <BrowserRouter>
+            <AppContent/>
+        </BrowserRouter>
+    )
 }
