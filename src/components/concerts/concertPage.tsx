@@ -1,5 +1,5 @@
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
-import { ConcertThumbnail, MenuHeader } from 'components/shared';
+import { ConcertThumbnail, MenuHeader, BackButtonNav } from 'components/shared';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
 import { NavIcon } from 'components/authenticatedAppMain';
+import { RouteComponentProps } from 'react-router';
 
 // DON'T LIKE HOW REACT-SELECT FORCES THIS TYPE (ID AND NAME IS MORE APPROPRIATE FOR SONG)
 interface Song {
@@ -113,7 +114,6 @@ class SongDropdown extends React.Component<SongDropdownProps> {
     }
 }
 
-
 // TODO: moved to shared
 interface SubmitButtonProps {
     onClick(): void
@@ -151,8 +151,9 @@ class PredictionForm extends React.Component<{model: ConcertPredictionModel}> {
     }
 }
 
-interface ConcertPageProps {
+interface ConcertPageProps extends RouteComponentProps {
     concertID: number
+    // TODO: replace this with a history back button using React Router
     onBackToConcertList(): void
 }
 
@@ -175,10 +176,14 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
             alignItems: 'center',
         }
 
+        const goBack = (): void => {
+
+        }
+
         return (
             <VerticalStack>
                 <HorizontalStack style={headerStyle}>
-                    <NavIcon icon= {faAngleDoubleLeft} title="Back To Shows" onClick={this.props.onBackToConcertList}/>
+                    <BackButtonNav title="Back To Shows"/>
                     <MenuHeader title="My Prediction"/>
                 </HorizontalStack>
                 <ConcertThumbnail concert={model.concert}/>

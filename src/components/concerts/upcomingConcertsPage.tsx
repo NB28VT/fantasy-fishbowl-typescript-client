@@ -1,13 +1,12 @@
 import React from 'react';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { MenuHeader, ConcertThumbnail } from 'components/shared';
+import { RouteComponentProps } from 'react-router';
 
-// TODO: this will get replaced by a nested route via React Router
-interface UpcomingConcertsPageProps {
-    onSelectConcert(concertID: number): void
-}
 
-// Mobx observer for data loading indicator
+interface UpcomingConcertsPageProps extends RouteComponentProps<any> {}
+
+// TODO: Mobx observer for data loading indicator
 export class UpcomingConcertsPage extends React.Component<UpcomingConcertsPageProps> {
     private concertFetcher: APIConcertFetcher
     private concertList: Concert[]
@@ -26,6 +25,11 @@ export class UpcomingConcertsPage extends React.Component<UpcomingConcertsPagePr
         // this.concertList = await this.concertFetcher.fetchConcerts()
     }
 
+    // Maybe string?
+    goToConcert = (concertID: number): void => {
+        this.props.history.push(`/concerts/${concertID}`)
+    }
+
     render(): JSX.Element {
         if (this.concertFetcher.isLoading) {
             // TODO: Loading indicator
@@ -33,7 +37,7 @@ export class UpcomingConcertsPage extends React.Component<UpcomingConcertsPagePr
         }
 
         const concertButtons = this.concertList.map(concert => {
-            return <ConcertThumbnail concert={concert} onClick={this.props.onSelectConcert}/>
+            return <ConcertThumbnail concert={concert} onClick={this.goToConcert}/>
         })
 
         return (

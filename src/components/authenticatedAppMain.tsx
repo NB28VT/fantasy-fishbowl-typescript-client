@@ -9,6 +9,7 @@ import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from "r
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
 import { AllConcertsPage } from "./concerts/allConcertsPage";
 import { DashboardPage } from "./dashboardPage";
+import { ConcertPage } from './concerts/concertPage';
 
 interface NavIconProps {
     icon: IconDefinition
@@ -85,6 +86,8 @@ class NavFooter extends React.Component<NavBarProps> {
 }
 
 const NavFooterWithRouter = withRouter(NavFooter)
+const AllConcertsPageWithRouter = withRouter(AllConcertsPage)
+const UpcomingConcertsPageWithRouter = withRouter(UpcomingConcertsPage)
 
 class AppContent extends React.Component<{}> {
     render(): JSX.Element {
@@ -114,6 +117,7 @@ class AppContent extends React.Component<{}> {
                             <Route exact path="/leaderboard" component={LeaderboardPage}/>
                             <Route exact path="/concerts" component={AllConcertsPage}/>
                             <Route exact path="/concerts/upcoming" component={UpcomingConcertsPage}/>
+                            <Route exact path="/concerts/:id" component={ConcertPage}/>
                         </Switch>
                     </VerticalStack>
                     <NavFooterWithRouter/>
