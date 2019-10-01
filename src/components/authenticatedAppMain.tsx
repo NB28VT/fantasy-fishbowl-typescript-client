@@ -47,6 +47,7 @@ function LogoutButton(): JSX.Element {
 }
 
 // This is a mild hack to get withRouter working with TypeScript
+// TODO: take a close look at best practices here https://trello.com/c/sm8jTYed/19-revisit-typing-when-using-react-router
 // https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
 interface NavBarProps extends RouteComponentProps<any> {}
 
@@ -86,8 +87,6 @@ class NavFooter extends React.Component<NavBarProps> {
 }
 
 const NavFooterWithRouter = withRouter(NavFooter)
-const AllConcertsPageWithRouter = withRouter(AllConcertsPage)
-const UpcomingConcertsPageWithRouter = withRouter(UpcomingConcertsPage)
 
 class AppContent extends React.Component<{}> {
     render(): JSX.Element {
