@@ -6,7 +6,6 @@ import React from 'react';
 import Select from 'react-select';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
-import { NavIcon } from 'components/authenticatedAppMain';
 import { RouteComponentProps } from 'react-router';
 
 // DON'T LIKE HOW REACT-SELECT FORCES THIS TYPE (ID AND NAME IS MORE APPROPRIATE FOR SONG)
@@ -151,10 +150,10 @@ class PredictionForm extends React.Component<{model: ConcertPredictionModel}> {
     }
 }
 
-interface ConcertPageProps extends RouteComponentProps {
+type ConcertPageRouterParams = {id: string}
+
+interface ConcertPageProps extends RouteComponentProps<ConcertPageRouterParams> {
     concertID: number
-    // TODO: replace this with a history back button using React Router
-    onBackToConcertList(): void
 }
 
 @observer
@@ -164,20 +163,16 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     constructor(props: ConcertPageProps) {
         super(props)
 
-        this.model = new ConcertPredictionModel(props.concertID)
+        const concertID = parseInt(this.props.match.params.id)
+        this.model = new ConcertPredictionModel(concertID)
     }
 
-    // Handle null ID/move over to using React-Router
     render(): JSX.Element {
         const model = this.model
 
         const headerStyle: Style = {
             justifyContent: 'flex-start',
             alignItems: 'center',
-        }
-
-        const goBack = (): void => {
-
         }
 
         return (
