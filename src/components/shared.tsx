@@ -16,7 +16,6 @@ function BackButton(props: BackButtonProps): JSX.Element {
     return <NavIcon icon={faAngleDoubleLeft} title={props.title} onClick={goBack}/>
 }
 
-// Better name?
 export const BackButtonWithRouter = withRouter(BackButton)
 
 export function MenuHeader(props: {title: string}): JSX.Element {
@@ -74,7 +73,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
         return (
             <HorizontalStack style={styles.container} onClick={onClick}>
-                    <img style={styles.thumbnail} src={thumbnailPlaceholder} alt="Concert Photo"/>
+                <img style={styles.thumbnail} src={thumbnailPlaceholder} alt="Concert Photo"/>
                 <VerticalStack style={styles.info}>
                     <div style={styles.showDate}>{this.props.concert.show_time}</div>
                     <div style={styles.showName}>{this.props.concert.venue_name}</div>
