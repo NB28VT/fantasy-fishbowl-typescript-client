@@ -1,5 +1,5 @@
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
-import { ConcertThumbnail, MenuHeader, BackButtonNav } from 'components/shared';
+import { ConcertThumbnail, MenuHeader, BackButtonWithRouter } from 'components/shared';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -178,7 +178,7 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
         return (
             <VerticalStack>
                 <HorizontalStack style={headerStyle}>
-                    <BackButtonNav title="Back To Shows"/>
+                    <BackButtonWithRouter title="Back To Shows"/>
                     <MenuHeader title="My Prediction"/>
                 </HorizontalStack>
                 <ConcertThumbnail concert={model.concert}/>
