@@ -6,7 +6,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { NavIcon } from './authenticatedAppMain';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
-
 interface BackButtonProps extends RouteComponentProps<any> {title: string}
 
 function BackButton(props: BackButtonProps): JSX.Element {
@@ -18,7 +17,7 @@ function BackButton(props: BackButtonProps): JSX.Element {
 }
 
 // Better name?
-export const BackButtonNav = withRouter(BackButton)
+export const BackButtonWithRouter = withRouter(BackButton)
 
 export function MenuHeader(props: {title: string}): JSX.Element {
     const style: Style = {
@@ -45,7 +44,6 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
                 display: 'flex',
                 padding: 10,
                 justifyContent: 'flex-start',
-    
                 border: '1px solid',
                 borderRadius: '10px',
                 marginBottom: 10,
@@ -67,6 +65,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
             }
         }
 
+        // TODO: More elegant way to handle optional event
         const onClick = (): void => {
             if (this.props.onClick) {
                 this.props.onClick(this.props.concert.id)

@@ -25,7 +25,6 @@ export class UpcomingConcertsPage extends React.Component<UpcomingConcertsPagePr
         // this.concertList = await this.concertFetcher.fetchConcerts()
     }
 
-    // Maybe string?
     goToConcert = (concertID: number): void => {
         this.props.history.push(`/concerts/${concertID}`)
     }
