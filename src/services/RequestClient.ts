@@ -15,7 +15,6 @@ export const APIPut = async<T, U>(url: string, body: U): Promise<T> => {
     return await APIRequest<T>(new Request(url, args))
 }
 
-// Write test with JEST to handle bad response
 const APIRequest = <T>(request: RequestInfo): Promise<T> => {
     return new Promise((resolve, reject) => {
         let resp: Response
