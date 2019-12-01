@@ -2,6 +2,12 @@
 // Get absolute imports set up
 import mockConcertsResponse from '../mockData/concertList.json'
 import mockConcertResponse from '../mockData/concert.json'
+import { APIGet } from './RequestClient'
+
+export enum ConcertListEndpoint {
+    upcomingConcerts = "/concerts/upcoming",
+    allConcerts = "/concerts"
+}
 
 // TODO: FLESH OUT THE SET DATA
 export interface Concert {
@@ -15,19 +21,12 @@ export interface ConcertResponse {
 }
 
 export class APIConcertFetcher {
-    public isLoading: boolean = false
-
-    fetchConcerts = (): Concert[] => {
-        this.isLoading = true
-
-        this.isLoading = false
-        return mockConcertsResponse["concerts"]
+    fetchConcerts = async(concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
+        const response: ConcertResponse = await APIGet(concertsURL)
+        return response.concerts
     }
 
     fetchConcert = (concertID: number): Concert => {
-        this.isLoading = true
-
-        this.isLoading = false        
         return mockConcertResponse
     }
 }

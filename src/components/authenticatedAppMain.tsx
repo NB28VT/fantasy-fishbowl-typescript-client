@@ -1,13 +1,12 @@
 import { faCalendarAlt, faListOl, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from 'App';
-import { UpcomingConcertsPage } from 'components/concerts/upcomingConcertsPage';
+import { UpcomingConcertsPage, AllConcertsPage } from 'components/concerts/concertsPage';
 import { LeaderboardPage } from 'components/leaderboardPage';
 import backgroundImage from 'images/papyrus-dark.png';
 import React from 'react';
 import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
-import { AllConcertsPage } from "./concerts/allConcertsPage";
 import { DashboardPage } from "./dashboardPage";
 import { ConcertPage } from './concerts/concertPage';
 
