@@ -1,4 +1,3 @@
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import { ConcertThumbnail, MenuHeader, BackButtonWithRouter } from 'components/shared';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -7,11 +6,30 @@ import Select from 'react-select';
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
 import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
 import { RouteComponentProps } from 'react-router';
+import { APISongsFetcher, Song } from 'services/APISongFetcher';
 
-// DON'T LIKE HOW REACT-SELECT FORCES THIS TYPE (ID AND NAME IS MORE APPROPRIATE FOR SONG)
-interface Song {
+// This is a very unfortunate intermediate step between the Song type and the value, label pairing React-select requires
+// Songs loaded from the API must be cast in this manner
+interface SongSelection {
     value: number
     label: string
+}
+
+class SongsModel {
+    @observable songs: Song[]
+    @observable isLoading: boolean
+    songsFetcher: APISongsFetcher
+
+    constructor() {
+        this.isLoading = true
+        this.songs = []
+        this.songsFetcher = new APISongsFetcher()
+    }
+
+    loadSongs = async(): Promise<void> => {
+        this.songs = await this.songsFetcher.fetchSongs()
+        this.isLoading = false
+    }
 }
 
 class ConcertPredictionModel {
@@ -21,41 +39,36 @@ class ConcertPredictionModel {
     @observable concert: Concert
 
     // meh
-    @observable setOneOpenerPrediction: Song | null = null
-    @observable setOneCloserPrediction: Song | null = null
-    @observable setTwoOpenerPrediction: Song | null = null
-    @observable setTwoCloserPrediction: Song | null = null
-    @observable encorePrediction: Song | null = null
-
-    @observable songList: Song[]
+    @observable setOneOpenerPrediction: SongSelection | null = null
+    @observable setOneCloserPrediction: SongSelection | null = null
+    @observable setTwoOpenerPrediction: SongSelection | null = null
+    @observable setTwoCloserPrediction: SongSelection | null = null
+    @observable encorePrediction: SongSelection | null = null
     
     constructor(public concertID: number) {
-        // TODO: these will be async on load
         this.concertFetcher = new APIConcertFetcher()
         this.concert = this.concertFetcher.fetchConcert(concertID)
-
-        this.songList = []
     }
 
     // May be able to combine but this is probably better
-    onSelectFirstSetOpener = (song: Song): void => {
-        this.setOneOpenerPrediction = song
+    onSelectFirstSetOpener = (songSelection: SongSelection): void => {
+        this.setOneOpenerPrediction = songSelection
     }
 
-    onSelectFirstSetCloser = (song: Song): void => {
-        this.setOneCloserPrediction = song
+    onSelectFirstSetCloser = (songSelection: SongSelection): void => {
+        this.setOneCloserPrediction = songSelection
     }
 
-    onSelectSecondSetOpener = (song: Song): void => {
-        this.setTwoOpenerPrediction = song
+    onSelectSecondSetOpener = (songSelection: SongSelection): void => {
+        this.setTwoOpenerPrediction = songSelection
     }
 
-    onSelectSecondSetCloser = (song: Song): void => {
-        this.setTwoCloserPrediction = song
+    onSelectSecondSetCloser = (songSelection: SongSelection): void => {
+        this.setTwoCloserPrediction = songSelection
     }
 
-    onSelectEncore = (song: Song): void => {
-        this.encorePrediction = song
+    onSelectEncore = (songSelection: SongSelection): void => {
+        this.encorePrediction = songSelection
     }
 
     submitPrediction = (): void => {
@@ -65,29 +78,19 @@ class ConcertPredictionModel {
 
 interface SongDropdownProps {
     label: string
-    selected: Song | null
-    onSelect(song: Song): void
+    selected: SongSelection | null
+    songs: Song[]
+    onSelect(songSelection: SongSelection): void
 }
 
 @observer
 class SongDropdown extends React.Component<SongDropdownProps> {
-    state = {
-        selectedOption: null,
-      };
-
     //TODO: this should get strongly typed, unclear how to do this in current version of react-select. 
     handleChange = (selectedOption: any)   => {
         this.props.onSelect(selectedOption)
     };
 
     render(): JSX.Element {
-        // TODO: remove when actual data is loaded
-        const options = [
-            {value: 1, label: 'A Song I Heard The Ocean Sing'},
-            {value: 2, label: 'Theme From The Bottom'},
-            {value: 3, label: 'Waves'},
-        ];
-
         const style: Style = {
             color: 'black',
             marginBottom: 10, 
@@ -99,14 +102,16 @@ class SongDropdown extends React.Component<SongDropdownProps> {
             color: '#F5ED13',
         }
 
-       const dropdownLabel = <VerticalStack style={labelStyle}>{this.props.label}</VerticalStack>
+        const dropdownLabel = <VerticalStack style={labelStyle}>{this.props.label}</VerticalStack>
+        // Maps songs returned from API to the format React-Select expects
+        const dropdownOptions = this.props.songs.map(song=>({value: song.id, label: song.name}))
         return (
             <VerticalStack style={style}>
                 {dropdownLabel}
                 <Select
                     value={this.props.selected}
                     onChange={this.handleChange}
-                    options={options}
+                    options={dropdownOptions}
                 />
             </VerticalStack>
         );
@@ -132,19 +137,24 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
 
-@observer
-class PredictionForm extends React.Component<{model: ConcertPredictionModel}> {
-    render(): JSX.Element {
-        const model = this.props.model
+interface PredictionFormProps {
+    model: ConcertPredictionModel
+    songs: Song[]
+}
 
+@observer
+class PredictionForm extends React.Component<PredictionFormProps> {
+    render(): JSX.Element {
+        const predictionModel = this.props.model
+        const songs = this.props.songs
         return (
             <VerticalStack>
-                <SongDropdown label="First Set Opener" selected={model.setOneOpenerPrediction} onSelect={model.onSelectFirstSetOpener}/>
-                <SongDropdown label="First Set Closer" selected={model.setOneCloserPrediction} onSelect={model.onSelectFirstSetCloser}/>
-                <SongDropdown label="Second Set Opener" selected={model.setTwoOpenerPrediction} onSelect={model.onSelectSecondSetOpener}/>
-                <SongDropdown label="Second Set Closer" selected={model.setTwoCloserPrediction} onSelect={model.onSelectSecondSetCloser}/>
-                <SongDropdown label="Encore" selected={model.encorePrediction} onSelect={model.onSelectEncore}/>
-                <SubmitButton onClick={model.submitPrediction}/>
+                <SongDropdown songs={songs} label="First Set Opener" selected={predictionModel.setOneOpenerPrediction} onSelect={predictionModel.onSelectFirstSetOpener}/>
+                <SongDropdown songs={songs} label="First Set Closer" selected={predictionModel.setOneCloserPrediction} onSelect={predictionModel.onSelectFirstSetCloser}/>
+                <SongDropdown songs={songs} label="Second Set Opener" selected={predictionModel.setTwoOpenerPrediction} onSelect={predictionModel.onSelectSecondSetOpener}/>
+                <SongDropdown songs={songs} label="Second Set Closer" selected={predictionModel.setTwoCloserPrediction} onSelect={predictionModel.onSelectSecondSetCloser}/>
+                <SongDropdown songs={songs} label="Encore" selected={predictionModel.encorePrediction} onSelect={predictionModel.onSelectEncore}/>
+                <SubmitButton onClick={predictionModel.submitPrediction}/>
             </VerticalStack>
         )
     }
@@ -158,17 +168,25 @@ interface ConcertPageProps extends RouteComponentProps<ConcertPageRouterParams> 
 
 @observer
 export class ConcertPage extends React.Component<ConcertPageProps> {
-    model: ConcertPredictionModel
+
+    predictionModel: ConcertPredictionModel
+    private songsModel: SongsModel
     
     constructor(props: ConcertPageProps) {
         super(props)
 
         const concertID = parseInt(this.props.match.params.id)
-        this.model = new ConcertPredictionModel(concertID)
+        this.predictionModel = new ConcertPredictionModel(concertID)
+        this.songsModel = new SongsModel()
     }
 
+
+    async componentDidMount() {
+        await this.songsModel.loadSongs()
+    }
+
+
     render(): JSX.Element {
-        const model = this.model
 
         const headerStyle: Style = {
             justifyContent: 'flex-start',
@@ -181,8 +199,8 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
                     <BackButtonWithRouter title="Back To Shows"/>
                     <MenuHeader title="My Prediction"/>
                 </HorizontalStack>
-                <ConcertThumbnail concert={model.concert}/>
-                <PredictionForm model={model}/>
+                <ConcertThumbnail concert={this.predictionModel.concert}/>
+                <PredictionForm model={this.predictionModel} songs={this.songsModel.songs}/>
             </VerticalStack>
         )
     }
