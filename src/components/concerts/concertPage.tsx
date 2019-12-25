@@ -72,6 +72,8 @@ class ConcertPredictionModel {
     }
 
     submitPrediction = (): void => {
+        // TODO: remember SongSelection has different keys than API because of react-select, will need to 
+        // submit value here
         console.log("Submitted prediction")
     }
 }
