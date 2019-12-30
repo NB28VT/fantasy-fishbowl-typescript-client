@@ -60,12 +60,12 @@ export class LeaderboardPage extends React.Component<{}> {
             return <div>Loading</div>
         }
 
-        // Meh
         if (!rankingData) {
             return <div>No users!</div>
         }
 
         // TODO: ADD TOUR NAME TO RANKINGS ENDPOINT
+        // https://trello.com/c/C4qSzIrU/30-add-tour-model
         const header = "Summer 2018 Rankings"
 
         const tableStyle: Style = {

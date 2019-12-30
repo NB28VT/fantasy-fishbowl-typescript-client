@@ -8,8 +8,6 @@ import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
 import { RouteComponentProps } from 'react-router';
 import { APISongsFetcher, Song } from 'services/APISongFetcher';
 
-// This is a very unfortunate intermediate step between the Song type and the value, label pairing React-select requires
-// Songs loaded from the API must be cast in this manner
 interface SongSelection {
     value: number
     label: string
@@ -37,8 +35,6 @@ class ConcertPredictionModel {
     private concertFetcher: APIConcertFetcher
 
     @observable concert: Concert
-
-    // meh
     @observable setOneOpenerPrediction: SongSelection | null = null
     @observable setOneCloserPrediction: SongSelection | null = null
     @observable setTwoOpenerPrediction: SongSelection | null = null
@@ -87,7 +83,6 @@ interface SongDropdownProps {
 
 @observer
 class SongDropdown extends React.Component<SongDropdownProps> {
-    //TODO: this should get strongly typed, unclear how to do this in current version of react-select. 
     handleChange = (selectedOption: any)   => {
         this.props.onSelect(selectedOption)
     };
@@ -170,7 +165,6 @@ interface ConcertPageProps extends RouteComponentProps<ConcertPageRouterParams> 
 
 @observer
 export class ConcertPage extends React.Component<ConcertPageProps> {
-
     predictionModel: ConcertPredictionModel
     private songsModel: SongsModel
     
@@ -182,14 +176,11 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
         this.songsModel = new SongsModel()
     }
 
-
     async componentDidMount() {
         await this.songsModel.loadSongs()
     }
 
-
     render(): JSX.Element {
-
         const headerStyle: Style = {
             justifyContent: 'flex-start',
             alignItems: 'center',

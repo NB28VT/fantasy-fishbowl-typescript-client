@@ -17,6 +17,5 @@ export class APISongsFetcher {
     fetchSongs = async(): Promise<Song[]> => {
         const response: SongsResponse = await APIGet(SongsEndpoint.allSongs)
         return response.songs
-
     }
 }

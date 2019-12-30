@@ -5,7 +5,6 @@ import { RouteComponentProps } from 'react-router';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 
-
 class ConcertsModel {
     @observable isLoading: boolean
     @observable concertList: Concert[]
@@ -45,7 +44,6 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
         this.props.history.push(`/concerts/${concertID}`)
     }
 
-    // TODO: review maybe usages in Dashtastic
     maybeConcertButtons = (): JSX.Element => {
         const concertButtons = this.concertsModel.concertList.map(concert => {
             return <ConcertThumbnail concert={concert} onClick={this.goToConcert}/>
@@ -54,13 +52,14 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
         if (concertButtons.length) {
             return <div>{concertButtons}</div>
         }
-        // TODO: No concerts page
+
         return <h1>No Concerts</h1>
     }
 
     render(): JSX.Element {
         if (this.concertsModel.isLoading) {
             // TODO: Loading indicator
+            // https://trello.com/c/IiDDdi9U/29-loading-indicator
             return <div>Loading</div>
         }
 

@@ -4,7 +4,6 @@ export enum UsersEndpoint {
     userRankings = "/users/prediction_rankings"
 }
 
-
 export interface UserRanking {
     name: string
     total_score: number
@@ -13,7 +12,6 @@ export interface UserRanking {
 export interface LeaderboardResponse {
     users: UserRanking[]
 }
-
 
 export class APIUserFetcher {
     fetchLeaderBoard =  async(): Promise<UserRanking[]> => {
