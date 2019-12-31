@@ -1,12 +1,12 @@
-import { ConcertThumbnail, MenuHeader, BackButtonWithRouter } from 'components/shared'
+import { BackButtonWithRouter, ConcertThumbnail, MenuHeader } from 'components/shared'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import React from 'react'
+import { RouteComponentProps } from 'react-router'
 import Select from 'react-select'
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher'
-import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
-import { RouteComponentProps } from 'react-router'
 import { APISongsFetcher, Song } from 'services/APISongFetcher'
+import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
 
 // Song id and name with the properties a React-Select dropdown expects
 interface SongSelection {
@@ -82,7 +82,7 @@ class ConcertPredictionModel {
 }
 
 interface SongDropdownProps {
-    label: string
+    
     selected: SongSelection | null
     songSelections: SongSelection[]
     onSelect(songSelection: SongSelection): void

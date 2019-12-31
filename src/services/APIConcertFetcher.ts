@@ -1,7 +1,7 @@
 // TODO: configure tslint for absolute imports
+import mockConcertResponse from '../mockData/concert.json'
 // Get absolute imports set up
 import mockConcertsResponse from '../mockData/concertList.json'
-import mockConcertResponse from '../mockData/concert.json'
 import { APIGet } from './RequestClient'
 
 export enum ConcertListEndpoint {

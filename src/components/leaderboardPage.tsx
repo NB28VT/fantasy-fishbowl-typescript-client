@@ -1,11 +1,11 @@
-import React from 'react'
-import { APIUserFetcher, UserRanking, LeaderboardResponse } from '../services/APIUserFetcher'
-import { VerticalStack, Style } from 'utils/styles'
-import { MenuHeader } from './shared'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
+import React from 'react'
 import { Table } from 'react-bootstrap'
+import { Style, VerticalStack } from 'utils/styles'
 
+import { APIUserFetcher, LeaderboardResponse, UserRanking } from '../services/APIUserFetcher'
+import { MenuHeader } from './shared'
 
 class LeaderboardPageModel {
     @observable isLoading: boolean

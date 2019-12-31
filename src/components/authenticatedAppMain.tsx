@@ -1,14 +1,18 @@
-import { faCalendarAlt, faListOl, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AuthContext } from 'App'
-import { UpcomingConcertsPage, AllConcertsPage } from 'components/concerts/concertsPage'
+import { AllConcertsPage, UpcomingConcertsPage } from 'components/concerts/concertsPage'
 import { LeaderboardPage } from 'components/leaderboardPage'
 import backgroundImage from 'images/papyrus-dark.png'
 import React from 'react'
 import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
-import { DashboardPage } from './dashboardPage'
+
+import {
+    faCalendarAlt, faListOl, faSignOutAlt, IconDefinition,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { ConcertPage } from './concerts/concertPage'
+import { DashboardPage } from './dashboardPage'
 
 interface NavIconProps {
     icon: IconDefinition
