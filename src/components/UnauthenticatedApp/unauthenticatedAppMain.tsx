@@ -35,8 +35,8 @@ class LoginFormModel {
     constructor(
         private onLogin: (responseToken: string) => void
     ) {
-        this.email = ""
-        this.password = ""
+        this.email = ''
+        this.password = ''
     }
 
     loginUser = async (): Promise<void> => {
@@ -46,7 +46,7 @@ class LoginFormModel {
             const loginResponse = await client.loginUser(this.email, this.password)
             this.onLogin(loginResponse.token)
         } catch(error) {
-            toast.error("Invalid Login, Please Try Again", {
+            toast.error('Invalid Login, Please Try Again', {
                 hideProgressBar: true,
                 closeOnClick: true,
             })

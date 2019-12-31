@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactChild } from "react"
+import { ReactChild } from 'react'
 
 export type Style = React.CSSProperties
 

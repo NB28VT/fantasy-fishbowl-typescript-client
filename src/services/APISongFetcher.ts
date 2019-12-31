@@ -1,7 +1,7 @@
 import { APIGet } from './RequestClient'
 
 export enum SongsEndpoint {
-    allSongs = "/songs"
+    allSongs = '/songs'
 }
 
 export interface Song {

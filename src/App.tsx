@@ -31,7 +31,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
 
     // Check if the user is already authenticated
     this.cookies = new Cookies()
-    const maybeToken = this.cookies.get("token")
+    const maybeToken = this.cookies.get('token')
 
     this.state = {
       token: maybeToken,
@@ -41,10 +41,10 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     }
   }
 
-  // Set login cookie and remove on logout path is set to "/" so it's accessbile on every page.
+  // Set login cookie and remove on logout path is set to '/' so it's accessbile on every page.
   // https://www.npmjs.com/package/universal-cookie
   onLogin = (loginToken: string): void => {
-    this.cookies.set("token", loginToken, {path: "/"})
+    this.cookies.set('token', loginToken, {path: '/'})
 
     this.setState({
       token: loginToken,
@@ -53,7 +53,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
   }
 
   onLogout = (): void => {
-    this.cookies.remove("token", {path: "/"})
+    this.cookies.remove('token', {path: '/'})
 
     this.setState({
       token: '',

@@ -67,7 +67,7 @@ export class LeaderboardPage extends React.Component<{}> {
 
         // TODO: ADD TOUR NAME TO RANKINGS ENDPOINT
         // https://trello.com/c/C4qSzIrU/30-add-tour-model
-        const header = "Summer 2018 Rankings"
+        const header = 'Summer 2018 Rankings'
 
         const tableStyle: Style = {
             backgroundColor: 'white',

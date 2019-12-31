@@ -77,7 +77,7 @@ class ConcertPredictionModel {
     }
 
     submitPrediction = (): void => {
-        console.log("Submitted prediction")
+        console.log('Submitted prediction')
     }
 }
 

@@ -1,17 +1,17 @@
-const JSONHeaders = {"Content-Type": "application/json"}
+const JSONHeaders = {'Content-Type': 'application/json'}
 
 export const APIGet = async<T>(url: string): Promise<T> => {
-    const args = {method: "GET", headers: JSONHeaders}
+    const args = {method: 'GET', headers: JSONHeaders}
     return await APIRequest<T>(new Request(url, args))
 }
 
 export const APIPost = async<T, U>(url: string, body: U): Promise<T> => {
-    const args = {method: "POST", headers: JSONHeaders, body: JSON.stringify(body)}
+    const args = {method: 'POST', headers: JSONHeaders, body: JSON.stringify(body)}
     return await APIRequest<T>(new Request(url, args))
 }
 
 export const APIPut = async<T, U>(url: string, body: U): Promise<T> => {
-    const args = {method: "PUT", headers: JSONHeaders, body: JSON.stringify(body)}
+    const args = {method: 'PUT', headers: JSONHeaders, body: JSON.stringify(body)}
     return await APIRequest<T>(new Request(url, args))
 }
 

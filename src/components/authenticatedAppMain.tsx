@@ -5,9 +5,9 @@ import { UpcomingConcertsPage, AllConcertsPage } from 'components/concerts/conce
 import { LeaderboardPage } from 'components/leaderboardPage'
 import backgroundImage from 'images/papyrus-dark.png'
 import React from 'react'
-import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from "react-router-dom"
+import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
-import { DashboardPage } from "./dashboardPage"
+import { DashboardPage } from './dashboardPage'
 import { ConcertPage } from './concerts/concertPage'
 
 interface NavIconProps {
@@ -111,7 +111,7 @@ class AppContent extends React.Component<{}> {
                 <div style={styles.overlay}>
                     <VerticalStack style={styles.content}>
                         <Switch>
-                            <Route exact path={"/"} component={DashboardPage}/>
+                            <Route exact path={'/'} component={DashboardPage}/>
                             <Route exact path="/leaderboard" component={LeaderboardPage}/>
                             <Route exact path="/concerts" component={AllConcertsPage}/>
                             <Route exact path="/concerts/upcoming" component={UpcomingConcertsPage}/>
