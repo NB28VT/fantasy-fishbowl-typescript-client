@@ -26,9 +26,10 @@ class LeaderboardPageModel {
 }
 
 function LeaderboardRankings(props: {users: UserRanking[]}): JSX.Element {
-    const rankedRows = props.users.map(user => {
+    const rankedRows = props.users.map((user, index) => {
         return (
             <tr>
+                <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.total_score}</td>
             </tr>
