@@ -10,7 +10,7 @@ import { Table } from 'react-bootstrap';
 class LeaderboardPageModel {
     @observable isLoading: boolean
     @observable rankings: UserRanking[]
-    userFetcher: APIUserFetcher
+    private userFetcher: APIUserFetcher
 
     constructor() {
         this.isLoading = false

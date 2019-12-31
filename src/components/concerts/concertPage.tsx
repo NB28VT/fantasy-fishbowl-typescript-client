@@ -30,7 +30,6 @@ class SongsModel {
         this.isLoading = false
     }
 
-
     /**
      * Maps songs returned from the API to a format that can be used by
      * the React-Select library's dropdown component
@@ -91,6 +90,10 @@ interface SongDropdownProps {
 
 @observer
 class SongDropdown extends React.Component<SongDropdownProps> {
+    /**
+     * Arg type is "SongSelection" but cast as "any" because React-Select whines;
+     * prefer this to jumping through hoops with the typing for React-Select's benefit
+     */
     handleChange = (selectedOption: any)   => {
         this.props.onSelect(selectedOption)
     };
