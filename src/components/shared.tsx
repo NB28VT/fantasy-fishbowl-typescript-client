@@ -63,7 +63,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
             info: {
                 justifyContent: 'space-between',
                 marginLeft: 20,
-            }
+            },
         }
 
         // TODO: More elegant way to handle optional event

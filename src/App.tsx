@@ -11,7 +11,7 @@ export const AuthContext = React.createContext({
   token: '',
   authenticated: false,
   onLogin: (loginToken: string): void => {},
-  onLogout: (): void => {}
+  onLogout: (): void => {},
 })
 
 export interface AuthContextInterface {
@@ -49,7 +49,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
 
     this.setState({
       token: loginToken,
-      authenticated: true
+      authenticated: true,
     })    
   }
 

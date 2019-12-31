@@ -6,7 +6,7 @@ import { APIGet } from './RequestClient'
 
 export enum ConcertListEndpoint {
     upcomingConcerts = '/concerts/upcoming',
-    allConcerts = '/concerts'
+    allConcerts = '/concerts',
 }
 
 // TODO: FLESH OUT THE SET DATA

@@ -17,8 +17,8 @@ function WelcomeLogo(): JSX.Element {
             textAlign: 'center',
             justifyContent: 'center',
             fontSize: 20,
-            color: '#F5ED13'
-        }
+            color: '#F5ED13',
+        },
     }
 
     return (
@@ -88,7 +88,7 @@ class LoginForm extends React.Component<LoginFormProps> {
             input: {
                 marginBottom: 10,
                 borderRadius: 3,
-            }
+            },
         }
 
         const model = this.model
