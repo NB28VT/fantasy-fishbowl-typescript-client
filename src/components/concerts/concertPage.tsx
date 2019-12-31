@@ -8,6 +8,7 @@ import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
 import { RouteComponentProps } from 'react-router';
 import { APISongsFetcher, Song } from 'services/APISongFetcher';
 
+// Song id and name with the properties a React-Select dropdown expects
 interface SongSelection {
     value: number
     label: string
