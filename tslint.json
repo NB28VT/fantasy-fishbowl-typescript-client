@@ -4,6 +4,11 @@
         "tslint:recommended"
     ],
     "jsRules": {},
+    "linterOptions": {
+        "exclude": [
+            "src/serviceWorker.ts"
+        ]
+    },
     "rules": {
         "align": [true, "statements"],
         "array-type": [true, "array-simple"],
