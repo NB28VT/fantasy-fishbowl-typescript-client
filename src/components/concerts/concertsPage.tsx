@@ -1,9 +1,9 @@
-import React from 'react';
-import { APIConcertFetcher, Concert, ConcertListEndpoint } from '../../services/APIConcertFetcher';
-import { MenuHeader, ConcertThumbnail } from '../shared';
-import { RouteComponentProps } from 'react-router';
-import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import React from 'react'
+import { APIConcertFetcher, Concert, ConcertListEndpoint } from '../../services/APIConcertFetcher'
+import { MenuHeader, ConcertThumbnail } from '../shared'
+import { RouteComponentProps } from 'react-router'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
 
 class ConcertsModel {
     @observable isLoading: boolean

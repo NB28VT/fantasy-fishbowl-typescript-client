@@ -1,8 +1,8 @@
-import React from 'react';
-import './App.css';
-import Cookies from 'universal-cookie';
-import { AuthenticatedApp } from 'components/authenticatedAppMain';
-import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain';
+import React from 'react'
+import './App.css'
+import Cookies from 'universal-cookie'
+import { AuthenticatedApp } from 'components/authenticatedAppMain'
+import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain'
 
 // Need default values for callback function, per official docs
 // https://reactjs.org/docs/context.html#updating-context-from-a-nested-component
@@ -30,7 +30,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     super(props)
 
     // Check if the user is already authenticated
-    this.cookies = new Cookies();
+    this.cookies = new Cookies()
     const maybeToken = this.cookies.get("token")
 
     this.state = {
@@ -41,7 +41,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     }
   }
 
-  // Set login cookie and remove on logout; path is set to "/" so it's accessbile on every page.
+  // Set login cookie and remove on logout path is set to "/" so it's accessbile on every page.
   // https://www.npmjs.com/package/universal-cookie
   onLogin = (loginToken: string): void => {
     this.cookies.set("token", loginToken, {path: "/"})
@@ -72,4 +72,4 @@ const App: React.FC = () => {
   return <FantasyFishbowl/>
 }
 
-export default App;
+export default App

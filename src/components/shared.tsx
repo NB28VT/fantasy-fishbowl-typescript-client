@@ -1,10 +1,10 @@
-import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg';
-import React from 'react';
-import { Concert } from 'services/APIConcertFetcher';
-import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { NavIcon } from './authenticatedAppMain';
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg'
+import React from 'react'
+import { Concert } from 'services/APIConcertFetcher'
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { NavIcon } from './authenticatedAppMain'
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
 
 interface BackButtonProps extends RouteComponentProps<any> {title: string}
 

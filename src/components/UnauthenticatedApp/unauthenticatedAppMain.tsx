@@ -1,14 +1,14 @@
-import React, { ChangeEvent } from 'react';
-import { VerticalStack, Style, StyleMap } from 'utils/styles';
-import backgroundImage  from 'images/nb-super-fade.jpg';
+import React, { ChangeEvent } from 'react'
+import { VerticalStack, Style, StyleMap } from 'utils/styles'
+import backgroundImage  from 'images/nb-super-fade.jpg'
 import vertLogo from 'images/yellow-logo-vertical.png'
-import { action, observable } from 'mobx';
-import { observer } from 'mobx-react';
-import { SubmitButton } from 'components/concerts/concertPage';
-import { AuthClient } from 'services/authClient';
-import { AuthContext } from 'App';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
+import { action, observable } from 'mobx'
+import { observer } from 'mobx-react'
+import { SubmitButton } from 'components/concerts/concertPage'
+import { AuthClient } from 'services/authClient'
+import { AuthContext } from 'App'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 function WelcomeLogo(): JSX.Element {
     const styles: StyleMap = {

@@ -1,12 +1,12 @@
-import { ConcertThumbnail, MenuHeader, BackButtonWithRouter } from 'components/shared';
-import { observable } from 'mobx';
-import { observer } from 'mobx-react';
-import React from 'react';
-import Select from 'react-select';
-import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher';
-import { HorizontalStack, Style, VerticalStack } from 'utils/styles';
-import { RouteComponentProps } from 'react-router';
-import { APISongsFetcher, Song } from 'services/APISongFetcher';
+import { ConcertThumbnail, MenuHeader, BackButtonWithRouter } from 'components/shared'
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
+import React from 'react'
+import Select from 'react-select'
+import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher'
+import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
+import { RouteComponentProps } from 'react-router'
+import { APISongsFetcher, Song } from 'services/APISongFetcher'
 
 // Song id and name with the properties a React-Select dropdown expects
 interface SongSelection {
@@ -91,12 +91,12 @@ interface SongDropdownProps {
 @observer
 class SongDropdown extends React.Component<SongDropdownProps> {
     /**
-     * Arg type is "SongSelection" but cast as "any" because React-Select whines;
+     * Arg type is "SongSelection" but cast as "any" because React-Select whines
      * prefer this to jumping through hoops with the typing for React-Select's benefit
      */
     handleChange = (selectedOption: any)   => {
         this.props.onSelect(selectedOption)
-    };
+    }
 
     render(): JSX.Element {
         const style: Style = {
@@ -120,7 +120,7 @@ class SongDropdown extends React.Component<SongDropdownProps> {
                     options={this.props.songSelections}
                 />
             </VerticalStack>
-        );
+        )
     }
 }
 
