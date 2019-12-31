@@ -1,8 +1,9 @@
 {
-    "extends": ["tslint:latest", "tslint-microsoft-contrib", "tslint-react"],
-    "linterOptions": {
-        "typeCheck": true
-    },
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
     "rules": {
         "align": [true, "statements"],
         "array-type": [true, "array-simple"],
@@ -80,5 +81,6 @@
         ],
         "triple-equals": true,
         "typedef": [true, "call-signature", "parameter", "member-variable-declaration"]
-    }
+    },
+    "rulesDirectory": []
 }
