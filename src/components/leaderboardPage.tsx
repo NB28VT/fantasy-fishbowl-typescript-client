@@ -1,60 +1,37 @@
 import React from 'react'
+import { APIUserFetcher, UserRanking, LeaderboardResponse } from '../services/APIUserFetcher';
 import { VerticalStack, Style } from 'utils/styles';
 import { MenuHeader } from './shared';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Table } from 'react-bootstrap';
 
-interface UserRanking {
-    rank: number
-    user_name: string
-    score: number
-}
-
-interface RankingsResponse {
-    tour_name: string
-    rankings: UserRanking[]
-}
 
 class LeaderboardPageModel {
     @observable isLoading: boolean
-    @observable rankings: RankingsResponse | null
-
+    @observable rankings: UserRanking[]
+    private userFetcher: APIUserFetcher
 
     constructor() {
         this.isLoading = false
-        this.rankings = null
+        this.rankings = []
+
+        this.userFetcher = new APIUserFetcher()
     }
 
-    loadRankings = (): void => {
-        // TODO: need an endpoint for this
-        const fakeRankings = {
-            tour_name: "Summer 2018",
-            "rankings": [
-            {rank: 1,
-            "user_name": "Kashka8675309",
-            score: 555},
-            {rank: 2,
-            "user_name": "TheBobs1234",
-            score: 324},
-            {rank: 3,
-            "user_name": "RustyShackleford802",
-            score: 15}
-            ]
-        }
-
+    loadRankings = async(): Promise<void> => {
+        this.rankings  = await this.userFetcher.fetchLeaderBoard()
         this.isLoading = false
-        this.rankings = fakeRankings
     }
 }
 
 function LeaderboardRankings(props: {users: UserRanking[]}): JSX.Element {
-    const rankedRows = props.users.map(user => {
+    const rankedRows = props.users.map((user, index) => {
         return (
             <tr>
-                <td>{user.rank}</td>
-                <td>{user.user_name}</td>
-                <td>{user.score}</td>
+                <td>{index + 1}</td>
+                <td>{user.name}</td>
+                <td>{user.total_score}</td>
             </tr>
         )
     })
@@ -70,17 +47,27 @@ export class LeaderboardPage extends React.Component<{}> {
         super(props)
 
         this.model = new LeaderboardPageModel()
+ 
+    }
+
+    async componentDidMount() {
         this.model.loadRankings()
     }
 
     render(): JSX.Element {
         const rankingData = this.model.rankings
 
-        if (this.model.isLoading || !rankingData) {
+        if (this.model.isLoading) {
             return <div>Loading</div>
         }
 
-        const header = `${rankingData.tour_name} Rankings`
+        if (!rankingData) {
+            return <div>No users!</div>
+        }
+
+        // TODO: ADD TOUR NAME TO RANKINGS ENDPOINT
+        // https://trello.com/c/C4qSzIrU/30-add-tour-model
+        const header = "Summer 2018 Rankings"
 
         const tableStyle: Style = {
             backgroundColor: 'white',
@@ -101,7 +88,7 @@ export class LeaderboardPage extends React.Component<{}> {
                             <th>Points Total</th>
                         </tr>
                     </thead>
-                    <LeaderboardRankings users={rankingData.rankings}/>
+                    <LeaderboardRankings users={this.model.rankings}/>
                 </Table>
             </VerticalStack>
         )
