@@ -28,6 +28,15 @@ class SongsModel {
         this.songs = await this.songsFetcher.fetchSongs()
         this.isLoading = false
     }
+
+
+    /**
+     * Maps songs returned from the API to a format that can be used by
+     * the React-Select library's dropdown component
+     */
+    getSongSelections = (): SongSelection[] => {
+        return this.songs.map(song=>({value: song.id, label: song.name}))
+    }
 }
 
 class ConcertPredictionModel {
@@ -68,8 +77,6 @@ class ConcertPredictionModel {
     }
 
     submitPrediction = (): void => {
-        // TODO: remember SongSelection has different keys than API because of react-select, will need to 
-        // submit value here
         console.log("Submitted prediction")
     }
 }
@@ -77,7 +84,7 @@ class ConcertPredictionModel {
 interface SongDropdownProps {
     label: string
     selected: SongSelection | null
-    songs: Song[]
+    songSelections: SongSelection[]
     onSelect(songSelection: SongSelection): void
 }
 
@@ -100,15 +107,13 @@ class SongDropdown extends React.Component<SongDropdownProps> {
         }
 
         const dropdownLabel = <VerticalStack style={labelStyle}>{this.props.label}</VerticalStack>
-        // Maps songs returned from API to the format React-Select expects
-        const dropdownOptions = this.props.songs.map(song=>({value: song.id, label: song.name}))
         return (
             <VerticalStack style={style}>
                 {dropdownLabel}
                 <Select
                     value={this.props.selected}
                     onChange={this.handleChange}
-                    options={dropdownOptions}
+                    options={this.props.songSelections}
                 />
             </VerticalStack>
         );
@@ -136,21 +141,21 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
 
 interface PredictionFormProps {
     model: ConcertPredictionModel
-    songs: Song[]
+    songSelections: SongSelection[]
 }
 
 @observer
 class PredictionForm extends React.Component<PredictionFormProps> {
     render(): JSX.Element {
         const predictionModel = this.props.model
-        const songs = this.props.songs
+        const songSelections = this.props.songSelections
         return (
             <VerticalStack>
-                <SongDropdown songs={songs} label="First Set Opener" selected={predictionModel.setOneOpenerPrediction} onSelect={predictionModel.onSelectFirstSetOpener}/>
-                <SongDropdown songs={songs} label="First Set Closer" selected={predictionModel.setOneCloserPrediction} onSelect={predictionModel.onSelectFirstSetCloser}/>
-                <SongDropdown songs={songs} label="Second Set Opener" selected={predictionModel.setTwoOpenerPrediction} onSelect={predictionModel.onSelectSecondSetOpener}/>
-                <SongDropdown songs={songs} label="Second Set Closer" selected={predictionModel.setTwoCloserPrediction} onSelect={predictionModel.onSelectSecondSetCloser}/>
-                <SongDropdown songs={songs} label="Encore" selected={predictionModel.encorePrediction} onSelect={predictionModel.onSelectEncore}/>
+                <SongDropdown songSelections={songSelections} label="First Set Opener" selected={predictionModel.setOneOpenerPrediction} onSelect={predictionModel.onSelectFirstSetOpener}/>
+                <SongDropdown songSelections={songSelections} label="First Set Closer" selected={predictionModel.setOneCloserPrediction} onSelect={predictionModel.onSelectFirstSetCloser}/>
+                <SongDropdown songSelections={songSelections} label="Second Set Opener" selected={predictionModel.setTwoOpenerPrediction} onSelect={predictionModel.onSelectSecondSetOpener}/>
+                <SongDropdown songSelections={songSelections} label="Second Set Closer" selected={predictionModel.setTwoCloserPrediction} onSelect={predictionModel.onSelectSecondSetCloser}/>
+                <SongDropdown songSelections={songSelections} label="Encore" selected={predictionModel.encorePrediction} onSelect={predictionModel.onSelectEncore}/>
                 <SubmitButton onClick={predictionModel.submitPrediction}/>
             </VerticalStack>
         )
@@ -186,6 +191,8 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
             alignItems: 'center',
         }
 
+        const songSelections = this.songsModel.getSongSelections()
+
         return (
             <VerticalStack>
                 <HorizontalStack style={headerStyle}>
@@ -193,7 +200,7 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
                     <MenuHeader title="My Prediction"/>
                 </HorizontalStack>
                 <ConcertThumbnail concert={this.predictionModel.concert}/>
-                <PredictionForm model={this.predictionModel} songs={this.songsModel.songs}/>
+                <PredictionForm model={this.predictionModel} songSelections={songSelections}/>
             </VerticalStack>
         )
     }
