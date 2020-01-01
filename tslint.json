@@ -38,7 +38,7 @@
         "no-angle-bracket-type-assertion": true,
         "no-any": false,
         "no-backbone-get-set-outside-model": false,
-        "no-default-export": true,
+        "no-default-export": false,
         "no-floating-promises": true,
         "no-implicit-dependencies": false,
         "no-namespace": false,
