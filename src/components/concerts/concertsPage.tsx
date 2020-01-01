@@ -37,7 +37,7 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
         this.concertsModel = new ConcertsModel()
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         this.concertsModel.loadConcerts(this.concertsURL)
     }
 

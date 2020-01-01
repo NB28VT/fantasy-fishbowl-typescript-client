@@ -49,7 +49,7 @@ export class LeaderboardPage extends React.Component<{}> {
         this.model = new LeaderboardPageModel()
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         this.model.loadRankings()
     }
 

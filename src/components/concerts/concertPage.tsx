@@ -213,7 +213,7 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
         this.songsModel = new SongsModel()
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         await this.songsModel.loadSongs()
     }
 
