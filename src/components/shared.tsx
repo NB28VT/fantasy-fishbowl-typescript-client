@@ -39,7 +39,7 @@ interface ConcertThumbnailProps {
 }
 
 export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
-    render() {
+    render(): JSX.Element {
         const styles: StyleMap = {
             container:  {
                 display: 'flex',
