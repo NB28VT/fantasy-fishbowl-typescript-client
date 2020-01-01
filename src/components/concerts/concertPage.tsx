@@ -41,14 +41,14 @@ class SongsModel {
 
 class ConcertPredictionModel {
     // TODO: form validation on submit or save
-    private concertFetcher: APIConcertFetcher
-
     @observable concert: Concert
     @observable setOneOpenerPrediction: SongSelection | null = null
     @observable setOneCloserPrediction: SongSelection | null = null
     @observable setTwoOpenerPrediction: SongSelection | null = null
     @observable setTwoCloserPrediction: SongSelection | null = null
     @observable encorePrediction: SongSelection | null = null
+
+    private concertFetcher: APIConcertFetcher
 
     constructor(public concertID: number) {
         this.concertFetcher = new APIConcertFetcher()

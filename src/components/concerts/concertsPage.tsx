@@ -28,8 +28,8 @@ class ConcertsModel {
 interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 
 export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageProps> {
-    private concertsModel: ConcertsModel
     abstract concertsURL: ConcertListEndpoint
+    private concertsModel: ConcertsModel
 
     constructor(props: BaseConcertsPageProps) {
         super(props)
