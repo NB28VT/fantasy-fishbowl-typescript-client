@@ -77,7 +77,8 @@ class ConcertPredictionModel {
     }
 
     submitPrediction = (): void => {
-        console.log('Submitted prediction')
+        // TODO: Submit prediction
+        // https://trello.com/c/eG0f2Cym/18-api-client-post-put-routes
     }
 }
 
