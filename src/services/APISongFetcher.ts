@@ -1,7 +1,7 @@
 import { APIGet } from './RequestClient'
 
 export enum SongsEndpoint {
-    allSongs = "/songs"
+    allSongs = '/songs',
 }
 
 export interface Song {
@@ -14,7 +14,7 @@ export interface SongsResponse {
 }
 
 export class APISongsFetcher {
-    fetchSongs = async(): Promise<Song[]> => {
+    fetchSongs = async (): Promise<Song[]> => {
         const response: SongsResponse = await APIGet(SongsEndpoint.allSongs)
         return response.songs
     }

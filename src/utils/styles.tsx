@@ -1,9 +1,8 @@
-import React from 'react';
-import { ReactChild } from "react";
+import React, { ReactChild } from 'react'
 
 export type Style = React.CSSProperties
 
-export type StyleMap = { [name: string]: Style }
+export interface StyleMap { [name: string]: Style }
 
 interface StackProps {
     children?: ReactChild | ReactChild[]

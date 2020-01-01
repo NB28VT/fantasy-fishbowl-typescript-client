@@ -1,14 +1,15 @@
-import React, { ChangeEvent } from 'react';
-import { VerticalStack, Style, StyleMap } from 'utils/styles';
-import backgroundImage  from 'images/nb-super-fade.jpg';
+import 'react-toastify/dist/ReactToastify.min.css'
+
+import { AuthContext } from 'App'
+import { SubmitButton } from 'components/concerts/concertPage'
+import backgroundImage from 'images/nb-super-fade.jpg'
 import vertLogo from 'images/yellow-logo-vertical.png'
-import { action, observable } from 'mobx';
-import { observer } from 'mobx-react';
-import { SubmitButton } from 'components/concerts/concertPage';
-import { AuthClient } from 'services/authClient';
-import { AuthContext } from 'App';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
+import { action, observable } from 'mobx'
+import { observer } from 'mobx-react'
+import React, { ChangeEvent } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import { AuthClient } from 'services/authClient'
+import { Style, StyleMap, VerticalStack } from 'utils/styles'
 
 function WelcomeLogo(): JSX.Element {
     const styles: StyleMap = {
@@ -16,8 +17,8 @@ function WelcomeLogo(): JSX.Element {
             textAlign: 'center',
             justifyContent: 'center',
             fontSize: 20,
-            color: '#F5ED13'
-        }
+            color: '#F5ED13',
+        },
     }
 
     return (
@@ -31,12 +32,12 @@ function WelcomeLogo(): JSX.Element {
 class LoginFormModel {
     @observable email: string
     @observable password: string
-    
+
     constructor(
         private onLogin: (responseToken: string) => void
     ) {
-        this.email = ""
-        this.password = ""
+        this.email = ''
+        this.password = ''
     }
 
     loginUser = async (): Promise<void> => {
@@ -45,8 +46,8 @@ class LoginFormModel {
         try {
             const loginResponse = await client.loginUser(this.email, this.password)
             this.onLogin(loginResponse.token)
-        } catch(error) {
-            toast.error("Invalid Login, Please Try Again", {
+        } catch (error) {
+            toast.error('Invalid Login, Please Try Again', {
                 hideProgressBar: true,
                 closeOnClick: true,
             })
@@ -74,7 +75,7 @@ class LoginForm extends React.Component<LoginFormProps> {
 
     constructor(props: LoginFormProps) {
         super(props)
- 
+
         this.model = new LoginFormModel(this.props.onLogin)
     }
 
@@ -87,7 +88,7 @@ class LoginForm extends React.Component<LoginFormProps> {
             input: {
                 marginBottom: 10,
                 borderRadius: 3,
-            }
+            },
         }
 
         const model = this.model
@@ -95,7 +96,13 @@ class LoginForm extends React.Component<LoginFormProps> {
         return (
             <VerticalStack style={styles.container}>
                 <input style={styles.input} placeholder="Email" value={model.email} onChange={model.updateEmail}/>
-                <input  type="password" style={styles.input} placeholder="Password" value={model.password} onChange={model.updatePassword}/>
+                <input
+                    type="password"
+                    style={styles.input}
+                    placeholder="Password"
+                    value={model.password}
+                    onChange={model.updatePassword}
+                />
                 <SubmitButton onClick={model.loginUser}/>
                 <ToastContainer position="bottom-center"/>
             </VerticalStack>

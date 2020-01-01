@@ -1,10 +1,12 @@
-import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg';
-import React from 'react';
-import { Concert } from 'services/APIConcertFetcher';
-import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { NavIcon } from './authenticatedAppMain';
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg'
+import React from 'react'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { Concert } from 'services/APIConcertFetcher'
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
+
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
+
+import { NavIcon } from './authenticatedAppMain'
 
 interface BackButtonProps extends RouteComponentProps<any> {title: string}
 
@@ -25,7 +27,7 @@ export function MenuHeader(props: {title: string}): JSX.Element {
         justifyContent: 'center',
         marginBottom: 20,
         marginTop: 20,
-        fontSize: 30,   
+        fontSize: 30,
     }
 
     return <div style={style}>{props.title}</div>
@@ -37,7 +39,7 @@ interface ConcertThumbnailProps {
 }
 
 export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
-    render() {
+    render(): JSX.Element {
         const styles: StyleMap = {
             container:  {
                 display: 'flex',
@@ -61,14 +63,14 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
             info: {
                 justifyContent: 'space-between',
                 marginLeft: 20,
-            }
+            },
         }
 
         // TODO: More elegant way to handle optional event
         const onClick = (): void => {
             if (this.props.onClick) {
                 this.props.onClick(this.props.concert.id)
-            } 
+            }
         }
 
         return (
@@ -80,5 +82,5 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
                 </VerticalStack>
             </HorizontalStack>
         )
-    }  
+    }
 }

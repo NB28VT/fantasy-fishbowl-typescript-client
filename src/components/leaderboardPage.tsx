@@ -1,11 +1,11 @@
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
 import React from 'react'
-import { APIUserFetcher, UserRanking, LeaderboardResponse } from '../services/APIUserFetcher';
-import { VerticalStack, Style } from 'utils/styles';
-import { MenuHeader } from './shared';
-import { observable } from 'mobx';
-import { observer } from 'mobx-react';
-import { Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap'
+import { Style, VerticalStack } from 'utils/styles'
 
+import { APIUserFetcher, LeaderboardResponse, UserRanking } from '../services/APIUserFetcher'
+import { MenuHeader } from './shared'
 
 class LeaderboardPageModel {
     @observable isLoading: boolean
@@ -19,7 +19,7 @@ class LeaderboardPageModel {
         this.userFetcher = new APIUserFetcher()
     }
 
-    loadRankings = async(): Promise<void> => {
+    loadRankings = async (): Promise<void> => {
         this.rankings  = await this.userFetcher.fetchLeaderBoard()
         this.isLoading = false
     }
@@ -47,10 +47,9 @@ export class LeaderboardPage extends React.Component<{}> {
         super(props)
 
         this.model = new LeaderboardPageModel()
- 
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         this.model.loadRankings()
     }
 
@@ -67,14 +66,14 @@ export class LeaderboardPage extends React.Component<{}> {
 
         // TODO: ADD TOUR NAME TO RANKINGS ENDPOINT
         // https://trello.com/c/C4qSzIrU/30-add-tour-model
-        const header = "Summer 2018 Rankings"
+        const header = 'Summer 2018 Rankings'
 
         const tableStyle: Style = {
             backgroundColor: 'white',
         }
 
         const containerStyle: Style = {
-            paddingBottom:'100%',
+            paddingBottom: '100%',
         }
 
         return (

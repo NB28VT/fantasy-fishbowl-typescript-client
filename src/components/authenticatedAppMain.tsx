@@ -1,14 +1,18 @@
-import { faCalendarAlt, faListOl, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AuthContext } from 'App';
-import { UpcomingConcertsPage, AllConcertsPage } from 'components/concerts/concertsPage';
-import { LeaderboardPage } from 'components/leaderboardPage';
-import backgroundImage from 'images/papyrus-dark.png';
-import React from 'react';
-import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
-import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles';
-import { DashboardPage } from "./dashboardPage";
-import { ConcertPage } from './concerts/concertPage';
+import { AuthContext } from 'App'
+import { AllConcertsPage, UpcomingConcertsPage } from 'components/concerts/concertsPage'
+import { LeaderboardPage } from 'components/leaderboardPage'
+import backgroundImage from 'images/papyrus-dark.png'
+import React from 'react'
+import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
+
+import {
+    faCalendarAlt, faListOl, faSignOutAlt, IconDefinition,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { ConcertPage } from './concerts/concertPage'
+import { DashboardPage } from './dashboardPage'
 
 interface NavIconProps {
     icon: IconDefinition
@@ -45,9 +49,12 @@ function LogoutButton(): JSX.Element {
     )
 }
 
-// This is a mild hack to get withRouter working with TypeScript
-// TODO: take a close look at best practices here https://trello.com/c/sm8jTYed/19-revisit-typing-when-using-react-router
-// https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
+/**
+ * This is a mild hack to get withRouter working with TypeScript
+ * TODO: take a close look at best practices here
+ * https://trello.com/c/sm8jTYed/19-revisit-typing-when-using-react-router
+ * https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
+ */
 interface NavBarProps extends RouteComponentProps<any> {}
 
 class NavFooter extends React.Component<NavBarProps> {
@@ -63,7 +70,7 @@ class NavFooter extends React.Component<NavBarProps> {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: 10,        
+                padding: 10,
             },
         }
 
@@ -111,7 +118,7 @@ class AppContent extends React.Component<{}> {
                 <div style={styles.overlay}>
                     <VerticalStack style={styles.content}>
                         <Switch>
-                            <Route exact path={"/"} component={DashboardPage}/>
+                            <Route exact path={'/'} component={DashboardPage}/>
                             <Route exact path="/leaderboard" component={LeaderboardPage}/>
                             <Route exact path="/concerts" component={AllConcertsPage}/>
                             <Route exact path="/concerts/upcoming" component={UpcomingConcertsPage}/>

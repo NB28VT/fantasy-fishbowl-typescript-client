@@ -1,8 +1,9 @@
-import React from 'react';
-import './App.css';
-import Cookies from 'universal-cookie';
-import { AuthenticatedApp } from 'components/authenticatedAppMain';
-import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain';
+import './App.css'
+
+import { AuthenticatedApp } from 'components/authenticatedAppMain'
+import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain'
+import React from 'react'
+import Cookies from 'universal-cookie'
 
 // Need default values for callback function, per official docs
 // https://reactjs.org/docs/context.html#updating-context-from-a-nested-component
@@ -10,7 +11,7 @@ export const AuthContext = React.createContext({
   token: '',
   authenticated: false,
   onLogin: (loginToken: string): void => {},
-  onLogout: (): void => {}
+  onLogout: (): void => {},
 })
 
 export interface AuthContextInterface {
@@ -30,8 +31,8 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     super(props)
 
     // Check if the user is already authenticated
-    this.cookies = new Cookies();
-    const maybeToken = this.cookies.get("token")
+    this.cookies = new Cookies()
+    const maybeToken = this.cookies.get('token')
 
     this.state = {
       token: maybeToken,
@@ -41,19 +42,19 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     }
   }
 
-  // Set login cookie and remove on logout; path is set to "/" so it's accessbile on every page.
+  // Set login cookie and remove on logout path is set to '/' so it's accessbile on every page.
   // https://www.npmjs.com/package/universal-cookie
   onLogin = (loginToken: string): void => {
-    this.cookies.set("token", loginToken, {path: "/"})
+    this.cookies.set('token', loginToken, {path: '/'})
 
     this.setState({
       token: loginToken,
-      authenticated: true
-    })    
+      authenticated: true,
+    })
   }
 
   onLogout = (): void => {
-    this.cookies.remove("token", {path: "/"})
+    this.cookies.remove('token', {path: '/'})
 
     this.setState({
       token: '',
@@ -72,4 +73,4 @@ const App: React.FC = () => {
   return <FantasyFishbowl/>
 }
 
-export default App;
+export default App

@@ -1,15 +1,15 @@
-import React from 'react';
-import { APIConcertFetcher, Concert, ConcertListEndpoint } from '../../services/APIConcertFetcher';
-import { MenuHeader, ConcertThumbnail } from '../shared';
-import { RouteComponentProps } from 'react-router';
-import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
+import React from 'react'
+import { RouteComponentProps } from 'react-router'
+
+import { APIConcertFetcher, Concert, ConcertListEndpoint } from '../../services/APIConcertFetcher'
+import { ConcertThumbnail, MenuHeader } from '../shared'
 
 class ConcertsModel {
     @observable isLoading: boolean
     @observable concertList: Concert[]
     private concertFetcher: APIConcertFetcher
-
 
     constructor() {
         this.isLoading = true
@@ -17,18 +17,17 @@ class ConcertsModel {
         this.concertList = []
     }
 
-    loadConcerts = async(concertsUrl: ConcertListEndpoint): Promise<void> => {
+    loadConcerts = async (concertsUrl: ConcertListEndpoint): Promise<void> => {
         this.concertList = await this.concertFetcher.fetchConcerts(concertsUrl)
         this.isLoading = false
     }
 }
 
-
 interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 
 export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageProps> {
-    private concertsModel: ConcertsModel
     abstract concertsURL: ConcertListEndpoint
+    private concertsModel: ConcertsModel
 
     constructor(props: BaseConcertsPageProps) {
         super(props)
@@ -36,7 +35,7 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
         this.concertsModel = new ConcertsModel()
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         this.concertsModel.loadConcerts(this.concertsURL)
     }
 
@@ -45,7 +44,8 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
     }
 
     // TODO: refactor this out into a component, implment Maybe base type with isVisible prop
-    // https://trello.com/c/rfLA6ae8/31-concerts-page-refactor-maybeconcertbuttons-into-component-instead-of-separate-function-call
+    // https://trello.com/c/rfLA6ae8/31-concerts-page-refactor
+    // -maybeconcertbuttons-into-component-instead-of-separate-function-call
     maybeConcertButtons = (): JSX.Element => {
         const concertButtons = this.concertsModel.concertList.map(concert => {
             return <ConcertThumbnail concert={concert} onClick={this.goToConcert}/>
@@ -76,10 +76,10 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
 
 @observer
 export class AllConcertsPage extends BaseConcertsPage {
-    concertsURL = ConcertListEndpoint.allConcerts
+    concertsURL: ConcertListEndpoint = ConcertListEndpoint.allConcerts
 }
 
 @observer
 export class UpcomingConcertsPage extends BaseConcertsPage {
-    concertsURL = ConcertListEndpoint.upcomingConcerts
+    concertsURL: ConcertListEndpoint = ConcertListEndpoint.upcomingConcerts
 }

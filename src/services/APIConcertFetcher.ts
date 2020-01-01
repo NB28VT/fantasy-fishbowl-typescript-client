@@ -1,12 +1,12 @@
 // TODO: configure tslint for absolute imports
+import mockConcertResponse from '../mockData/concert.json'
 // Get absolute imports set up
 import mockConcertsResponse from '../mockData/concertList.json'
-import mockConcertResponse from '../mockData/concert.json'
 import { APIGet } from './RequestClient'
 
 export enum ConcertListEndpoint {
-    upcomingConcerts = "/concerts/upcoming",
-    allConcerts = "/concerts"
+    upcomingConcerts = '/concerts/upcoming',
+    allConcerts = '/concerts',
 }
 
 // TODO: FLESH OUT THE SET DATA
@@ -21,7 +21,7 @@ export interface ConcertResponse {
 }
 
 export class APIConcertFetcher {
-    fetchConcerts = async(concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
+    fetchConcerts = async (concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
         const response: ConcertResponse = await APIGet(concertsURL)
         return response.concerts
     }

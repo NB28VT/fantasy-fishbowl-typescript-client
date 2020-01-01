@@ -1,0 +1,91 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "linterOptions": {
+        "exclude": [
+            "src/serviceWorker.ts"
+        ]
+    },
+    "rules": {
+        "align": [true, "statements"],
+        "array-type": [true, "array-simple"],
+        "arrow-parens": false,
+        "binary-expression-operand-order": false,
+        "completed-docs": false,
+        "export-name": false,
+        "function-name": false,
+        "import-blacklist": [true, "logrocket"],
+        "import-name": [
+            true,
+            null,
+            {
+                "momentTimezone": "moment"
+            },
+            null,
+            {"ignoreExternalModule": false}
+        ],
+        "interface-name": false,
+        "jsx-no-lambda": false,
+        "max-classes-per-file": [false, 1],
+        "member-access": [true, "no-public"],
+        "missing-jsdoc": false,
+        "mocha-no-side-effect-code": false,
+        "newline-before-return": false,
+        "newline-per-chained-call": false,
+        "no-angle-bracket-type-assertion": true,
+        "no-any": false,
+        "no-backbone-get-set-outside-model": false,
+        "no-default-export": false,
+        "no-floating-promises": true,
+        "no-implicit-dependencies": false,
+        "no-namespace": false,
+        "no-null-keyword": false,
+        "no-object-literal-type-assertion": false,
+        "no-parameter-properties": false,
+        "no-reference": false,
+        "no-relative-imports": ["allow-siblings"],
+        "no-reserved-keywords": false,
+        "no-submodule-imports": false,
+        "no-suspicious-comment": false,
+        "no-unsafe-any": false,
+        "no-unused-variable": true,
+        "no-with-statement": false,
+        "object-literal-sort-keys": false,
+        "ordered-imports": true,
+        "prefer-array-literal": [true, {"allow-type-parameters": true}],
+        "prefer-object-spread": false,
+        "prefer-readonly": false,
+        "prefer-template": false,
+        "prefer-type-cast": false,
+        "promise-function-async": false,
+        "quotemark": [true, "single", "jsx-double", "avoid-template", "avoid-escape"],
+        "react-a11y-event-has-role": false,
+        "react-this-binding-issue": [
+            true,
+            {
+                "allow-anonymous-listeners": true
+            }
+        ],
+        "semicolon": [true, "never"],
+        "strict-boolean-expressions": false,
+        "type-literal-delimiter": false,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": {
+                    "arrays": "always",
+                    "exports": "always",
+                    "imports": "always",
+                    "objects": "always"
+                },
+                "singleline": "never"
+            }
+        ],
+        "triple-equals": true,
+        "typedef": [true, "call-signature", "parameter", "member-variable-declaration"]
+    },
+    "rulesDirectory": []
+}
