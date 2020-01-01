@@ -18,7 +18,7 @@ class ConcertsModel {
         this.concertList = []
     }
 
-    loadConcerts = async(concertsUrl: ConcertListEndpoint): Promise<void> => {
+    loadConcerts = async (concertsUrl: ConcertListEndpoint): Promise<void> => {
         this.concertList = await this.concertFetcher.fetchConcerts(concertsUrl)
         this.isLoading = false
     }

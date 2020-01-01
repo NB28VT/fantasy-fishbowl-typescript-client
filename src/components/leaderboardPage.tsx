@@ -19,7 +19,7 @@ class LeaderboardPageModel {
         this.userFetcher = new APIUserFetcher()
     }
 
-    loadRankings = async(): Promise<void> => {
+    loadRankings = async (): Promise<void> => {
         this.rankings  = await this.userFetcher.fetchLeaderBoard()
         this.isLoading = false
     }

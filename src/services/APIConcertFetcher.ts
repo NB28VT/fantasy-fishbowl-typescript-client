@@ -21,7 +21,7 @@ export interface ConcertResponse {
 }
 
 export class APIConcertFetcher {
-    fetchConcerts = async(concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
+    fetchConcerts = async (concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
         const response: ConcertResponse = await APIGet(concertsURL)
         return response.concerts
     }

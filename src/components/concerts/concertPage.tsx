@@ -25,7 +25,7 @@ class SongsModel {
         this.songsFetcher = new APISongsFetcher()
     }
 
-    loadSongs = async(): Promise<void> => {
+    loadSongs = async (): Promise<void> => {
         this.songs = await this.songsFetcher.fetchSongs()
         this.isLoading = false
     }

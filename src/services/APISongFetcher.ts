@@ -14,7 +14,7 @@ export interface SongsResponse {
 }
 
 export class APISongsFetcher {
-    fetchSongs = async(): Promise<Song[]> => {
+    fetchSongs = async (): Promise<Song[]> => {
         const response: SongsResponse = await APIGet(SongsEndpoint.allSongs)
         return response.songs
     }

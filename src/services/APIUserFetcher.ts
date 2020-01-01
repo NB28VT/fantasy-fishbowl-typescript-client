@@ -14,7 +14,7 @@ export interface LeaderboardResponse {
 }
 
 export class APIUserFetcher {
-    fetchLeaderBoard =  async(): Promise<UserRanking[]> => {
+    fetchLeaderBoard =  async (): Promise<UserRanking[]> => {
         const response: LeaderboardResponse = await APIGet(UsersEndpoint.userRankings)
         return response.users
     }
