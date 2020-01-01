@@ -46,7 +46,8 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
     }
 
     // TODO: refactor this out into a component, implment Maybe base type with isVisible prop
-    // https://trello.com/c/rfLA6ae8/31-concerts-page-refactor-maybeconcertbuttons-into-component-instead-of-separate-function-call
+    // https://trello.com/c/rfLA6ae8/31-concerts-page-refactor
+    // -maybeconcertbuttons-into-component-instead-of-separate-function-call
     maybeConcertButtons = (): JSX.Element => {
         const concertButtons = this.concertsModel.concertList.map(concert => {
             return <ConcertThumbnail concert={concert} onClick={this.goToConcert}/>

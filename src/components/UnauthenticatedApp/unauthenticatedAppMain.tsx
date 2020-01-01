@@ -96,7 +96,13 @@ class LoginForm extends React.Component<LoginFormProps> {
         return (
             <VerticalStack style={styles.container}>
                 <input style={styles.input} placeholder="Email" value={model.email} onChange={model.updateEmail}/>
-                <input  type="password" style={styles.input} placeholder="Password" value={model.password} onChange={model.updatePassword}/>
+                <input
+                    type="password"
+                    style={styles.input}
+                    placeholder="Password"
+                    value={model.password}
+                    onChange={model.updatePassword}
+                />
                 <SubmitButton onClick={model.loginUser}/>
                 <ToastContainer position="bottom-center"/>
             </VerticalStack>

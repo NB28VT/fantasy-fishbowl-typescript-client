@@ -155,11 +155,36 @@ class PredictionForm extends React.Component<PredictionFormProps> {
         const songSelections = this.props.songSelections
         return (
             <VerticalStack>
-                <SongDropdown songSelections={songSelections} label="First Set Opener" selected={predictionModel.setOneOpenerPrediction} onSelect={predictionModel.onSelectFirstSetOpener}/>
-                <SongDropdown songSelections={songSelections} label="First Set Closer" selected={predictionModel.setOneCloserPrediction} onSelect={predictionModel.onSelectFirstSetCloser}/>
-                <SongDropdown songSelections={songSelections} label="Second Set Opener" selected={predictionModel.setTwoOpenerPrediction} onSelect={predictionModel.onSelectSecondSetOpener}/>
-                <SongDropdown songSelections={songSelections} label="Second Set Closer" selected={predictionModel.setTwoCloserPrediction} onSelect={predictionModel.onSelectSecondSetCloser}/>
-                <SongDropdown songSelections={songSelections} label="Encore" selected={predictionModel.encorePrediction} onSelect={predictionModel.onSelectEncore}/>
+                <SongDropdown
+                    songSelections={songSelections}
+                    label="First Set Opener"
+                    selected={predictionModel.setOneOpenerPrediction}
+                    onSelect={predictionModel.onSelectFirstSetOpener}
+                />
+                <SongDropdown
+                    songSelections={songSelections}
+                    label="First Set Closer"
+                    selected={predictionModel.setOneCloserPrediction}
+                    onSelect={predictionModel.onSelectFirstSetCloser}
+                />
+                <SongDropdown
+                    songSelections={songSelections}
+                    label="Second Set Opener"
+                    selected={predictionModel.setTwoOpenerPrediction}
+                    onSelect={predictionModel.onSelectSecondSetOpener}
+                />
+                <SongDropdown
+                    songSelections={songSelections}
+                    label="Second Set Closer"
+                    selected={predictionModel.setTwoCloserPrediction}
+                    onSelect={predictionModel.onSelectSecondSetCloser}
+                />
+                <SongDropdown
+                    songSelections={songSelections}
+                    label="Encore" selected={
+                    predictionModel.encorePrediction}
+                    onSelect={predictionModel.onSelectEncore}
+                />
                 <SubmitButton onClick={predictionModel.submitPrediction}/>
             </VerticalStack>
         )
