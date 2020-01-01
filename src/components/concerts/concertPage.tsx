@@ -49,7 +49,7 @@ class ConcertPredictionModel {
     @observable setTwoOpenerPrediction: SongSelection | null = null
     @observable setTwoCloserPrediction: SongSelection | null = null
     @observable encorePrediction: SongSelection | null = null
-    
+
     constructor(public concertID: number) {
         this.concertFetcher = new APIConcertFetcher()
         this.concert = this.concertFetcher.fetchConcert(concertID)
@@ -82,7 +82,7 @@ class ConcertPredictionModel {
 }
 
 interface SongDropdownProps {
-    
+    label: string
     selected: SongSelection | null
     songSelections: SongSelection[]
     onSelect(songSelection: SongSelection): void
@@ -101,7 +101,7 @@ class SongDropdown extends React.Component<SongDropdownProps> {
     render(): JSX.Element {
         const style: Style = {
             color: 'black',
-            marginBottom: 10, 
+            marginBottom: 10,
         }
 
         // TODO: move colors to constant
@@ -176,7 +176,7 @@ interface ConcertPageProps extends RouteComponentProps<ConcertPageRouterParams> 
 export class ConcertPage extends React.Component<ConcertPageProps> {
     predictionModel: ConcertPredictionModel
     private songsModel: SongsModel
-    
+
     constructor(props: ConcertPageProps) {
         super(props)
 

@@ -32,7 +32,7 @@ function WelcomeLogo(): JSX.Element {
 class LoginFormModel {
     @observable email: string
     @observable password: string
-    
+
     constructor(
         private onLogin: (responseToken: string) => void
     ) {
@@ -75,7 +75,7 @@ class LoginForm extends React.Component<LoginFormProps> {
 
     constructor(props: LoginFormProps) {
         super(props)
- 
+
         this.model = new LoginFormModel(this.props.onLogin)
     }
 

@@ -50,7 +50,7 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
     this.setState({
       token: loginToken,
       authenticated: true,
-    })    
+    })
   }
 
   onLogout = (): void => {

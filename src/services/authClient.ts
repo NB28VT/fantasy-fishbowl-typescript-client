@@ -6,7 +6,7 @@ export class AuthClient {
     loginUser = async (email: string, password: string): Promise<LoginUserResponse> => {
         const encodedEmail = encodeURIComponent(email)
         const encodedPassword = encodeURIComponent(password)
-    
+
         const authUrl = `/authenticate?email=${encodedEmail}&password=${encodedPassword}`
         const result = await fetch(authUrl, {method: 'POST',headers: {'Content-Type': 'application/json'}})
 

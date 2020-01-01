@@ -67,7 +67,7 @@ class NavFooter extends React.Component<NavBarProps> {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: 10,        
+                padding: 10,
             },
         }
 

@@ -47,7 +47,6 @@ export class LeaderboardPage extends React.Component<{}> {
         super(props)
 
         this.model = new LeaderboardPageModel()
- 
     }
 
     async componentDidMount() {

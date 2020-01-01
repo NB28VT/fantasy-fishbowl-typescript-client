@@ -27,7 +27,7 @@ export function MenuHeader(props: {title: string}): JSX.Element {
         justifyContent: 'center',
         marginBottom: 20,
         marginTop: 20,
-        fontSize: 30,   
+        fontSize: 30,
     }
 
     return <div style={style}>{props.title}</div>
@@ -70,7 +70,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
         const onClick = (): void => {
             if (this.props.onClick) {
                 this.props.onClick(this.props.concert.id)
-            } 
+            }
         }
 
         return (
@@ -82,5 +82,5 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
                 </VerticalStack>
             </HorizontalStack>
         )
-    }  
+    }
 }
