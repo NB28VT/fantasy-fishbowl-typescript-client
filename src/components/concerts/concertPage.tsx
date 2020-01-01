@@ -192,7 +192,9 @@ class PredictionForm extends React.Component<PredictionFormProps> {
     }
 }
 
-type ConcertPageRouterParams = {id: string}
+interface ConcertPageRouterParams {
+    id: string
+}
 
 interface ConcertPageProps extends RouteComponentProps<ConcertPageRouterParams> {
     concertID: number
