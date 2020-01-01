@@ -76,10 +76,10 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
 
 @observer
 export class AllConcertsPage extends BaseConcertsPage {
-    concertsURL = ConcertListEndpoint.allConcerts
+    concertsURL: ConcertListEndpoint = ConcertListEndpoint.allConcerts
 }
 
 @observer
 export class UpcomingConcertsPage extends BaseConcertsPage {
-    concertsURL = ConcertListEndpoint.upcomingConcerts
+    concertsURL: ConcertListEndpoint = ConcertListEndpoint.upcomingConcerts
 }
