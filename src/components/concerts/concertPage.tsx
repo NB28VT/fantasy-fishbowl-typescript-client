@@ -208,7 +208,7 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     constructor(props: ConcertPageProps) {
         super(props)
 
-        const concertID = parseInt(this.props.match.params.id)
+        const concertID = parseInt(this.props.match.params.id, 10)
         this.predictionModel = new ConcertPredictionModel(concertID)
         this.songsModel = new SongsModel()
     }
