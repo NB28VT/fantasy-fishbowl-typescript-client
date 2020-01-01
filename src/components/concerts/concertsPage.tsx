@@ -11,7 +11,6 @@ class ConcertsModel {
     @observable concertList: Concert[]
     private concertFetcher: APIConcertFetcher
 
-
     constructor() {
         this.isLoading = true
         this.concertFetcher = new APIConcertFetcher()
@@ -23,7 +22,6 @@ class ConcertsModel {
         this.isLoading = false
     }
 }
-
 
 interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 
