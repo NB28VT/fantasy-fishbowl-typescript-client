@@ -35,7 +35,7 @@ class SongsModel {
      * the React-Select library's dropdown component
      */
     getSongSelections = (): SongSelection[] => {
-        return this.songs.map(song=>({value: song.id, label: song.name}))
+        return this.songs.map(song => ({value: song.id, label: song.name}))
     }
 }
 

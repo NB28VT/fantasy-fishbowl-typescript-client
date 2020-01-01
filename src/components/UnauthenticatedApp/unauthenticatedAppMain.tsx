@@ -46,7 +46,7 @@ class LoginFormModel {
         try {
             const loginResponse = await client.loginUser(this.email, this.password)
             this.onLogin(loginResponse.token)
-        } catch(error) {
+        } catch (error) {
             toast.error('Invalid Login, Please Try Again', {
                 hideProgressBar: true,
                 closeOnClick: true,

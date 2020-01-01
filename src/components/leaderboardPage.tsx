@@ -73,7 +73,7 @@ export class LeaderboardPage extends React.Component<{}> {
         }
 
         const containerStyle: Style = {
-            paddingBottom:'100%',
+            paddingBottom: '100%',
         }
 
         return (
