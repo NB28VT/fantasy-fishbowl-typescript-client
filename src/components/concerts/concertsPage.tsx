@@ -1,27 +1,10 @@
-import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import { APIConcertFetcher, Concert, ConcertListEndpoint } from '../../services/APIConcertFetcher'
+import { ConcertListEndpoint } from '../../services/APIConcertFetcher'
 import { ConcertThumbnail, MenuHeader } from '../shared'
-
-class ConcertsModel {
-    @observable isLoading: boolean
-    @observable concertList: Concert[]
-    private concertFetcher: APIConcertFetcher
-
-    constructor() {
-        this.isLoading = true
-        this.concertFetcher = new APIConcertFetcher()
-        this.concertList = []
-    }
-
-    loadConcerts = async (concertsUrl: ConcertListEndpoint): Promise<void> => {
-        this.concertList = await this.concertFetcher.fetchConcerts(concertsUrl)
-        this.isLoading = false
-    }
-}
+import { ConcertsModel } from './models'
 
 interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 

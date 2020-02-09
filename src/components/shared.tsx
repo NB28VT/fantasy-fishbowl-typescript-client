@@ -34,12 +34,12 @@ export function MenuHeader(props: {title: string}): JSX.Element {
 }
 
 interface ConcertThumbnailProps {
-    concert: Concert
+    concert: Concert | null
     onClick?(concertID: number): void
 }
 
 export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
-    render(): JSX.Element {
+    render(): JSX.Element | null {
         const styles: StyleMap = {
             container:  {
                 display: 'flex',
@@ -68,9 +68,13 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
         // TODO: More elegant way to handle optional event
         const onClick = (): void => {
-            if (this.props.onClick) {
+            if (this.props.onClick && this.props.concert) {
                 this.props.onClick(this.props.concert.id)
             }
+        }
+
+        if (!this.props.concert) {
+            return null
         }
 
         return (
