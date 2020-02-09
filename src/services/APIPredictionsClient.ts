@@ -33,7 +33,7 @@ export interface SongSelection {
 
 export interface SongPrediction {
     songSelection: SongSelection | null
-    prediction_category_id: number
+    predictionCategoryID: number
 }
 
 // For the update route
