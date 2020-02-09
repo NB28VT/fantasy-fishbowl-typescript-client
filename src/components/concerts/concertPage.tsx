@@ -1,13 +1,15 @@
+import { AuthContext } from 'App'
 import { BackButtonWithRouter, ConcertThumbnail, MenuHeader } from 'components/shared'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import Select from 'react-select'
+import { toast, ToastContainer } from 'react-toastify'
 import { APIConcertFetcher, Concert } from 'services/APIConcertFetcher'
 import {
-    APIPredictionsClient, PredictionCategoriesResponse, PredictionCategory, SongPrediction,
-    SongSelection,
+    APIPredictionsClient, ConcertPredictionParams, PredictionCategoriesResponse, PredictionCategory,
+    SongPrediction, SongSelection,
 } from 'services/APIPredictionsClient'
 import { APISongsFetcher, Song } from 'services/APISongFetcher'
 import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
@@ -17,15 +19,15 @@ class ConcertPredictionModel {
     @observable songSelections: SongSelection[]
     @observable predictionCategories: PredictionCategory[]
 
-    private isValidPrediction: boolean
+    private isCompletePrediction: boolean
     private predictionsClient: APIPredictionsClient
     private songsFetcher: APISongsFetcher
 
-    constructor(public concertID: number) {
-        this.predictionsClient = new APIPredictionsClient()
+    constructor(public concertID: number, public token: string) {
+        this.predictionsClient = new APIPredictionsClient(token)
         this.songsFetcher = new APISongsFetcher()
 
-        this.isValidPrediction = false
+        this.isCompletePrediction = false
 
         this.predictionCategories = []
         this.songPredictions = []
@@ -73,18 +75,33 @@ class ConcertPredictionModel {
         predictionForCategory.songSelection = songSelection
     }
 
-    submitPrediction = (): void => {
-        // TODO: Validate all categories have a selection
+    submitPrediction = async (): Promise<void> => {
         this.validateSelectionForAllCategories()
-        // TODO: Submit prediction
-        // https://trello.com/c/eG0f2Cym/18-api-client-post-put-routes
+        if (!this.isCompletePrediction) {
+            toast.error('You must select a song for each category', {
+                hideProgressBar: true,
+                closeOnClick: true,
+            })
+        } else {
+            // TODO: Display Submitted Prediction
+            // https://trello.com/c/UQI9aPNp/5-pages-load-and-edit-existing-prediction
+            await this.predictionsClient.submitPrediction(this.predictionSubmission())
+        }
     }
 
     private validateSelectionForAllCategories = (): void => {
-        this.isValidPrediction =  this.songPredictions.every(prediction => prediction.songSelection !== null)
+        this.isCompletePrediction =  this.songPredictions.every(prediction => prediction.songSelection !== null)
+    }
+
+    private predictionSubmission = (): ConcertPredictionParams => {
+        return {
+            concert_id: this.concertID,
+            concert_prediction: {
+                song_predictions: this.songPredictions,
+            },
+        }
     }
 }
-
 
 interface SongDropdownProps {
     selected: SongSelection | null
@@ -109,7 +126,6 @@ class SongDropdown extends React.Component<SongDropdownProps> {
             marginBottom: 10,
         }
 
-        // TODO: move colors to constant
         const labelStyle: Style = {
             marginBottom: 5,
             color: '#F5ED13',
@@ -128,7 +144,6 @@ class SongDropdown extends React.Component<SongDropdownProps> {
     }
 }
 
-// TODO: move to shared
 interface SubmitButtonProps {
     onClick(): void
 }
@@ -147,7 +162,10 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
 
-interface PredictionFormProps {concertID: number}
+interface PredictionFormProps {
+    concertID: number
+    token: string
+}
 
 @observer
 class PredictionsForm extends React.Component<PredictionFormProps> {
@@ -156,7 +174,7 @@ class PredictionsForm extends React.Component<PredictionFormProps> {
     constructor(props: PredictionFormProps) {
         super(props)
 
-        this.model = new ConcertPredictionModel(props.concertID)
+        this.model = new ConcertPredictionModel(props.concertID, this.props.token)
     }
 
     async componentDidMount(): Promise<void> {
@@ -247,7 +265,12 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
                     <MenuHeader title="My Prediction"/>
                 </HorizontalStack>
                 <ConcertThumbnail concert={this.model.concert}/>
-                <PredictionsForm concertID={this.model.concert.id}/>
+                <AuthContext.Consumer>
+                    {({token}) => (
+                        <PredictionsForm concertID={this.concertID} token={token}/>
+                    )}
+                </AuthContext.Consumer>
+                <ToastContainer position="bottom-center"/>
             </VerticalStack>
         )
     }

@@ -32,9 +32,7 @@ export interface SongSelection {
 }
 
 export interface SongPrediction {
-    // song_id: number | null
     songSelection: SongSelection | null
-    // Could use enum here but prefer frontend doesn't know about it
     prediction_category_id: number
 }
 
@@ -48,11 +46,12 @@ interface SubmitPredictionResponse {
 }
 
 export class APIPredictionsClient {
+    constructor(public authToken: string) {}
+
     submitPrediction = async (predictionParams: ConcertPredictionParams): Promise<SubmitPredictionResponse> => {
-        // TODO: see if you can get this into an enum?
-        // try and catch error handling? (Let model do this?)
+        // THIS HAS TO BE AUTHENTICATED!
         const url = `/concerts/${predictionParams.concert_id}/predictions`
-        return APIPost(url, predictionParams.concert_prediction)
+        return APIPost(url, predictionParams.concert_prediction, this.authToken)
     }
 
     getPredictionCategories = async (): Promise<PredictionCategory[]> => {

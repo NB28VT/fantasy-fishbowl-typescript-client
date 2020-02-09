@@ -1,17 +1,19 @@
-const JSONHeaders = {'Content-Type': 'application/json'}
+const JSONHeaders = {'Content-Type': 'application/json', 'Authorization': 'sdsds'}
 
 export const APIGet = async<T>(url: string): Promise<T> => {
     const args = {method: 'GET', headers: JSONHeaders}
     return await APIRequest<T>(new Request(url, args))
 }
 
-export const APIPost = async<T, U>(url: string, body: U): Promise<T> => {
-    const args = {method: 'POST', headers: JSONHeaders, body: JSON.stringify(body)}
+export const APIPost = async<T, U>(url: string, body: U, auth_token: string): Promise<T> => {
+    const AuthenticationHeaders = {'Content-Type': 'application/json', 'Authorization': auth_token}
+    const args = {method: 'POST', headers: AuthenticationHeaders, body: JSON.stringify(body)}
     return await APIRequest<T>(new Request(url, args))
 }
 
-export const APIPut = async<T, U>(url: string, body: U): Promise<T> => {
-    const args = {method: 'PUT', headers: JSONHeaders, body: JSON.stringify(body)}
+export const APIPut = async<T, U>(url: string, body: U, auth_token: string): Promise<T> => {
+    const AuthenticationHeaders = {'Content-Type': 'application/json', 'Authorization': auth_token}
+    const args = {method: 'PUT', headers: AuthenticationHeaders, body: JSON.stringify(body)}
     return await APIRequest<T>(new Request(url, args))
 }
 
