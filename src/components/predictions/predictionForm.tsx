@@ -17,7 +17,7 @@ interface SongDropdownProps {
 @observer
 class SongDropdown extends React.Component<SongDropdownProps> {
     /**
-     * Arg type is "SongSelection" but cast as "any" because React-Select whines
+     * Arg type is "SongSelection" but cast as "any" because React-Select whines;
      * prefer this to jumping through hoops with the typing for React-Select's benefit
      */
     handleChange = (selectedOption: any)   => {

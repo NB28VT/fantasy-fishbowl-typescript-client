@@ -68,7 +68,6 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
         // TODO: More elegant way to handle optional event
         const onClick = (): void => {
-            // yuck
             if (this.props.onClick && this.props.concert) {
                 this.props.onClick(this.props.concert.id)
             }

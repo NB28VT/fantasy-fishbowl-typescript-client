@@ -49,13 +49,11 @@ export class APIPredictionsClient {
     constructor(public authToken: string) {}
 
     submitPrediction = async (predictionParams: ConcertPredictionParams): Promise<SubmitPredictionResponse> => {
-        // THIS HAS TO BE AUTHENTICATED!
         const url = `/concerts/${predictionParams.concert_id}/predictions`
         return APIPost(url, predictionParams.concert_prediction, this.authToken)
     }
 
     getPredictionCategories = async (): Promise<PredictionCategory[]> => {
-        // TODO: try catch
         const response = await APIGet<PredictionCategoriesResponse>(PredictionsEndpoints.prediction_categories)
         return response.prediction_categories
     }
