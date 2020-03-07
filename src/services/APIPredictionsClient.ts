@@ -26,7 +26,7 @@ interface ConcertPrediction {
 }
 
 interface ConcertPredictionSubmission {
-    song_predictions_attributes: SongPredictionSubmission[] | []
+    song_predictions_attributes: SongPredictionSubmission[]
 }
 
 // Song formatted for React-Select dropdown
