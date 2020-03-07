@@ -75,9 +75,18 @@ export class ConcertPredictionModel {
                 closeOnClick: true,
             })
         } else {
-            // TODO: Display Submitted Prediction
+
+            try {
+                await this.predictionsClient.submitPrediction(this.getPredictionSubmission(), this.concertID)
+            } catch (e) {
+                toast.error('There was a problem submitting your subscription', {
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                })
+            }
+            // TODO: Display Submitted Prediction on successful submission
             // https://trello.com/c/UQI9aPNp/5-pages-load-and-edit-existing-prediction
-            await this.predictionsClient.submitPrediction(this.predictionSubmission())
+            alert('Prediction submitted')
         }
     }
 
@@ -85,12 +94,20 @@ export class ConcertPredictionModel {
         this.isCompletePrediction =  this.songPredictions.every(prediction => prediction.songSelection !== null)
     }
 
-    private predictionSubmission = (): ConcertPredictionParams => {
+    private getPredictionSubmission = (): ConcertPredictionParams => {
+        const songPredictionsAttributes = this.songPredictions.map((prediction) => {
+            if (!prediction.songSelection) {
+                throw Error(`Prediction submitted without songSelection ${prediction}`)
+            }
+
+            return {
+                song_id: prediction.songSelection.value,
+                prediction_category_id: prediction.predictionCategoryID,
+            }
+        })
         return {
             concert_id: this.concertID,
-            concert_prediction: {
-                song_predictions: this.songPredictions,
-            },
+            concert_prediction: {song_predictions_attributes: songPredictionsAttributes},
         }
     }
 }
