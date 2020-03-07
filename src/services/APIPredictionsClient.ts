@@ -17,12 +17,16 @@ export interface PredictionCategory {
 
 export interface ConcertPredictionParams {
     concert_id: number
-    concert_prediction: ConcertPrediction
+    concert_prediction: ConcertPredictionSubmission
 }
 
 interface ConcertPrediction {
     id?: number
     song_predictions: SongPrediction[]
+}
+
+interface ConcertPredictionSubmission {
+    song_predictions_attributes: SongPredictionSubmission[] | []
 }
 
 // Song formatted for React-Select dropdown
@@ -34,6 +38,12 @@ export interface SongSelection {
 export interface SongPrediction {
     songSelection: SongSelection | null
     predictionCategoryID: number
+}
+
+// SongPrediction serialized for the backend
+interface SongPredictionSubmission {
+    song_id: number
+    prediction_category_id: number
 }
 
 // For the update route
@@ -48,9 +58,10 @@ interface SubmitPredictionResponse {
 export class APIPredictionsClient {
     constructor(public authToken: string) {}
 
-    submitPrediction = async (predictionParams: ConcertPredictionParams): Promise<SubmitPredictionResponse> => {
-        const url = `/concerts/${predictionParams.concert_id}/predictions`
-        return APIPost(url, predictionParams.concert_prediction, this.authToken)
+    submitPrediction = async (
+        predictionParams: ConcertPredictionParams, concertID: number): Promise<SubmitPredictionResponse> => {
+        const url = `/concerts/${concertID}/predictions`
+        return APIPost(url, predictionParams, this.authToken)
     }
 
     getPredictionCategories = async (): Promise<PredictionCategory[]> => {
