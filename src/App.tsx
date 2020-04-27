@@ -4,6 +4,7 @@ import { AuthenticatedApp } from 'components/authenticatedAppMain'
 import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain'
 import React from 'react'
 import Cookies from 'universal-cookie'
+import { Style, StyleMap } from 'utils/styles'
 
 // Need default values for callback function, per official docs
 // https://reactjs.org/docs/context.html#updating-context-from-a-nested-component
@@ -70,7 +71,19 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
 }
 
 const App: React.FC = () => {
-  return <FantasyFishbowl/>
+  // Type style map
+  const globalStyle: Style = {
+    fontFamily: 'Oswald, sans-serif',
+    height: '100vh',
+
+    // overflow: 'hidden',
+  }
+
+  return (
+    <div style={globalStyle}>
+      <FantasyFishbowl/>
+    </div>
+  )
 }
 
 export default App

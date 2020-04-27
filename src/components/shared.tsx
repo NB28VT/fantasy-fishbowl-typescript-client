@@ -27,7 +27,8 @@ export function MenuHeader(props: {title: string}): JSX.Element {
         justifyContent: 'center',
         marginBottom: 20,
         marginTop: 20,
-        fontSize: 30,
+        // fontSize: 30,
+        fontSize: 50,
     }
 
     return <div style={style}>{props.title}</div>
@@ -43,22 +44,29 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
         const styles: StyleMap = {
             container:  {
                 display: 'flex',
+                // padding: '20px 0px 20px 0px',
                 padding: 10,
                 justifyContent: 'flex-start',
                 border: '1px solid',
                 borderRadius: '10px',
-                marginBottom: 10,
+                marginBottom: 15,
+            },
+            thumbnailContainer: {
+                alignItems: 'center',
             },
             thumbnail: {
                 height: '100%',
+                objectFit: 'cover',
                 width: 80,
             },
             showDate: {
-                fontSize: 25,
+                fontSize: 15,
+                // fontSize: 25,
                 marginBottom: 10,
             },
             showName: {
-                fontSize: 12,
+                fontSize: 25,
+                // fontSize: 12,
             },
             info: {
                 justifyContent: 'space-between',
@@ -79,10 +87,12 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
         return (
             <HorizontalStack style={styles.container} onClick={onClick}>
-                <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                <VerticalStack style={styles.thumbnailContainer}>
+                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                </VerticalStack>
                 <VerticalStack style={styles.info}>
-                    <div style={styles.showDate}>{this.props.concert.show_time}</div>
                     <div style={styles.showName}>{this.props.concert.venue_name}</div>
+                    <div style={styles.showDate}>{this.props.concert.show_time}</div>
                 </VerticalStack>
             </HorizontalStack>
         )

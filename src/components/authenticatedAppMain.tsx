@@ -66,7 +66,9 @@ class NavFooter extends React.Component<NavBarProps> {
                 bottom: 0,
                 height:  50,
                 width: '100%',
-                backgroundColor: '#636d66',
+                // backgroundColor: '#636d66',
+                // backgroundColor: 'rgba(203, 13, 250)',
+                backgroundColor: 'rgba(142, 0, 230)',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -104,7 +106,7 @@ class AppContent extends React.Component<{}> {
             },
             overlay: {
                 // TODO: this matches the global purple, get this into a constant somewhere
-                backgroundColor: 'rgba(203, 13, 250, 0.5)',
+                // backgroundColor: 'rgba(203, 13, 250, 0.5)',
             },
             content: {
                 overflow: 'auto',
