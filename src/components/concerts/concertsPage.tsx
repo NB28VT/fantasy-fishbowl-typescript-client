@@ -9,6 +9,7 @@ import { ConcertsModel } from './models'
 interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 
 export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageProps> {
+    // TODO: MOVE THIS ENDPOINT TO THE MODEL!
     abstract concertsURL: ConcertListEndpoint
     private concertsModel: ConcertsModel
 
