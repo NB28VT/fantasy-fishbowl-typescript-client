@@ -1,10 +1,13 @@
 
 import { observable } from 'mobx'
 import { RouteComponentProps } from 'react-router'
-import { APIConcertFetcher, Concert, ConcertListEndpoint } from 'services/APIConcertFetcher'
+import {
+    APIConcertFetcher, Concert, ConcertEndpoint, ConcertListEndpoint,
+} from 'services/APIConcertFetcher'
 
 export class ConcertPageModel {
     @observable concert: Concert | null
+    private concertURL: ConcertEndpoint = ConcertEndpoint.concert
 
     private concertFetcher: APIConcertFetcher
 
@@ -14,7 +17,8 @@ export class ConcertPageModel {
     }
 
     async loadConcert(concertID: number): Promise<void> {
-        this.concert = await this.concertFetcher.fetchConcert(concertID)
+        const url = this.concertURL + concertID
+        this.concert = await this.concertFetcher.fetchConcert(url)
     }
 }
 

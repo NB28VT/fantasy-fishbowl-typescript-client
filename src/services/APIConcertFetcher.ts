@@ -9,24 +9,34 @@ export enum ConcertListEndpoint {
     allConcerts = '/concerts',
 }
 
+export enum ConcertEndpoint {
+    concert = '/concerts/',
+}
+
 // TODO: FLESH OUT THE SET DATA
 export interface Concert {
     id: number
     show_time: string
     venue_name: string
+    venue_image_src: string
+}
+
+export interface ConcertsResponse {
+    concerts: Concert[]
 }
 
 export interface ConcertResponse {
-    concerts: Concert[]
+    concert: Concert
 }
 
 export class APIConcertFetcher {
     fetchConcerts = async (concertsURL: ConcertListEndpoint): Promise<Concert[]> => {
-        const response: ConcertResponse = await APIGet(concertsURL)
+        const response: ConcertsResponse = await APIGet(concertsURL)
         return response.concerts
     }
 
-    fetchConcert = (concertID: number): Concert => {
-        return mockConcertResponse
+    fetchConcert = async (concertURL: string): Promise<Concert> => {
+        const response: ConcertResponse = await APIGet(concertURL)
+        return response.concert
     }
 }
