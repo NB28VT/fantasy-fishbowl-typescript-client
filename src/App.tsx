@@ -74,9 +74,6 @@ const App: React.FC = () => {
   // Type style map
   const globalStyle: Style = {
     fontFamily: 'Oswald, sans-serif',
-    height: '100vh',
-
-    // overflow: 'hidden',
   }
 
   return (
