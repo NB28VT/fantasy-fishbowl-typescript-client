@@ -100,9 +100,8 @@ class AppContent extends React.Component<{}> {
         const styles: StyleMap = {
             container: {
                 background: `url(${backgroundImage})`,
-                backgroundSize: 'cover',
-                position: 'relative',
                 color: '#F5ED13',
+                height: '100vh',
             },
             content: {
                 overflow: 'auto',

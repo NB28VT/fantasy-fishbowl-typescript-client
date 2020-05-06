@@ -102,6 +102,7 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
 
     render(): JSX.Element | null {
         // TODO: this can be slow, fill in a loading indicator
+        // https://trello.com/c/IiDDdi9U/29-loading-indicator
         if (!this.model.predictionCategories) {
             return null
         }
