@@ -117,8 +117,12 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
             return <ButtonWithIcon text={buttonText} icon={icon}/>
         })
 
+        const style: Style = {
+            marginTop: 15,
+        }
+
         return (
-            <VerticalStack>
+            <VerticalStack style={style}>
                 <div>{predictionButtons}</div>
                 <SubmitButton onClick={this.model.submitPrediction}/>
             </VerticalStack>
