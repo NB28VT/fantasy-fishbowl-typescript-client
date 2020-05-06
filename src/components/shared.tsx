@@ -6,26 +6,42 @@ import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { NavIcon } from './authenticatedAppMain'
+interface NavBackHeaderProps extends RouteComponentProps<any> {pageTitle: string}
 
-interface BackButtonProps extends RouteComponentProps<any> {title: string}
-
-// TODO: REDO BACK BUTTON BAR AS ITS OWN COMPONENT, NAV ICON NEEDS TO WORK FOR THE BOTTOM BAR
-function BackButton(props: BackButtonProps): JSX.Element {
+function NavBackHeader(props: NavBackHeaderProps): JSX.Element {
     const goBack = (): void => {
         props.history.goBack()
     }
 
-    return <NavIcon icon={faAngleLeft} title={props.title} onClick={goBack}/>
+    const styles: StyleMap = {
+        container: {
+            justifyContent: 'flex-start',
+            height: '10vh',
+            fontSize: 30,
+        },
+        buttonContainer: {
+            justifyContent: 'center',
+        },
+    }
+
+    return (
+        <HorizontalStack style={styles.container}>
+            <VerticalStack style={styles.buttonContainer} onClick={goBack}>
+                <FontAwesomeIcon icon={faAngleLeft}/>
+            </VerticalStack>
+            <MenuHeader title={props.pageTitle}/>
+        </HorizontalStack>
+    )
 }
 
-export const BackButtonWithRouter = withRouter(BackButton)
+export const NavBackHeaderWithRouter = withRouter(NavBackHeader)
 
 export function MenuHeader(props: {title: string}): JSX.Element {
     const style: Style = {
         display: 'flex',
         flexGrow: 2,
         justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 20,
         marginTop: 20,
         fontSize: 30,

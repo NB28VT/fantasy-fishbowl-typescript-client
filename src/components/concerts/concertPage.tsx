@@ -1,11 +1,11 @@
 import { AuthContext } from 'App'
 import { PredictionsForm } from 'components/predictions/predictionForm'
-import { BackButtonWithRouter, ConcertThumbnail, MenuHeader } from 'components/shared'
+import { ConcertThumbnail, NavBackHeaderWithRouter } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ToastContainer } from 'react-toastify'
-import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
+import { Style, VerticalStack } from 'utils/styles'
 
 import { ConcertPageModel } from './models'
 
@@ -52,29 +52,14 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     }
 
     render(): JSX.Element | null {
-
-        const topBarStyle: Style = {
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            height: '10vh',
-        }
-
         if (!this.model.concert) {
             return null
         }
 
         return (
             <VerticalStack>
-                <HorizontalStack style={topBarStyle}>
-                    <VerticalStack>
-                        <BackButtonWithRouter title="Back To Shows"/>
-                    </VerticalStack>
-                    <MenuHeader title="My Setlist Prediction"/>
-                </HorizontalStack>
-
-                <VerticalStack>
-                    <ConcertThumbnail concert={this.model.concert}/>
-                </VerticalStack>
+                <NavBackHeaderWithRouter pageTitle="My Setlist Prediction"/>
+                <ConcertThumbnail concert={this.model.concert}/>
                 <AuthContext.Consumer>
                     {({token}) => (
                         <PredictionsForm concertID={this.concertID} token={token}/>
