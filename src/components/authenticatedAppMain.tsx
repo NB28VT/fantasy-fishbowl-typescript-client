@@ -7,7 +7,7 @@ import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from 'r
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import {
-    faCalendarAlt, faListOl, faSignOutAlt, IconDefinition,
+    faCalendarAlt, faHome, faListOl, faSignOutAlt, IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -16,12 +16,10 @@ import { DashboardPage } from './dashboardPage'
 
 interface NavIconProps {
     icon: IconDefinition
-    title: string
     onClick?(): void
 }
 
-// TODO: BRING title SIZE BACK
-export function NavIcon(props: NavIconProps): JSX.Element {
+function NavIcon(props: NavIconProps): JSX.Element {
     const style: Style = {
         alignItems: 'center',
         fontSize: 15,
@@ -29,13 +27,12 @@ export function NavIcon(props: NavIconProps): JSX.Element {
     }
 
     const iconStyle = {
-        fontSize: 30,
+        fontSize: 35,
     }
 
     return (
         <VerticalStack style={style} onClick={props.onClick}>
             <FontAwesomeIcon icon={props.icon} style={iconStyle}/>
-            {/* {props.title} */}
         </VerticalStack>
     )
 }
@@ -44,7 +41,7 @@ function LogoutButton(): JSX.Element {
     return (
         <AuthContext.Consumer>
             {({onLogout}) => (
-                <NavIcon icon={faSignOutAlt} title="Log Out" onClick={onLogout}/>
+                <NavIcon icon={faSignOutAlt} onClick={onLogout}/>
             )}
         </AuthContext.Consumer>
     )
@@ -65,9 +62,9 @@ class NavFooter extends React.Component<NavBarProps> {
                 position: 'fixed',
                 left: 0,
                 bottom: 0,
-                height:  50,
+                height:  60,
                 width: '100%',
-                backgroundColor: 'rgba(142, 0, 230)',
+                backgroundColor: '#63067A',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -85,8 +82,9 @@ class NavFooter extends React.Component<NavBarProps> {
 
         return (
             <HorizontalStack style={styles.container}>
-                <NavIcon icon={faListOl} title="Rankings" onClick={goToLeaderboard}/>
-                <NavIcon icon={faCalendarAlt} title="Upcoming Shows" onClick={goToUpcomingConcerts}/>
+                <NavIcon icon={faHome} onClick={goToLeaderboard}/>
+                <NavIcon icon={faListOl} onClick={goToLeaderboard}/>
+                <NavIcon icon={faCalendarAlt} onClick={goToUpcomingConcerts}/>
                 <LogoutButton/>
             </HorizontalStack>
         )
@@ -101,7 +99,7 @@ class AppContent extends React.Component<{}> {
             container: {
                 background: `url(${backgroundImage})`,
                 color: '#F5ED13',
-                height: '100vh',
+                height: '100%',
             },
             content: {
                 overflow: 'auto',

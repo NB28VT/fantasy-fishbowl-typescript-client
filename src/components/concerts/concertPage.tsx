@@ -13,6 +13,7 @@ interface SubmitButtonProps {
     onClick(): void
 }
 
+// TODO: remove submit button to shared
 export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     const style: Style = {
         padding: '10px 30px',

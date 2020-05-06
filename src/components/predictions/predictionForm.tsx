@@ -61,7 +61,7 @@ interface SubmitButtonProps {
 export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     const style: Style = {
         padding: '10px 30px',
-        backgroundColor: 'rgba(203, 13, 250, 0.7)',
+        backgroundColor: '#A10AC7',
         borderRadius: '5px',
         alignItems: 'center',
         fontSize: 20,
