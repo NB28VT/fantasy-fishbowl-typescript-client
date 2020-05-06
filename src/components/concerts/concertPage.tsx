@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ToastContainer } from 'react-toastify'
-import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { ConcertPageModel } from './models'
 
@@ -52,9 +52,11 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     }
 
     render(): JSX.Element | null {
-        const headerStyle: Style = {
+
+        const topBarStyle: Style = {
             justifyContent: 'flex-start',
             alignItems: 'center',
+            height: '10vh',
         }
 
         if (!this.model.concert) {
@@ -63,11 +65,16 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
 
         return (
             <VerticalStack>
-                <HorizontalStack style={headerStyle}>
-                    <BackButtonWithRouter title="Back To Shows"/>
-                    <MenuHeader title="My Prediction"/>
+                <HorizontalStack style={topBarStyle}>
+                    <VerticalStack>
+                        <BackButtonWithRouter title="Back To Shows"/>
+                    </VerticalStack>
+                    <MenuHeader title="My Setlist Prediction"/>
                 </HorizontalStack>
-                <ConcertThumbnail concert={this.model.concert}/>
+
+                <VerticalStack>
+                    <ConcertThumbnail concert={this.model.concert}/>
+                </VerticalStack>
                 <AuthContext.Consumer>
                     {({token}) => (
                         <PredictionsForm concertID={this.concertID} token={token}/>

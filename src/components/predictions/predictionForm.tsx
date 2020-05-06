@@ -1,9 +1,12 @@
 
+import { ButtonWithIcon } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import Select from 'react-select'
 import { PredictionCategory, SongSelection } from 'services/APIPredictionsClient'
-import { Style, VerticalStack } from 'utils/styles'
+import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
+
+import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { ConcertPredictionModel } from './models'
 
@@ -25,19 +28,22 @@ class SongDropdown extends React.Component<SongDropdownProps> {
     }
 
     render(): JSX.Element {
-        const style: Style = {
-            color: 'black',
-            marginBottom: 10,
-        }
-
-        const labelStyle: Style = {
-            marginBottom: 5,
-            color: '#F5ED13',
+        const styles: StyleMap = {
+            container: {
+                color: 'black',
+                marginBottom: 20,
+            },
+            label: {
+                marginBottom: 5,
+                color: '#F5ED13',
+            },
         }
 
         return (
-            <VerticalStack style={style}>
-                {this.props.predictionCategory.name}
+            <VerticalStack style={styles.container}>
+                <HorizontalStack style={styles.label}>
+                    {this.props.predictionCategory.name}
+                </HorizontalStack>
                 <Select
                     value={this.props.selected}
                     onChange={this.handleChange}
@@ -56,9 +62,9 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     const style: Style = {
         padding: '10px 30px',
         backgroundColor: 'rgba(203, 13, 250, 0.7)',
-        borderRadius: '10px',
+        borderRadius: '5px',
         alignItems: 'center',
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: 600,
 
     }
@@ -66,16 +72,24 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
 
-interface PredictionFormProps {
+// todo: Incorporate this in the popup
+{/* <SongDropdown
+    selected={selectedSong}
+    songSelections={this.model.songSelections}
+    predictionCategory={predictionCategory}
+    onSelect={this.model.onSelect}
+/> */}
+
+interface PredictionsFormProps {
     concertID: number
     token: string
 }
 
 @observer
-export class PredictionsForm extends React.Component<PredictionFormProps> {
+export class PredictionsForm extends React.Component<PredictionsFormProps> {
     model: ConcertPredictionModel
 
-    constructor(props: PredictionFormProps) {
+    constructor(props: PredictionsFormProps) {
         super(props)
 
         this.model = new ConcertPredictionModel(props.concertID, this.props.token)
@@ -87,26 +101,24 @@ export class PredictionsForm extends React.Component<PredictionFormProps> {
     }
 
     render(): JSX.Element | null {
+        // TODO: this can be slow, fill in a loading indicator
         if (!this.model.predictionCategories) {
             return null
         }
 
-        const songDropdowns = this.model.predictionCategories.map((predictionCategory) => {
+        const predictionButtons = this.model.predictionCategories.map((predictionCategory) => {
             const selectedSong = this.model.getSongSelectionForCategory(predictionCategory)
 
-            return (
-                <SongDropdown
-                    selected={selectedSong}
-                    songSelections={this.model.songSelections}
-                    predictionCategory={predictionCategory}
-                    onSelect={this.model.onSelect}
-                />
-            )
+            const songTitle = selectedSong ? selectedSong.label : 'N/A'
+            const buttonText = predictionCategory.name + ': ' + songTitle
+            const icon = selectedSong ? faEdit : faPlus
+
+            return <ButtonWithIcon text={buttonText} icon={icon}/>
         })
 
         return (
             <VerticalStack>
-                <div>{songDropdowns}</div>
+                <div>{predictionButtons}</div>
                 <SubmitButton onClick={this.model.submitPrediction}/>
             </VerticalStack>
         )

@@ -1,21 +1,22 @@
-import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { NavIcon } from './authenticatedAppMain'
 
 interface BackButtonProps extends RouteComponentProps<any> {title: string}
 
+// TODO: REDO BACK BUTTON BAR AS ITS OWN COMPONENT, NAV ICON NEEDS TO WORK FOR THE BOTTOM BAR
 function BackButton(props: BackButtonProps): JSX.Element {
     const goBack = (): void => {
         props.history.goBack()
     }
 
-    return <NavIcon icon={faAngleDoubleLeft} title={props.title} onClick={goBack}/>
+    return <NavIcon icon={faAngleLeft} title={props.title} onClick={goBack}/>
 }
 
 export const BackButtonWithRouter = withRouter(BackButton)
@@ -27,8 +28,7 @@ export function MenuHeader(props: {title: string}): JSX.Element {
         justifyContent: 'center',
         marginBottom: 20,
         marginTop: 20,
-        // fontSize: 30,
-        fontSize: 50,
+        fontSize: 30,
     }
 
     return <div style={style}>{props.title}</div>
@@ -44,7 +44,6 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
         const styles: StyleMap = {
             container:  {
                 display: 'flex',
-                // padding: '20px 0px 20px 0px',
                 padding: 10,
                 justifyContent: 'flex-start',
                 border: '1px solid',
@@ -61,12 +60,10 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
             },
             showDate: {
                 fontSize: 15,
-                // fontSize: 25,
                 marginBottom: 10,
             },
             showName: {
                 fontSize: 25,
-                // fontSize: 12,
             },
             info: {
                 justifyContent: 'space-between',
@@ -97,4 +94,30 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
             </HorizontalStack>
         )
     }
+}
+
+interface ButtonWithIconProps {
+    text: string
+    icon: IconDefinition
+}
+
+export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
+    const style: Style = {
+        height: '8vh',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'rgb(203,13,250, 0.2)',
+        borderRadius: '5px',
+        border: '1px solid #CB0DFA',
+        padding: '5vw',
+        marginBottom: '10px',
+        fontSize: 15,
+    }
+
+    return (
+        <HorizontalStack style={style}>
+            {props.text}
+            <FontAwesomeIcon icon={props.icon}/>
+        </HorizontalStack>
+    )
 }

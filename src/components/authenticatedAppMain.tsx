@@ -20,10 +20,11 @@ interface NavIconProps {
     onClick?(): void
 }
 
+// TODO: BRING title SIZE BACK
 export function NavIcon(props: NavIconProps): JSX.Element {
     const style: Style = {
         alignItems: 'center',
-        fontSize: 10,
+        fontSize: 15,
         flexGrow: 1,
     }
 
@@ -34,7 +35,7 @@ export function NavIcon(props: NavIconProps): JSX.Element {
     return (
         <VerticalStack style={style} onClick={props.onClick}>
             <FontAwesomeIcon icon={props.icon} style={iconStyle}/>
-            {props.title}
+            {/* {props.title} */}
         </VerticalStack>
     )
 }
@@ -66,8 +67,6 @@ class NavFooter extends React.Component<NavBarProps> {
                 bottom: 0,
                 height:  50,
                 width: '100%',
-                // backgroundColor: '#636d66',
-                // backgroundColor: 'rgba(203, 13, 250)',
                 backgroundColor: 'rgba(142, 0, 230)',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -101,12 +100,9 @@ class AppContent extends React.Component<{}> {
         const styles: StyleMap = {
             container: {
                 background: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
                 position: 'relative',
                 color: '#F5ED13',
-            },
-            overlay: {
-                // TODO: this matches the global purple, get this into a constant somewhere
-                // backgroundColor: 'rgba(203, 13, 250, 0.5)',
             },
             content: {
                 overflow: 'auto',
