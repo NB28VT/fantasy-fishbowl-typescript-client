@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
+import { Style, StyleMap } from 'utils/styles'
 
 import { ConcertListEndpoint } from '../../services/APIConcertFetcher'
 import { ConcertThumbnail, MenuHeader } from '../shared'
@@ -10,6 +11,7 @@ interface BaseConcertsPageProps extends RouteComponentProps<any> {}
 
 export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageProps> {
     abstract concertsURL: ConcertListEndpoint
+    menuTitle: string = 'Shows'
     private concertsModel: ConcertsModel
 
     constructor(props: BaseConcertsPageProps) {
@@ -50,7 +52,7 @@ export abstract class BaseConcertsPage extends React.Component<BaseConcertsPageP
 
         return (
             <div>
-                <MenuHeader title="Concerts"/>
+                <MenuHeader title={this.menuTitle}/>
                 {this.maybeConcertButtons()}
             </div>
         )
@@ -65,4 +67,5 @@ export class AllConcertsPage extends BaseConcertsPage {
 @observer
 export class UpcomingConcertsPage extends BaseConcertsPage {
     concertsURL: ConcertListEndpoint = ConcertListEndpoint.upcomingConcerts
+    menuTitle: string = 'Upcoming Shows'
 }

@@ -1,30 +1,47 @@
-import thumbnailPlaceholder from 'images/alpharetta-venue-image.jpg'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { NavIcon } from './authenticatedAppMain'
+interface NavBackHeaderProps extends RouteComponentProps<any> {pageTitle: string}
 
-interface BackButtonProps extends RouteComponentProps<any> {title: string}
-
-function BackButton(props: BackButtonProps): JSX.Element {
+function NavBackHeader(props: NavBackHeaderProps): JSX.Element {
     const goBack = (): void => {
         props.history.goBack()
     }
 
-    return <NavIcon icon={faAngleDoubleLeft} title={props.title} onClick={goBack}/>
+    const styles: StyleMap = {
+        container: {
+            justifyContent: 'flex-start',
+            height: '10vh',
+            fontSize: 30,
+        },
+        buttonContainer: {
+            justifyContent: 'center',
+        },
+    }
+
+    return (
+        <HorizontalStack style={styles.container}>
+            <VerticalStack style={styles.buttonContainer} onClick={goBack}>
+                <FontAwesomeIcon icon={faAngleLeft}/>
+            </VerticalStack>
+            <MenuHeader title={props.pageTitle}/>
+        </HorizontalStack>
+    )
 }
 
-export const BackButtonWithRouter = withRouter(BackButton)
+export const NavBackHeaderWithRouter = withRouter(NavBackHeader)
 
 export function MenuHeader(props: {title: string}): JSX.Element {
     const style: Style = {
         display: 'flex',
         flexGrow: 2,
         justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 20,
         marginTop: 20,
         fontSize: 30,
@@ -47,18 +64,22 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
                 justifyContent: 'flex-start',
                 border: '1px solid',
                 borderRadius: '10px',
-                marginBottom: 10,
+                marginBottom: 15,
+            },
+            thumbnailContainer: {
+                alignItems: 'center',
             },
             thumbnail: {
                 height: '100%',
+                objectFit: 'cover',
                 width: 80,
             },
             showDate: {
-                fontSize: 25,
+                fontSize: 15,
                 marginBottom: 10,
             },
             showName: {
-                fontSize: 12,
+                fontSize: 25,
             },
             info: {
                 justifyContent: 'space-between',
@@ -79,12 +100,40 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
         return (
             <HorizontalStack style={styles.container} onClick={onClick}>
-                <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                <VerticalStack style={styles.thumbnailContainer}>
+                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                </VerticalStack>
                 <VerticalStack style={styles.info}>
-                    <div style={styles.showDate}>{this.props.concert.show_time}</div>
                     <div style={styles.showName}>{this.props.concert.venue_name}</div>
+                    <div style={styles.showDate}>{this.props.concert.show_time}</div>
                 </VerticalStack>
             </HorizontalStack>
         )
     }
+}
+
+interface ButtonWithIconProps {
+    text: string
+    icon: IconDefinition
+}
+
+export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
+    const style: Style = {
+        height: '8vh',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'rgb(203,13,250, 0.2)',
+        borderRadius: '5px',
+        border: '1px solid #CB0DFA',
+        padding: '5vw',
+        marginBottom: '10px',
+        fontSize: 15,
+    }
+
+    return (
+        <HorizontalStack style={style}>
+            {props.text}
+            <FontAwesomeIcon icon={props.icon}/>
+        </HorizontalStack>
+    )
 }

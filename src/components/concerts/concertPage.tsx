@@ -1,11 +1,11 @@
 import { AuthContext } from 'App'
 import { PredictionsForm } from 'components/predictions/predictionForm'
-import { BackButtonWithRouter, ConcertThumbnail, MenuHeader } from 'components/shared'
+import { ConcertThumbnail, NavBackHeaderWithRouter } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ToastContainer } from 'react-toastify'
-import { HorizontalStack, Style, VerticalStack } from 'utils/styles'
+import { Style, VerticalStack } from 'utils/styles'
 
 import { ConcertPageModel } from './models'
 
@@ -13,6 +13,7 @@ interface SubmitButtonProps {
     onClick(): void
 }
 
+// TODO: remove submit button to shared
 export function SubmitButton(props: SubmitButtonProps): JSX.Element {
     const style: Style = {
         padding: '10px 30px',
@@ -52,21 +53,13 @@ export class ConcertPage extends React.Component<ConcertPageProps> {
     }
 
     render(): JSX.Element | null {
-        const headerStyle: Style = {
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-        }
-
         if (!this.model.concert) {
             return null
         }
 
         return (
             <VerticalStack>
-                <HorizontalStack style={headerStyle}>
-                    <BackButtonWithRouter title="Back To Shows"/>
-                    <MenuHeader title="My Prediction"/>
-                </HorizontalStack>
+                <NavBackHeaderWithRouter pageTitle="My Setlist Prediction"/>
                 <ConcertThumbnail concert={this.model.concert}/>
                 <AuthContext.Consumer>
                     {({token}) => (
