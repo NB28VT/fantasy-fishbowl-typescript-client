@@ -71,7 +71,6 @@ class FantasyFishbowl extends React.Component<{}, FantasyFishbowlState> {
 }
 
 const App: React.FC = () => {
-  // Type style map
   const globalStyle: Style = {
     fontFamily: 'Oswald, sans-serif',
   }
