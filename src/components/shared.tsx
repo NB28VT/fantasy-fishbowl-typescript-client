@@ -115,6 +115,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 interface ButtonWithIconProps {
     text: string
     icon: IconDefinition
+    onClick?(...args: any): void
 }
 
 export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
@@ -126,12 +127,13 @@ export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
         borderRadius: '5px',
         border: '1px solid #CB0DFA',
         padding: '5vw',
-        marginBottom: '10px',
+        // marginBottom: '5px',
+        marginBottom: '8px',
         fontSize: 15,
     }
 
     return (
-        <HorizontalStack style={style}>
+        <HorizontalStack style={style} onClick={props.onClick}>
             {props.text}
             <FontAwesomeIcon icon={props.icon}/>
         </HorizontalStack>
