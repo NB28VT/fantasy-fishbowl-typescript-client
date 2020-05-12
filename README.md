@@ -9,9 +9,9 @@ This repo comprises the TypeScript/React.js frontend for the app; you can view t
 Fantasy Fishbowl is an ongoing personal project built by [Nathan Burgess](https://nb28vt.github.io/).
 
 ## Current Technical Features/Toolchain
-* [Mobx]("https://mobx.js.org/README.html/") for synchronizing application state
-* [React Router]("https://reacttraining.com/react-router/") for page navigation
-* [React Context]("https://reactjs.org/docs/context.html") for wrapping authenticated and unauthenticated versions of the app
+* [Mobx](https://mobx.js.org/README.html/) for synchronizing application state
+* [React Router](https://reacttraining.com/react-router/) for page navigation
+* [React Context](https://reactjs.org/docs/context.html) for wrapping authenticated and unauthenticated versions of the app
 
 <p float="left">
 <img src="readme_assets/ffupcoming.png" width="32%;">
