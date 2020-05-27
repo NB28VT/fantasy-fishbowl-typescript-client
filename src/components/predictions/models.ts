@@ -56,7 +56,7 @@ export class ConcertPredictionModel {
         return predictionForCategory.songSelection
     }
 
-    onSelect = (songSelection: SongSelection, predictionCategoryID: number): void => {
+    onSelect = (songSelection: SongSelection | null, predictionCategoryID: number): void => {
         const predictionForCategory = this.songPredictions.find((prediction: SongPrediction) => (
             prediction.predictionCategoryID === predictionCategoryID)
         )
