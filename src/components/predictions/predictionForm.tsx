@@ -195,6 +195,7 @@ class SongSelectionModal extends React.Component<SongSelectionModalProps, SongSe
 
     onSaveSelection = () => {
         this.props.model.onSelect(this.state.selectedSong, this.props.category.id)
+        this.onHideModal()
     }
 
 
@@ -218,10 +219,10 @@ class SongSelectionModal extends React.Component<SongSelectionModalProps, SongSe
     }
 
     render(): JSX.Element {
-        // const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
-        const songTitle = this.state.selectedSong ? this.state.selectedSong.label : 'N/A'
+        const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
+        const songTitle = selectedSong ? selectedSong.label : 'N/A'
         const buttonText = this.props.category.name + ': ' + songTitle
-        const icon = this.state.selectedSong ? faEdit : faPlus
+        const icon = selectedSong ? faEdit : faPlus
 
         // Eliminate modal to see if this solves the react-select autofocus issues
         // No autoFocus=true doesn't work
@@ -285,7 +286,7 @@ class SongSelectionModal extends React.Component<SongSelectionModalProps, SongSe
                         {songDropdown}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={this.onHideModal}>
+                        <Button variant="primary" onClick={this.onSaveSelection}>
                             Save
                         </Button>
                         <Button variant="secondary" onClick={this.onHideModal}>
