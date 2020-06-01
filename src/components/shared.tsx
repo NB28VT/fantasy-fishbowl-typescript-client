@@ -1,10 +1,39 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+// Flash true?
+interface ButtonStandardProps {
+    children: ReactChild
+    fontSize: number
+    inverse?: boolean
+    disabled?: boolean
+    // May need to type this differently for more reusably
+    onClick(): void
+}
+
+export function ButtonStandard(props: ButtonStandardProps): JSX.Element {
+    const style = {
+        padding: '10px 30px',
+        backgroundColor: '#A10AC7',
+        color: 'inherit',
+        borderRadius: '5px',
+        alignItems: 'center',
+        fontSize: props.fontSize,
+        fontWeight: 600,
+        opacity: props.disabled ? 0.5 : 1,
+    }
+
+    return <button style={style} onClick={props.onClick} disabled={props.disabled}>{props.children}</button>
+
+    // return <VerticalStack style={style} onClick={props.onClick}>{props.children}</VerticalStack>
+}
+
+// Button inverse that overwrites default styling
 
 interface NavBackHeaderProps extends RouteComponentProps<any> {pageTitle: string}
 

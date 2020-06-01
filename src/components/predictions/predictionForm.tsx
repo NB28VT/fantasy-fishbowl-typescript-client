@@ -1,6 +1,6 @@
 import 'App.css'
 
-import { ButtonWithIcon } from 'components/shared'
+import { ButtonStandard, ButtonWithIcon } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
@@ -13,6 +13,8 @@ import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { ConcertPredictionModel } from './models'
 
 // TODO: Make Submit Button shared component https://trello.com/c/Lx6Phxxp/57-move-submit-button-component-to-shared
+// TODO: ACTUALLY YOU CAN REUSE THE STANDARD BUTTON COMPONENT
+// ADD TO LOGIN BUTTON AS WELL
 interface SubmitButtonProps {
     onClick(): void
 }
@@ -53,11 +55,18 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
     }
 
     componentDidMount = () => {
+        this.setSelectedSong()
+    }
+
+    setSelectedSong = () => {
         const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
         this.setState({selectedSong})
     }
 
     onShowModal = () => {
+        // Calls setState twice, not sure if that's an issue
+        // We need to reset the selected song in case the modal was closed with a different song
+        this.setSelectedSong()
         this.setState({showModal: true})
     }
 
@@ -75,18 +84,30 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
         this.onHideModal()
     }
 
+    onCancelSelection = () => {
+        this.onHideModal()
+        this.setState({selectedSong: null})
+    }
+
     render(): JSX.Element {
         const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
         const songTitle = selectedSong ? selectedSong.label : 'N/A'
         const buttonText = this.props.category.name + ': ' + songTitle
         const icon = selectedSong ? faEdit : faPlus
 
-        const dropdownStyle: Style = {
-            color: 'black',
-            marginBottom: 20,
+        const styles: StyleMap = {
+            dropdown: {
+                color: 'black',
+                marginBottom: 20,
+            },
+            footer: {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+            }
         }
 
-        const songDropdown = <VerticalStack style={dropdownStyle}>
+        const songDropdown = <VerticalStack style={styles.dropdown}>
             <Select
                 value={this.state.selectedSong}
                 onChange={this.onChangeSelection}
@@ -96,9 +117,13 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
             />
         </VerticalStack>
 
-        const modalFooter = <Modal.Footer>
-            <Button variant="primary" onClick={this.onSaveSelection}>Save</Button>
-            <Button variant="secondary" onClick={this.onHideModal}>Cancel</Button>
+        const isSubmitDisabled = this.state.selectedSong ? false : true
+
+        const modalFooter = <Modal.Footer style={styles.footer}>
+            <ButtonStandard onClick={this.onSaveSelection} fontSize={20} disabled={isSubmitDisabled}>
+                Save
+            </ButtonStandard>
+            <ButtonStandard onClick={this.onCancelSelection} fontSize={20}>Cancel</ButtonStandard>
         </Modal.Footer>
 
         // NOTE: easier to use CSS classes than inline styles for React-Bootstrap modals
