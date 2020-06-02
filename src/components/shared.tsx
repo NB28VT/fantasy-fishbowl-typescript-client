@@ -1,6 +1,7 @@
 import React, { ReactChild } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
+import { transparentPurple, transparentYellow } from 'utils/colors'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
@@ -167,4 +168,65 @@ export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
             <FontAwesomeIcon icon={props.icon}/>
         </HorizontalStack>
     )
+}
+
+// NOTE THIS WAS REFACTORED TO FORCE AN ON CLICK FUNCTION
+interface FlashButtonWithIconProps {
+    text: string
+    icon: IconDefinition
+    // onClick?(...args: any): void
+    onClick(...args: any): void
+}
+
+interface FlashButtonWithIconState {
+    backgroundColor: string
+}
+
+// CLEAN THIS UP
+
+export class FlashButtonWithIcon extends React.Component<FlashButtonWithIconProps, FlashButtonWithIconState> {
+    constructor(props: FlashButtonWithIconProps) {
+        super(props)
+
+        // TODO: I think it's time we move these colors to some type of global constant (or importable module)
+        this.state = {
+            backgroundColor: transparentPurple,
+        }
+    }
+
+    onClick = () => {
+        this.props.onClick()
+        this.setState({backgroundColor: transparentYellow})
+        setTimeout(this.afterButtonFlash, 100)
+    }
+
+    afterButtonFlash = () => {
+        this.setState({backgroundColor: transparentPurple})
+    }
+
+    // componentDidMount = ( ) => {
+    //     this.setState({backgroundColor: })
+    // }
+
+    render(): JSX.Element {
+        const style: Style = {
+            height: '8vh',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: this.state.backgroundColor,
+            borderRadius: '5px',
+            border: '1px solid #CB0DFA',
+            padding: '5vw',
+            // marginBottom: '5px',
+            marginBottom: '8px',
+            fontSize: 15,
+        }
+
+        return (
+            <HorizontalStack style={style} onClick={this.onClick}>
+                {this.props.text}
+                <FontAwesomeIcon icon={this.props.icon}/>
+            </HorizontalStack>
+        )
+    }
 }

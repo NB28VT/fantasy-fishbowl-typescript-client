@@ -1,6 +1,6 @@
 import 'App.css'
 
-import { ButtonStandard, ButtonWithIcon } from 'components/shared'
+import { ButtonStandard, ButtonWithIcon, FlashButtonWithIcon } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
@@ -32,6 +32,28 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
 
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
+
+// TODO: BAKE THIS INTO REGULAR REUSABLE SUBMIT BUTTON; SET FLASH ON TO FALSE BY DEFAULT AND SET AS OPTIONAL PROP
+// interface FlashSubmitButtonProps {
+//     onClick(): void
+
+// }
+
+// export function FlashSubmitButton(props: FlashSubmitButtonProps): JSX.Element {
+//     const style: Style = {
+//         padding: '10px 30px',
+//         backgroundColor: '#A10AC7',
+//         borderRadius: '5px',
+//         alignItems: 'center',
+//         fontSize: 20,
+//         fontWeight: 600,
+
+//     }
+
+//     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
+// }
+
+
 
 interface SongPredictionButtonProps {
     model: ConcertPredictionModel
@@ -138,7 +160,10 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
                     </Modal.Body>
                         {modalFooter}
                 </Modal>
-                <ButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/>
+                {/* <ButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/> */}
+                <FlashButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/>
+                {/* FlashSubmitButton */}
+                {/* <ButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/> */}
             </div>
         )
     }
