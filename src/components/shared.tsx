@@ -4,10 +4,9 @@ import { Concert } from 'services/APIConcertFetcher'
 import { transparentPurple, transparentYellow } from 'utils/colors'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
-import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-// Flash true?
 interface ButtonStandardProps {
     children: ReactChild
     fontSize: number
@@ -30,11 +29,7 @@ export function ButtonStandard(props: ButtonStandardProps): JSX.Element {
     }
 
     return <button style={style} onClick={props.onClick} disabled={props.disabled}>{props.children}</button>
-
-    // return <VerticalStack style={style} onClick={props.onClick}>{props.children}</VerticalStack>
 }
-
-// Button inverse that overwrites default styling
 
 interface NavBackHeaderProps extends RouteComponentProps<any> {pageTitle: string}
 
@@ -142,71 +137,35 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
     }
 }
 
-interface ButtonWithIconProps {
-    text: string
-    icon: IconDefinition
-    onClick?(...args: any): void
-}
-
-export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
-    const style: Style = {
-        height: '8vh',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: 'rgb(203,13,250, 0.2)',
-        borderRadius: '5px',
-        border: '1px solid #CB0DFA',
-        padding: '5vw',
-        // marginBottom: '5px',
-        marginBottom: '8px',
-        fontSize: 15,
-    }
-
-    return (
-        <HorizontalStack style={style} onClick={props.onClick}>
-            {props.text}
-            <FontAwesomeIcon icon={props.icon}/>
-        </HorizontalStack>
-    )
-}
-
-// NOTE THIS WAS REFACTORED TO FORCE AN ON CLICK FUNCTION
-interface FlashButtonWithIconProps {
-    text: string
-    icon: IconDefinition
-    // onClick?(...args: any): void
+interface BorderedButtonProps {
+    children: ReactChild[]
+    flashOnClick?: boolean
     onClick(...args: any): void
 }
 
-interface FlashButtonWithIconState {
+interface BorderedButtonState {
     backgroundColor: string
 }
 
-// CLEAN THIS UP
-
-export class FlashButtonWithIcon extends React.Component<FlashButtonWithIconProps, FlashButtonWithIconState> {
-    constructor(props: FlashButtonWithIconProps) {
+export class BorderedButton extends React.Component<BorderedButtonProps, BorderedButtonState> {
+    constructor(props: BorderedButtonProps) {
         super(props)
 
-        // TODO: I think it's time we move these colors to some type of global constant (or importable module)
-        this.state = {
-            backgroundColor: transparentPurple,
-        }
+        this.state = {backgroundColor: transparentPurple}
     }
 
     onClick = () => {
         this.props.onClick()
-        this.setState({backgroundColor: transparentYellow})
-        setTimeout(this.afterButtonFlash, 100)
+        if (this.props.flashOnClick) {
+            this.setState({backgroundColor: transparentYellow})
+            setTimeout(this.afterButtonFlash, 100)
+        }
+
     }
 
     afterButtonFlash = () => {
         this.setState({backgroundColor: transparentPurple})
     }
-
-    // componentDidMount = ( ) => {
-    //     this.setState({backgroundColor: })
-    // }
 
     render(): JSX.Element {
         const style: Style = {
@@ -217,15 +176,14 @@ export class FlashButtonWithIcon extends React.Component<FlashButtonWithIconProp
             borderRadius: '5px',
             border: '1px solid #CB0DFA',
             padding: '5vw',
-            // marginBottom: '5px',
             marginBottom: '8px',
             fontSize: 15,
         }
 
         return (
+
             <HorizontalStack style={style} onClick={this.onClick}>
-                {this.props.text}
-                <FontAwesomeIcon icon={this.props.icon}/>
+                {this.props.children}
             </HorizontalStack>
         )
     }

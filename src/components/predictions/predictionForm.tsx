@@ -1,6 +1,6 @@
 import 'App.css'
 
-import { ButtonStandard, ButtonWithIcon, FlashButtonWithIcon } from 'components/shared'
+import { BorderedButton, ButtonStandard } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
@@ -9,6 +9,7 @@ import { PredictionCategory, SongSelection } from 'services/APIPredictionsClient
 import { Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { ConcertPredictionModel } from './models'
 
@@ -126,7 +127,7 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-            }
+            },
         }
 
         const songDropdown = <VerticalStack style={styles.dropdown}>
@@ -160,10 +161,11 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
                     </Modal.Body>
                         {modalFooter}
                 </Modal>
-                {/* <ButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/> */}
-                <FlashButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/>
-                {/* FlashSubmitButton */}
-                {/* <ButtonWithIcon text={buttonText} icon={icon} onClick={this.onShowModal}/> */}
+
+                <BorderedButton onClick={this.onShowModal} flashOnClick={true}>
+                    {buttonText}
+                    <FontAwesomeIcon icon={icon}/>
+                </BorderedButton>
             </div>
         )
     }
