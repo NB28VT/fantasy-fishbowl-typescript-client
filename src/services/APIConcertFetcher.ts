@@ -1,7 +1,3 @@
-// TODO: configure tslint for absolute imports
-import mockConcertResponse from '../mockData/concert.json'
-// Get absolute imports set up
-import mockConcertsResponse from '../mockData/concertList.json'
 import { APIGet } from './RequestClient'
 
 export enum ConcertListEndpoint {
@@ -13,7 +9,6 @@ export enum ConcertEndpoint {
     concert = '/concerts/',
 }
 
-// TODO: FLESH OUT THE SET DATA
 export interface Concert {
     id: number
     show_time: string

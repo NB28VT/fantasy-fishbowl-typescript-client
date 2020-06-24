@@ -1,29 +1,60 @@
 import { observable } from 'mobx'
-import { toast } from 'react-toastify'
 import {
-    APIPredictionsClient, ConcertPredictionParams, PredictionCategory, SongPrediction,
-    SongSelection,
+    APIPredictionsClient, ConcertPredictionParams, PredictionCategory, SongSelection,
 } from 'services/APIPredictionsClient'
 import { APISongsFetcher } from 'services/APISongFetcher'
+import { ToastService } from 'services/ToastService'
+
+export class CategoryPredictionModel {
+    @observable displayed: SongSelection | null
+    @observable saved: SongSelection | null
+
+    category: PredictionCategory
+
+    constructor(category: PredictionCategory, displayed: SongSelection | null, saved: SongSelection | null) {
+        this.category = category
+        this.displayed = displayed
+        this.saved = saved
+    }
+
+    // Cast as "any" for now; problems with React Select
+    onChangeSelection = (selectedSong: any) => {
+        this.displayed = selectedSong
+    }
+
+    onSaveSelection = () => {
+        this.saved = this.displayed
+    }
+
+    isValidPrediction = (): boolean => {
+        return !!(this.saved)
+    }
+}
 
 export class ConcertPredictionModel {
-    @observable songPredictions: SongPrediction[]
+    @observable isLoaded: boolean
+    @observable displayValidations: boolean
+    @observable categoryPredictionModels: CategoryPredictionModel[]
     @observable songSelections: SongSelection[]
-    @observable predictionCategories: PredictionCategory[]
 
-    private isCompletePrediction: boolean
-    private predictionsClient: APIPredictionsClient
-    private songsFetcher: APISongsFetcher
-
-    constructor(public concertID: number, public token: string) {
-        this.predictionsClient = new APIPredictionsClient(token)
-        this.songsFetcher = new APISongsFetcher()
-
-        this.isCompletePrediction = false
-
-        this.predictionCategories = []
-        this.songPredictions = []
+    // Dependency injection
+    constructor(
+        private predictionsClient: APIPredictionsClient,
+        private songsFetcher: APISongsFetcher,
+        private toastService: ToastService,
+        private concertID: number,
+    ) {
+        this.isLoaded = false
+        this.displayValidations = false
+        this.categoryPredictionModels = []
         this.songSelections = []
+    }
+
+    loadPredictionSelections = async (): Promise<void> => {
+        await this.getSongSelections()
+        await this.setPredictions()
+
+        this.isLoaded = true
     }
 
     /**
@@ -37,77 +68,57 @@ export class ConcertPredictionModel {
 
     // TODO: update promises to include rejections
     // https://blog.bitsrc.io/keep-your-promises-in-typescript-using-async-await-7bdc57041308
-    setDefaultPredictions = async (): Promise<void> => {
-        this.predictionCategories = await this.predictionsClient.getPredictionCategories()
-        this.songPredictions = this.predictionCategories.map((category) => ({
-            predictionCategoryID: category.id, songSelection: null})
-        )
-    }
-
-    getSongSelectionForCategory = (category: PredictionCategory): SongSelection | null => {
-        const predictionForCategory = this.songPredictions.find((prediction) => {
-            return prediction.predictionCategoryID === category.id
+    setPredictions = async (): Promise<void> => {
+        const predictionCategories = await this.predictionsClient.getPredictionCategories()
+        // TODO: this is where we load existing predictions so they can be edited
+        // https://trello.com/c/UQI9aPNp/5-pages-load-and-edit-existing-prediction
+        this.categoryPredictionModels = predictionCategories.map((category) => {
+            return new CategoryPredictionModel(category, null, null)
         })
-
-        if (predictionForCategory === undefined) {
-            return null
-        }
-
-        return predictionForCategory.songSelection
     }
 
-    onSelect = (songSelection: SongSelection | null, predictionCategoryID: number): void => {
-        const predictionForCategory = this.songPredictions.find((prediction: SongPrediction) => (
-            prediction.predictionCategoryID === predictionCategoryID)
-        )
-        if (!predictionForCategory) {
-            throw Error(`No default prediction set for ${predictionCategoryID}`)
-        }
-
-        predictionForCategory.songSelection = songSelection
-    }
-
-    submitPrediction = async (): Promise<void> => {
-        this.validateSelectionForAllCategories()
-        if (!this.isCompletePrediction) {
-            toast.error('You must select a song for each category', {
-                hideProgressBar: true,
-                closeOnClick: true,
-            })
-        } else {
-
+    onPredictionSubmit = async (): Promise<void> => {
+        this.displayValidations = false
+        if (this.isValidPrediction()) {
             try {
-                await this.predictionsClient.submitPrediction(this.getPredictionSubmission(), this.concertID)
+                await this.submitPrediction()
+                // TODO: Display Submitted Prediction on successful submission
+                // https://trello.com/c/UQI9aPNp/5-pages-load-and-edit-existing-prediction
+                alert('Prediction submitted')
             } catch (e) {
-                toast.error('There was a problem submitting your subscription', {
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                })
+                this.toastService.displayError('There was a problem submitting your subscription')
             }
-            // TODO: Display Submitted Prediction on successful submission
-            // https://trello.com/c/UQI9aPNp/5-pages-load-and-edit-existing-prediction
-            alert('Prediction submitted')
+        } else {
+            this.displayValidations = true
+            this.toastService.displayError('You must select a song for each category')
         }
     }
 
-    private validateSelectionForAllCategories = (): void => {
-        this.isCompletePrediction =  this.songPredictions.every(prediction => prediction.songSelection !== null)
+    private submitPrediction = async (): Promise<void> => {
+        const predictionSubmission = this.buildPredictionSubmission()
+
+        await this.predictionsClient.submitPrediction(predictionSubmission, this.concertID)
+
     }
 
-    private getPredictionSubmission = (): ConcertPredictionParams => {
-        const songPredictionsAttributes = this.songPredictions.map((prediction) => {
-            if (!prediction.songSelection) {
-                throw Error(`Prediction submitted without songSelection ${prediction}`)
+    private buildPredictionSubmission = (): ConcertPredictionParams => {
+        const predictionAttributes = this.categoryPredictionModels.map((predictionModel: CategoryPredictionModel) => {
+            if (!predictionModel.saved) {
+                throw Error(`Prediction submitted without songSelection ${predictionModel.category}`)
             }
-
             return {
-                song_id: prediction.songSelection.value,
-                prediction_category_id: prediction.predictionCategoryID,
+                song_id: predictionModel.saved.value,
+                prediction_category_id: predictionModel.category.id,
             }
         })
         return {
             concert_id: this.concertID,
-            concert_prediction: {song_predictions_attributes: songPredictionsAttributes},
+            concert_prediction: {song_predictions_attributes: predictionAttributes},
         }
+
+    }
+
+    private isValidPrediction = (): boolean => {
+        return this.categoryPredictionModels.every((model => model.isValidPrediction()))
     }
 }

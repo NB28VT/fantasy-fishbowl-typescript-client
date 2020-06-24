@@ -3,19 +3,19 @@ import 'App.css'
 import { BorderedButton, ButtonStandard } from 'components/shared'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { Button, Modal } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import Select from 'react-select'
-import { PredictionCategory, SongSelection } from 'services/APIPredictionsClient'
+import { APIPredictionsClient, SongSelection } from 'services/APIPredictionsClient'
+import { APISongsFetcher } from 'services/APISongFetcher'
+import { ToastService } from 'services/ToastService'
 import { Style, StyleMap, VerticalStack } from 'utils/styles'
 
-import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { ConcertPredictionModel } from './models'
+import { CategoryPredictionModel, ConcertPredictionModel } from './models'
 
 // TODO: Make Submit Button shared component https://trello.com/c/Lx6Phxxp/57-move-submit-button-component-to-shared
-// TODO: ACTUALLY YOU CAN REUSE THE STANDARD BUTTON COMPONENT
-// ADD TO LOGIN BUTTON AS WELL
 interface SubmitButtonProps {
     onClick(): void
 }
@@ -33,63 +33,40 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
 
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
 }
-
-// TODO: BAKE THIS INTO REGULAR REUSABLE SUBMIT BUTTON; SET FLASH ON TO FALSE BY DEFAULT AND SET AS OPTIONAL PROP
-// interface FlashSubmitButtonProps {
-//     onClick(): void
-
-// }
-
-// export function FlashSubmitButton(props: FlashSubmitButtonProps): JSX.Element {
-//     const style: Style = {
-//         padding: '10px 30px',
-//         backgroundColor: '#A10AC7',
-//         borderRadius: '5px',
-//         alignItems: 'center',
-//         fontSize: 20,
-//         fontWeight: 600,
-
-//     }
-
-//     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
-// }
-
-
-
-interface SongPredictionButtonProps {
-    model: ConcertPredictionModel
-    category: PredictionCategory
+interface PredictionCategoryButtonProps {
+    buttonText: string
+    icon: IconDefinition
+    highlightMissing: boolean
+    onClick(): void
 }
 
-interface SongPredictionButtonState {
+function PredictionCategoryButton(props: PredictionCategoryButtonProps): JSX.Element {
+    return (
+        <BorderedButton onClick={props.onClick} flashOnClick={true} errorHighlight={props.highlightMissing}>
+            {props.buttonText}
+        <FontAwesomeIcon icon={props.icon}/>
+    </BorderedButton>
+    )
+}
+
+interface CategoryPredictionProps {
+    songSelections: SongSelection[]
+    model: CategoryPredictionModel
+    displayValidations: boolean
+}
+
+interface CategoryPredictionState {
     showModal: boolean
-    selectedSong: SongSelection | null
 }
 
 @observer
-class SongPredictionButton extends React.Component<SongPredictionButtonProps, SongPredictionButtonState> {
-    constructor(props: SongPredictionButtonProps) {
+class CategoryPrediction extends React.Component<CategoryPredictionProps, CategoryPredictionState> {
+    constructor(props: CategoryPredictionProps) {
         super(props)
-
-        this.state = {
-            showModal: false,
-            selectedSong: null,
-        }
-    }
-
-    componentDidMount = () => {
-        this.setSelectedSong()
-    }
-
-    setSelectedSong = () => {
-        const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
-        this.setState({selectedSong})
+        this.state = {showModal: false}
     }
 
     onShowModal = () => {
-        // Calls setState twice, not sure if that's an issue
-        // We need to reset the selected song in case the modal was closed with a different song
-        this.setSelectedSong()
         this.setState({showModal: true})
     }
 
@@ -97,26 +74,16 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
         this.setState({showModal: false})
     }
 
-    // Cast as "any" for now; problems with React Select
-    onChangeSelection = (selectedSong: any) => {
-        this.setState({selectedSong})
-    }
-
     onSaveSelection = () => {
-        this.props.model.onSelect(this.state.selectedSong, this.props.category.id)
+        this.props.model.onSaveSelection()
         this.onHideModal()
-    }
-
-    onCancelSelection = () => {
-        this.onHideModal()
-        this.setState({selectedSong: null})
     }
 
     render(): JSX.Element {
-        const selectedSong = this.props.model.getSongSelectionForCategory(this.props.category)
-        const songTitle = selectedSong ? selectedSong.label : 'N/A'
-        const buttonText = this.props.category.name + ': ' + songTitle
-        const icon = selectedSong ? faEdit : faPlus
+        const model = this.props.model
+        const songTitle = model.saved ? model.saved.label : 'N/A'
+        const buttonText = model.category.name + ': ' + songTitle
+        const icon = model.saved ? faEdit : faPlus
 
         const styles: StyleMap = {
             dropdown: {
@@ -132,29 +99,28 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
 
         const songDropdown = <VerticalStack style={styles.dropdown}>
             <Select
-                value={this.state.selectedSong}
-                onChange={this.onChangeSelection}
-                options={this.props.model.songSelections}
-                onInputKeyDown={this.onChangeSelection}
+                value={model.displayed}
+                onChange={model.onChangeSelection}
+                options={this.props.songSelections}
+                onInputKeyDown={model.onChangeSelection}
                 components={{ DropdownIndicator: () => null }}
             />
         </VerticalStack>
 
-        const isSubmitDisabled = this.state.selectedSong ? false : true
-
+        const isSubmitDisabled = !(model.displayed)
         const modalFooter = <Modal.Footer style={styles.footer}>
             <ButtonStandard onClick={this.onSaveSelection} fontSize={20} disabled={isSubmitDisabled}>
                 Save
             </ButtonStandard>
-            <ButtonStandard onClick={this.onCancelSelection} fontSize={20}>Cancel</ButtonStandard>
+            <ButtonStandard onClick={this.onHideModal} fontSize={20}>Cancel</ButtonStandard>
         </Modal.Footer>
 
-        // NOTE: easier to use CSS classes than inline styles for React-Bootstrap modals
+        const displayValidations = !(model.saved) &&  this.props.displayValidations
         return (
             <div>
                 <Modal show={this.state.showModal} centered onHide={this.onHideModal} dialogClassName="modal-dialogue">
                     <Modal.Header className="modal-header" closeButton>
-                    <Modal.Title>{this.props.category.name}</Modal.Title>
+                    <Modal.Title>{model.category.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {songDropdown}
@@ -162,11 +128,14 @@ class SongPredictionButton extends React.Component<SongPredictionButtonProps, So
                         {modalFooter}
                 </Modal>
 
-                <BorderedButton onClick={this.onShowModal} flashOnClick={true}>
-                    {buttonText}
-                    <FontAwesomeIcon icon={icon}/>
-                </BorderedButton>
+                <PredictionCategoryButton
+                    buttonText={buttonText}
+                    onClick={this.onShowModal}
+                    highlightMissing={displayValidations}
+                    icon={icon}
+                />
             </div>
+
         )
     }
 }
@@ -183,23 +152,33 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
     constructor(props: PredictionsFormProps) {
         super(props)
 
-        this.model = new ConcertPredictionModel(props.concertID, this.props.token)
+        this.model = new ConcertPredictionModel(
+            new APIPredictionsClient(this.props.token),
+            new APISongsFetcher(),
+            new ToastService(),
+            props.concertID,
+        )
     }
 
     async componentDidMount(): Promise<void> {
-        await this.model.getSongSelections()
-        await this.model.setDefaultPredictions()
+        await this.model.loadPredictionSelections()
     }
 
     render(): JSX.Element | null {
         // TODO: this can be slow, fill in a loading indicator
         // https://trello.com/c/IiDDdi9U/29-loading-indicator
-        if (!this.model.predictionCategories) {
+        if (!this.model.isLoaded) {
             return null
         }
 
-        const predictionButtons = this.model.predictionCategories.map((predictionCategory) => {
-            return <SongPredictionButton model={this.model} category={predictionCategory} />
+        const predictionButtons = this.model.categoryPredictionModels.map(categoryPredictionModel => {
+            return (
+                <CategoryPrediction
+                    songSelections={this.model.songSelections}
+                    model={categoryPredictionModel}
+                    displayValidations={this.model.displayValidations}
+                />
+            )
         })
 
         const styles: StyleMap = {
@@ -214,7 +193,7 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
         return (
             <VerticalStack style={styles.container}>
                 <div style={styles.predictionButtons}>{predictionButtons}</div>
-                <SubmitButton onClick={this.model.submitPrediction}/>
+                <SubmitButton onClick={this.model.onPredictionSubmit}/>
             </VerticalStack>
         )
     }

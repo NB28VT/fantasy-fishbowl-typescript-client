@@ -1,7 +1,9 @@
 import React, { ReactChild } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
-import { transparentPurple, transparentYellow } from 'utils/colors'
+import {
+    solidPurple, transparentPurple, transparentToastifyRed, transparentYellow,
+} from 'utils/colors'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
@@ -126,7 +128,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
         return (
             <HorizontalStack style={styles.container} onClick={onClick}>
                 <VerticalStack style={styles.thumbnailContainer}>
-                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert"/>
                 </VerticalStack>
                 <VerticalStack style={styles.info}>
                     <div style={styles.showName}>{this.props.concert.venue_name}</div>
@@ -139,6 +141,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
 
 interface BorderedButtonProps {
     children: ReactChild[]
+    errorHighlight?: boolean
     flashOnClick?: boolean
     onClick(...args: any): void
 }
@@ -160,7 +163,6 @@ export class BorderedButton extends React.Component<BorderedButtonProps, Bordere
             this.setState({backgroundColor: transparentYellow})
             setTimeout(this.afterButtonFlash, 100)
         }
-
     }
 
     afterButtonFlash = () => {
@@ -168,13 +170,15 @@ export class BorderedButton extends React.Component<BorderedButtonProps, Bordere
     }
 
     render(): JSX.Element {
+        const border = this.props.errorHighlight ? `5px solid ${transparentToastifyRed}` : `1px solid ${solidPurple}`
+
         const style: Style = {
             height: '8vh',
             justifyContent: 'space-between',
             alignItems: 'center',
             backgroundColor: this.state.backgroundColor,
             borderRadius: '5px',
-            border: '1px solid #CB0DFA',
+            border: `${border}`,
             padding: '5vw',
             marginBottom: '8px',
             fontSize: 15,
