@@ -28,7 +28,6 @@ export function SubmitButton(props: SubmitButtonProps): JSX.Element {
         alignItems: 'center',
         fontSize: 20,
         fontWeight: 600,
-
     }
 
     return <VerticalStack style={style} onClick={props.onClick}>Submit</VerticalStack>
@@ -135,7 +134,6 @@ class CategoryPrediction extends React.Component<CategoryPredictionProps, Catego
                     icon={icon}
                 />
             </div>
-
         )
     }
 }

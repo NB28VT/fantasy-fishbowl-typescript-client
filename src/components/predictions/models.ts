@@ -11,7 +11,11 @@ export class CategoryPredictionModel {
 
     category: PredictionCategory
 
-    constructor(category: PredictionCategory, displayed: SongSelection | null, saved: SongSelection | null) {
+    constructor(
+        category: PredictionCategory,
+        displayed: SongSelection | null,
+        saved: SongSelection | null
+    ) {
         this.category = category
         this.displayed = displayed
         this.saved = saved
@@ -96,9 +100,7 @@ export class ConcertPredictionModel {
 
     private submitPrediction = async (): Promise<void> => {
         const predictionSubmission = this.buildPredictionSubmission()
-
         await this.predictionsClient.submitPrediction(predictionSubmission, this.concertID)
-
     }
 
     private buildPredictionSubmission = (): ConcertPredictionParams => {
@@ -115,7 +117,6 @@ export class ConcertPredictionModel {
             concert_id: this.concertID,
             concert_prediction: {song_predictions_attributes: predictionAttributes},
         }
-
     }
 
     private isValidPrediction = (): boolean => {

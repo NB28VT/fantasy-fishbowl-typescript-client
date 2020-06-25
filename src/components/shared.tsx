@@ -14,7 +14,6 @@ interface ButtonStandardProps {
     fontSize: number
     inverse?: boolean
     disabled?: boolean
-    // May need to type this differently for more reusably
     onClick(): void
 }
 
@@ -171,7 +170,6 @@ export class BorderedButton extends React.Component<BorderedButtonProps, Bordere
 
     render(): JSX.Element {
         const border = this.props.errorHighlight ? `5px solid ${transparentToastifyRed}` : `1px solid ${solidPurple}`
-
         const style: Style = {
             height: '8vh',
             justifyContent: 'space-between',
@@ -185,7 +183,6 @@ export class BorderedButton extends React.Component<BorderedButtonProps, Bordere
         }
 
         return (
-
             <HorizontalStack style={style} onClick={this.onClick}>
                 {this.props.children}
             </HorizontalStack>
