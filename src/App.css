@@ -8,3 +8,23 @@ body {
   height: 100%;
   overflow: auto;
 }
+
+/* Note need for hidden nested styles in React Bootstrap modals (need to specifcy .modal-content */
+/* https://stackoverflow.com/questions/51376875/modal-content-for-different-modals-react-bootstrap */
+.modal-dialogue .modal-content {
+  background: url('images/papyrus-dark.png');
+  color: #F5ED13;
+  border: 0.5px solid #F5ED13;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-family: Oswald, sans-serif;
+}
+
+.close {
+  color: #F5ED13;
+  opacity: 1;
+}
+
+.modal-elements {
+  color: '#F5ED13';
+}

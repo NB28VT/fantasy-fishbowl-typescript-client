@@ -4,7 +4,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import { Style, VerticalStack } from 'utils/styles'
 
-import { APIUserFetcher, LeaderboardResponse, UserRanking } from '../services/APIUserFetcher'
+import { APIUserFetcher, UserRanking } from '../services/APIUserFetcher'
 import { MenuHeader } from './shared'
 
 class LeaderboardPageModel {

@@ -1,6 +1,5 @@
 
 import { observable } from 'mobx'
-import { RouteComponentProps } from 'react-router'
 import {
     APIConcertFetcher, Concert, ConcertEndpoint, ConcertListEndpoint,
 } from 'services/APIConcertFetcher'

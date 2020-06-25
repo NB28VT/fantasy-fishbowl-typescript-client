@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Style, StyleMap } from 'utils/styles'
 
 import { ConcertListEndpoint } from '../../services/APIConcertFetcher'
 import { ConcertThumbnail, MenuHeader } from '../shared'

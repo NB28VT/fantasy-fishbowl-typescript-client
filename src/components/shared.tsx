@@ -1,10 +1,36 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Concert } from 'services/APIConcertFetcher'
+import {
+    solidPurple, transparentPurple, transparentToastifyRed, transparentYellow,
+} from 'utils/colors'
 import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
-import { faAngleLeft, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+interface ButtonStandardProps {
+    children: ReactChild
+    fontSize: number
+    inverse?: boolean
+    disabled?: boolean
+    onClick(): void
+}
+
+export function ButtonStandard(props: ButtonStandardProps): JSX.Element {
+    const style = {
+        padding: '10px 30px',
+        backgroundColor: '#A10AC7',
+        color: 'inherit',
+        borderRadius: '5px',
+        alignItems: 'center',
+        fontSize: props.fontSize,
+        fontWeight: 600,
+        opacity: props.disabled ? 0.5 : 1,
+    }
+
+    return <button style={style} onClick={props.onClick} disabled={props.disabled}>{props.children}</button>
+}
 
 interface NavBackHeaderProps extends RouteComponentProps<any> {pageTitle: string}
 
@@ -101,7 +127,7 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
         return (
             <HorizontalStack style={styles.container} onClick={onClick}>
                 <VerticalStack style={styles.thumbnailContainer}>
-                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert Photo"/>
+                    <img style={styles.thumbnail} src={this.props.concert.venue_image_src} alt="Concert"/>
                 </VerticalStack>
                 <VerticalStack style={styles.info}>
                     <div style={styles.showName}>{this.props.concert.venue_name}</div>
@@ -112,28 +138,54 @@ export class ConcertThumbnail extends React.Component<ConcertThumbnailProps> {
     }
 }
 
-interface ButtonWithIconProps {
-    text: string
-    icon: IconDefinition
+interface BorderedButtonProps {
+    children: ReactChild[]
+    errorHighlight?: boolean
+    flashOnClick?: boolean
+    onClick(...args: any): void
 }
 
-export function ButtonWithIcon(props: ButtonWithIconProps): JSX.Element {
-    const style: Style = {
-        height: '8vh',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: 'rgb(203,13,250, 0.2)',
-        borderRadius: '5px',
-        border: '1px solid #CB0DFA',
-        padding: '5vw',
-        marginBottom: '10px',
-        fontSize: 15,
+interface BorderedButtonState {
+    backgroundColor: string
+}
+
+export class BorderedButton extends React.Component<BorderedButtonProps, BorderedButtonState> {
+    constructor(props: BorderedButtonProps) {
+        super(props)
+
+        this.state = {backgroundColor: transparentPurple}
     }
 
-    return (
-        <HorizontalStack style={style}>
-            {props.text}
-            <FontAwesomeIcon icon={props.icon}/>
-        </HorizontalStack>
-    )
+    onClick = () => {
+        this.props.onClick()
+        if (this.props.flashOnClick) {
+            this.setState({backgroundColor: transparentYellow})
+            setTimeout(this.afterButtonFlash, 100)
+        }
+    }
+
+    afterButtonFlash = () => {
+        this.setState({backgroundColor: transparentPurple})
+    }
+
+    render(): JSX.Element {
+        const border = this.props.errorHighlight ? `5px solid ${transparentToastifyRed}` : `1px solid ${solidPurple}`
+        const style: Style = {
+            height: '8vh',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: this.state.backgroundColor,
+            borderRadius: '5px',
+            border: `${border}`,
+            padding: '5vw',
+            marginBottom: '8px',
+            fontSize: 15,
+        }
+
+        return (
+            <HorizontalStack style={style} onClick={this.onClick}>
+                {this.props.children}
+            </HorizontalStack>
+        )
+    }
 }

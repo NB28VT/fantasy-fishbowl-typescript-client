@@ -4,7 +4,7 @@ import { AuthenticatedApp } from 'components/authenticatedAppMain'
 import { UnauthenticatedApp } from 'components/UnauthenticatedApp/unauthenticatedAppMain'
 import React from 'react'
 import Cookies from 'universal-cookie'
-import { Style, StyleMap } from 'utils/styles'
+import { Style } from 'utils/styles'
 
 // Need default values for callback function, per official docs
 // https://reactjs.org/docs/context.html#updating-context-from-a-nested-component
