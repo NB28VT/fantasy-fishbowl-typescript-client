@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface ButtonStandardProps {
     children: ReactChild
-    fontSize: number
+    fontSize?: number
     inverse?: boolean
     disabled?: boolean
     onClick(): void
@@ -24,7 +24,7 @@ export function ButtonStandard(props: ButtonStandardProps): JSX.Element {
         color: 'inherit',
         borderRadius: '5px',
         alignItems: 'center',
-        fontSize: props.fontSize,
+        fontSize: props.fontSize || 20,
         fontWeight: 600,
         opacity: props.disabled ? 0.5 : 1,
     }
