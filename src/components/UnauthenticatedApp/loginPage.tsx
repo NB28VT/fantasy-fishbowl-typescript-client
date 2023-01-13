@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { AuthClient } from 'services/authClient'
 import { Style, StyleMap, VerticalStack } from 'utils/styles'
 import { ButtonStandard } from 'components/shared'
+import { RouteComponentProps } from 'react-router-dom'
 
 function WelcomeLogo(): JSX.Element {
     const styles: StyleMap = {
@@ -67,6 +68,7 @@ class LoginFormModel {
 
 interface LoginFormProps {
     onLogin(loginToken: string): void
+    onStartDemo(): void
 }
 
 @observer
@@ -109,17 +111,18 @@ class LoginForm extends React.Component<LoginFormProps> {
                     Login
                 </ButtonStandard>
 
-                <ButtonStandard onClick={() =>{}}>
+                <ButtonStandard onClick={this.props.onStartDemo}>
                     Demo
                 </ButtonStandard>
-
                 <ToastContainer position="bottom-center"/>
             </VerticalStack>
         )
     }
 }
 
-export class LoginPage extends React.Component<{}> {
+interface LoginPageProps extends RouteComponentProps<any> {}
+
+export class LoginPage extends React.Component<LoginPageProps> {
     render(): JSX.Element {
         const style: Style = {
             background: `url(${backgroundImage})`,
@@ -128,12 +131,16 @@ export class LoginPage extends React.Component<{}> {
             justifyContent: 'center',
         }
 
+        const goToDemo = (): void => {
+            this.props.history.push('/demo/start')
+        }
+
         return (
             <AuthContext.Consumer>
                 {({onLogin}) => (
                     <VerticalStack style={style}>
                         <WelcomeLogo/>
-                        <LoginForm onLogin={onLogin}/>
+                        <LoginForm onLogin={onLogin} onStartDemo={goToDemo}/>
                     </VerticalStack>
                 )}
             </AuthContext.Consumer>
