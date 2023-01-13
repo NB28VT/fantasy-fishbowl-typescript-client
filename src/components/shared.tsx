@@ -8,6 +8,25 @@ import { HorizontalStack, Style, StyleMap, VerticalStack } from 'utils/styles'
 
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import vertLogo from 'images/yellow-logo-vertical.png'
+
+export function Logo(): JSX.Element {
+    const styles: StyleMap = {
+        container: {
+            textAlign: 'center',
+            justifyContent: 'center',
+            fontSize: 20,
+            color: '#F5ED13',
+        },
+    }
+
+    return (
+        <VerticalStack style={styles.container}>
+            <img alt="logo" src={vertLogo}/>
+            <p>The Setlist Prediction Game</p>
+        </VerticalStack>
+    )
+}
 
 interface ButtonStandardProps {
     children: ReactChild

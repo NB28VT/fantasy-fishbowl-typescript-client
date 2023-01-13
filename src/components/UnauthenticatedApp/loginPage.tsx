@@ -9,26 +9,8 @@ import React, { ChangeEvent } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { AuthClient } from 'services/authClient'
 import { Style, StyleMap, VerticalStack } from 'utils/styles'
-import { ButtonStandard } from 'components/shared'
+import { ButtonStandard, Logo } from 'components/shared'
 import { RouteComponentProps } from 'react-router-dom'
-
-function WelcomeLogo(): JSX.Element {
-    const styles: StyleMap = {
-        container: {
-            textAlign: 'center',
-            justifyContent: 'center',
-            fontSize: 20,
-            color: '#F5ED13',
-        },
-    }
-
-    return (
-        <VerticalStack style={styles.container}>
-            <img alt="logo" src={vertLogo}/>
-            <p>The Setlist Prediction Game</p>
-        </VerticalStack>
-    )
-}
 
 class LoginFormModel {
     @observable email: string
@@ -139,7 +121,7 @@ export class LoginPage extends React.Component<LoginPageProps> {
             <AuthContext.Consumer>
                 {({onLogin}) => (
                     <VerticalStack style={style}>
-                        <WelcomeLogo/>
+                        <Logo/>
                         <LoginForm onLogin={onLogin} onStartDemo={goToDemo}/>
                     </VerticalStack>
                 )}
