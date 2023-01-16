@@ -1,6 +1,6 @@
 import { observable } from 'mobx'
 import {
-    APIPredictionsClient, ConcertPredictionParams, PredictionCategory, SongSelection,
+    APIPredictionsClient, ConcertPredictionParams, DemoAPIPredictionsClient, PredictionCategory, SongSelection,
 } from 'services/APIPredictionsClient'
 import { APISongsFetcher } from 'services/APISongFetcher'
 import { ToastService } from 'services/ToastService'
@@ -43,7 +43,7 @@ export class ConcertPredictionModel {
 
     // Dependency injection
     constructor(
-        private predictionsClient: APIPredictionsClient,
+        private predictionsClient: APIPredictionsClient | DemoAPIPredictionsClient,
         private songsFetcher: APISongsFetcher,
         private toastService: ToastService,
         private concertID: number,
