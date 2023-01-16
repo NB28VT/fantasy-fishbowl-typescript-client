@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.min.css'
 
 import React from 'react'
-import { BrowserRouter, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
+import { BrowserRouter, Route, RouteComponentProps, withRouter } from 'react-router-dom'
 import { LoginPage } from './loginPage'
 import { DemoApp } from './Demo/demoApp'
 
@@ -11,10 +11,8 @@ class UnauthenticatedAppContent extends React.Component<UnauthenticatedAppProps>
     render(): JSX.Element {
         return (
             <div>
-                <Switch>
-                    <Route exact path={'/'} component={LoginPage}/>
-                    <Route exact path={'/demo/start'} component={DemoApp}/>
-                </Switch>
+                <Route exact path={'/'} component={LoginPage}/>
+                <Route path={'/demo'} component={DemoApp}/>
             </div>
         )
     }

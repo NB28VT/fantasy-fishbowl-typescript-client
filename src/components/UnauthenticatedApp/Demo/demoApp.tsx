@@ -3,6 +3,7 @@ import React from 'react'
 import DemoStartPage from "./demoStartPage";
 import { StyleMap, VerticalStack } from "utils/styles";
 import backgroundImage from 'images/papyrus-dark.png'
+import LatestConcertPredictionPage from "./latestConcertPredictionPage";
 
 interface DemoAppProps extends RouteComponentProps<any> {}
 
@@ -26,7 +27,8 @@ class DemoAppContent extends React.Component<DemoAppProps> {
       <div style={styles.container}>
         <VerticalStack style={styles.content}>
           <Switch>
-              <Route exact path={'/demo/start'} component={DemoStartPage}/>
+              <Route path={'/demo/start'} component={DemoStartPage}/>
+              <Route path={'/demo/prediction'} component={LatestConcertPredictionPage}/>
           </Switch>
         </VerticalStack>
       </div>
@@ -38,6 +40,6 @@ const DemoAppContentWithRouter = withRouter(DemoAppContent)
 
 export function DemoApp(): JSX.Element {
     return (
-          <DemoAppContentWithRouter/>
+        <DemoAppContentWithRouter/>
     )
 }

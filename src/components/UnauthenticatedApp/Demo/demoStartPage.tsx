@@ -1,5 +1,6 @@
 import { ButtonStandard, Logo } from 'components/shared'
 import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import { Style, VerticalStack } from 'utils/styles'
 
 const DemoInstructions = (): JSX.Element => {
@@ -20,18 +21,31 @@ const DemoInstructions = (): JSX.Element => {
         Click the start button below to try and retroactively guess the setlist of the band's most recent show (no peaking!)
       </p>
 
-      <ButtonStandard onClick={() => {}}>
-        Play
-      </ButtonStandard>
+      
     </VerticalStack>
   )
 }
 
-export default function DemoStartPage(): JSX.Element {
-  return (
-    <VerticalStack>
-      <Logo/>
-      <DemoInstructions/>
-    </VerticalStack>
-  )
+interface DemoStartPageProps extends RouteComponentProps<any> {}
+
+export default class DemoStartPage extends React.Component<DemoStartPageProps> {
+  constructor(props: DemoStartPageProps) {
+    super(props)
+  }
+
+  render(): JSX.Element {
+    const onStartDemo = (): void => {
+      this.props.history.push('/demo/prediction')
+    }
+
+    return (
+      <VerticalStack>
+        <Logo/>
+        <DemoInstructions/>
+          <ButtonStandard onClick={onStartDemo}>
+            Play
+          </ButtonStandard>
+      </VerticalStack>
+    )
+  }
 }
