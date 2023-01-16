@@ -55,17 +55,32 @@ interface SubmitPredictionResponse {
     concert_prediction: ConcertPrediction
 }
 
-export class APIPredictionsClient {
-    constructor(public authToken: string) {}
+// Stores shared behavior between predictions clients
+export class BaseAPIPredictionsClient {
+    getPredictionCategories = async (): Promise<PredictionCategory[]> => {
+        const response = await APIGet<PredictionCategoriesResponse>(PredictionsEndpoints.prediction_categories)
+        return response.prediction_categories
+    }
+}
+
+// Predictions client for authenticated users
+export class APIPredictionsClient extends BaseAPIPredictionsClient {
+    constructor(public authToken: string) {
+        super()
+    }
 
     submitPrediction = async (
         predictionParams: ConcertPredictionParams, concertID: number): Promise<SubmitPredictionResponse> => {
         const url = `/concerts/${concertID}/predictions`
         return APIPost(url, predictionParams, this.authToken)
     }
+}
 
-    getPredictionCategories = async (): Promise<PredictionCategory[]> => {
-        const response = await APIGet<PredictionCategoriesResponse>(PredictionsEndpoints.prediction_categories)
-        return response.prediction_categories
+// Predictions client for unauthenticated users trying a demo predicitons
+export class DemoAPIPredictionsClient extends BaseAPIPredictionsClient {
+    // Submissions to the Demo predicitons route do not need to be authenticated; therefore we don't need to initialize this client with an authToken
+
+    submitPrediction = async (): Promise<void> => {
+        // TODO: implement once demo backend prediction endpoint is available
     }
 }
