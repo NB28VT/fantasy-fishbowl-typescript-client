@@ -1,8 +1,10 @@
 import { APIGet } from './RequestClient'
+import demoVenueImage from 'images/alpharetta-venue-image.jpg'
 
 export enum ConcertListEndpoint {
     upcomingConcerts = '/concerts/upcoming',
     allConcerts = '/concerts',
+    latestConcert = '/concerts/latest',
 }
 
 export enum ConcertEndpoint {
@@ -33,5 +35,17 @@ export class APIConcertFetcher {
     fetchConcert = async (concertURL: string): Promise<Concert> => {
         const response: ConcertResponse = await APIGet(concertURL)
         return response.concert
+    }
+
+    // Temporary; will become an async fetch call when a most recent concert endpoint is implemented
+    fetchLatestConcert = (): Concert => {
+        return(
+            {
+                id: 345,
+                show_time: "12/31/22",
+                venue_name: "Madison Square Garden",
+                venue_image_src: demoVenueImage,
+            }
+        )
     }
 }
