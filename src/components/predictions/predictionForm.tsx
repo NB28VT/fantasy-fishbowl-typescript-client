@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 import Select from 'react-select'
-import { APIPredictionsClient, SongSelection } from 'services/APIPredictionsClient'
+import { APIPredictionsClient, DemoAPIPredictionsClient, SongSelection } from 'services/APIPredictionsClient'
 import { APISongsFetcher } from 'services/APISongFetcher'
 import { ToastService } from 'services/ToastService'
 import { Style, StyleMap, VerticalStack } from 'utils/styles'
@@ -139,8 +139,7 @@ class CategoryPrediction extends React.Component<CategoryPredictionProps, Catego
 }
 
 interface PredictionsFormProps {
-    concertID: number
-    token: string
+    model: ConcertPredictionModel
 }
 
 @observer
@@ -150,12 +149,7 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
     constructor(props: PredictionsFormProps) {
         super(props)
 
-        this.model = new ConcertPredictionModel(
-            new APIPredictionsClient(this.props.token),
-            new APISongsFetcher(),
-            new ToastService(),
-            props.concertID,
-        )
+        this.model = this.props.model
     }
 
     async componentDidMount(): Promise<void> {
@@ -193,6 +187,49 @@ export class PredictionsForm extends React.Component<PredictionsFormProps> {
                 <div style={styles.predictionButtons}>{predictionButtons}</div>
                 <SubmitButton onClick={this.model.onPredictionSubmit}/>
             </VerticalStack>
+        )
+    }
+}
+
+interface PredictionFormProps {
+    concertID: number
+}
+
+export class DemoPredictionsForm extends React.Component<PredictionFormProps> {
+    render(): JSX.Element {
+        // Initialize ConcertPredictionModel with demo prediction client injected
+        // This client submits predictions for unauthorized Users demoing the app
+        const predictionsModel = new ConcertPredictionModel(
+            new DemoAPIPredictionsClient(),
+            new APISongsFetcher(),
+            new ToastService(),
+            this.props.concertID,
+        )
+
+        return(
+            <PredictionsForm model={predictionsModel}/>
+        )
+    }
+}
+
+interface AuthenticatedPredictionFormProps extends PredictionFormProps {
+    token: string
+}
+
+export class AuthenticatedPredictionsForm extends React.Component<AuthenticatedPredictionFormProps> {
+    render(): JSX.Element {
+
+        const predictionsModel = new ConcertPredictionModel(
+            // Initialize ConcertPredictionModel with authenticated prediction client injected
+            // This client submits predictions for logged in Users
+            new APIPredictionsClient(this.props.token),
+            new APISongsFetcher(),
+            new ToastService(),
+            this.props.concertID,
+        )
+
+        return(
+            <PredictionsForm model={predictionsModel}/>
         )
     }
 }
